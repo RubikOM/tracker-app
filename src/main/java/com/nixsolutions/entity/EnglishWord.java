@@ -17,6 +17,7 @@ public class EnglishWord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    // TODO rename it
     @Column(name = "word_in_english")
     private String wordInEnglish;
 

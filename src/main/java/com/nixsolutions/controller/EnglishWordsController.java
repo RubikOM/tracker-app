@@ -22,8 +22,8 @@ public class EnglishWordsController {
 
     @GetMapping("/")
     public String helloWorld(Model model) {
-        model.addAttribute("user", new EnglishWord());
-        model.addAttribute("words", englishWordService.getAllWords());
+        model.addAttribute("englishWord", new EnglishWord());
+//        model.addAttribute("words", englishWordService.getAllWords());
         return Pages.ENGLISH_WORD_PAGE.getPage();
     }
 

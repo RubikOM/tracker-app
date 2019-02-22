@@ -17,14 +17,14 @@
     <form:form method="post" action="createWord" modelAttribute="englishWord">
         <div class="form-group">
             <label>Input English word *</label>
-            <form:input type="text" class="form-control" path="wordInEnglish" placeholder="Word"/>
+            <form:input class="form-control" path="wordInEnglish" placeholder="Word"/>
             <%--<form:errors path="wordInEnglish" class="error"/>--%>
         </div>
 
         <div class="form-group">
             <%--TODO form label--%>
             <label>Input Transcription </label>
-            <form:input type="text" class="form-control" path="transcription" placeholder="Transcription"/>
+            <form:input class="form-control" path="transcription" placeholder="Transcription"/>
             <%--<form:errors path="transcription" class="error"/>--%>
         </div>
 
