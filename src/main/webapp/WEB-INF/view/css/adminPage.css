@@ -1,0 +1,46 @@
+body{
+     /*background:azure;*/
+     background:darkgray;
+     }
+     td{
+        width: 10%;
+        height: 50px;
+     }
+     tr{
+     vertical-align: center;
+         text-align: center;
+     }
+     p{
+     margin-left:200px;
+     }
+     .global_wrapper{
+         background: Beige;
+         position: fixed;
+         height: 100%;
+         width: 100%;
+     }
+     .header{
+         height: 10%;
+     }
+     .hello_user{
+         position: absolute;
+         top: 0;
+         right: 0;
+     }
+     .main_content{
+         width: 90%;
+         height: 85%;
+         padding-left: 43%;
+         overflow: auto;
+     }
+     .hello_user{
+         display: inline-block;
+     }
+     .user_name{
+         display: inline-block;
+     }
+     .table {
+         width: 70%;
+         overflow: auto;
+         margin-left:200px;
+     }
