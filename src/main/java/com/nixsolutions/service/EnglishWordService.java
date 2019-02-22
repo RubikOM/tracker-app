@@ -1,5 +1,7 @@
 package com.nixsolutions.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -18,5 +20,10 @@ public class EnglishWordService {
 
     public void createWord(EnglishWord englishWord){
         englishWordsDao.createWord(englishWord);
+    }
+
+    // TODO get only last words
+    public List<EnglishWord> getAllWords() {
+        return englishWordsDao.getAllWords();
     }
 }

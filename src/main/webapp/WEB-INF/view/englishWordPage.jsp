@@ -12,45 +12,69 @@
 </head>
 <body>
 <div class="content">
-    <p>Input English word here</p>
+    <p>Input English word here:</p>
 
-    <form:form method="post" action="createWord" modelAttribute="wordDTO">
+    <form:form method="post" action="createWord" modelAttribute="englishWord">
         <div class="form-group">
             <label>Input English word *</label>
             <form:input type="text" class="form-control" path="wordInEnglish" placeholder="Word"/>
-            <form:errors path="wordInEnglish" class="error"/>
+            <%--<form:errors path="wordInEnglish" class="error"/>--%>
         </div>
 
         <div class="form-group">
+            <%--TODO form label--%>
             <label>Input Transcription </label>
             <form:input type="text" class="form-control" path="transcription" placeholder="Transcription"/>
-            <form:errors path="transcription" class="error"/>
+            <%--<form:errors path="transcription" class="error"/>--%>
         </div>
 
         <div class="form-group">
             <label>Input Russian translation *
-            You can input several translations, please separate them with space or comma</label>
+                You can input several translations, please separate them with space or comma</label>
             <form:input type="text" class="form-control" path="translation" placeholder="Translation"/>
-            <form:errors path="translation" class="error"/>
+            <%--<form:errors path="translation" class="error"/>--%>
         </div>
 
         <div class="form-group">
             <label>Input Example on English </label>
             <form:input type="text" class="form-control" path="example" placeholder="Example in English"/>
-            <form:errors path="example" class="error"/>
+            <%--<form:errors path="example" class="error"/>--%>
         </div>
 
         <div class="form-group">
             <label>Input Example's translation in Russian </label>
             <form:input type="text" class="form-control" path="exampleTranslation" placeholder="example's translation"/>
-            <form:errors path="exampleTranslation" class="error"/>
+            <%--<form:errors path="exampleTranslation" class="error"/>--%>
         </div>
 
         <div class="button-box col-lg-12">
-            <p><form:button type="submit" class="btn btn-primary my-button" >Ok</form:button>
+            <p><form:button type="submit" class="btn btn-primary my-button">Ok</form:button>
                 <input type="button" class="btn btn-secondary my-button" onclick="history.back();" value="Cancel"/></p>
         </div>
     </form:form>
+
+    <%--<p>Your last added words:</p>
+     &lt;%&ndash;TODO limit by some number (1-10)&ndash;%&gt;
+    <table class="table table-condensed table-striped">
+        <tr>
+            <td>Word</td>
+            <td>Transcription</td>
+            <td>Translation</td>
+            <td>Example</td>
+            <td>Example translation</td>
+            <td>Created</td>
+        </tr>
+        <c:forEach items="${words}" var="word">
+            <tr class="table">
+                <td> ${word.wordInEnglish}</td>
+                <td > ${word.transcription}</td>
+                <td > ${word.translation}</td>
+                <td> ${word.example}</td>
+                <td > ${word.exampleTranslation}</td>
+                <td > ${word.creationDate}</td>
+            </tr>
+        </c:forEach>
+    </table>--%>
 </div>
 </body>
 </html>

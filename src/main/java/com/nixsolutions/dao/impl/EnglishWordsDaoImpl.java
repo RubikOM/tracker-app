@@ -2,6 +2,7 @@ package com.nixsolutions.dao.impl;
 
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -34,6 +35,8 @@ public class EnglishWordsDaoImpl implements EnglishWordsDao {
     @Override
     @Transactional(readOnly = true)
     public List<EnglishWord> getAllWords() {
-        return sessionFactory.getCurrentSession().createQuery("SELECT a FROM EnglishWord a", EnglishWord.class).getResultList();
+        // TODO rebuild this shit from criteria to smth normal
+        List<EnglishWord> list = sessionFactory.getCurrentSession().createCriteria(EnglishWord.class).list();
+        return list;
     }
 }

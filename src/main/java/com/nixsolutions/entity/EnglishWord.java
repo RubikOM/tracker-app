@@ -17,9 +17,6 @@ public class EnglishWord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "creation_date")
-    private LocalDate creationDate;
-
     @Column(name = "word_in_english")
     private String wordInEnglish;
 
@@ -34,6 +31,9 @@ public class EnglishWord {
 
     @Column(name = "example_translation")
     private String exampleTranslation;
+
+    @Column(name = "creation_date")
+    private LocalDate creationDate;
 
     public EnglishWord() {
     }
