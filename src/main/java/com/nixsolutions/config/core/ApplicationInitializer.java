@@ -15,10 +15,7 @@ import javax.servlet.ServletRegistration;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class ApplicationInitializer implements WebApplicationInitializer {
-
     public void onStartup(ServletContext container) {
-        container.setInitParameter(
-                "contextConfigLocation", "com.nixsolutions.webService");
         AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
 
         container.addListener(new ContextLoaderListener(ctx));

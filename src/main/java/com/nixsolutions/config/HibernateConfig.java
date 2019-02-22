@@ -19,16 +19,17 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @PropertySource(value = {"classpath:db.properties"})
 @ComponentScan({"com.nixsolutions.dao"})
 public class HibernateConfig {
-    // TODO in config use tricks of Idea ultimate
+    private final Environment environment;
 
     @Autowired
-    private Environment environment;
+    public HibernateConfig(Environment environment) {
+        this.environment = environment;
+    }
 
     @Bean
     public SessionFactory sessionFactory() {
         LocalSessionFactoryBuilder builder = new LocalSessionFactoryBuilder(dataSource());
-        builder.scanPackages("com.nixsolutions.entity")
-                .addProperties(hibernateProperties());
+        builder.scanPackages("com.nixsolutions.entity").addProperties(hibernateProperties());
         return builder.buildSessionFactory();
     }
 

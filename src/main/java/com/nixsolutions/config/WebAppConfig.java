@@ -14,24 +14,21 @@ import org.springframework.web.servlet.view.JstlView;
 @EnableWebMvc
 @Configuration
 @EnableTransactionManagement
-@ComponentScan({"com.nixsolutions.service, com.nixsolutions.controller, com.nixsolutions.webService"})
+@ComponentScan({"com.nixsolutions.service, com.nixsolutions.controller"})
 public class WebAppConfig extends WebMvcConfigurerAdapter {
-
-    // TODO move views to WEB-INF folder is needed
-    // TODO fix jsp and css duplications (there is a lot of them)
 
     @Bean
     public InternalResourceViewResolver viewResolver() {
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
         viewResolver.setViewClass(JstlView.class);
-        viewResolver.setPrefix("/view/");
+        viewResolver.setPrefix("/WEB-INF/view/");
         viewResolver.setSuffix(".jsp");
         return viewResolver;
     }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/view/**").addResourceLocations("/view/");
+        registry.addResourceHandler("/static/**").addResourceLocations("/static/");
     }
 
     @Bean
