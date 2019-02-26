@@ -12,14 +12,14 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "english_words")
-public class EnglishWord {
+public class VocabularyElement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     // TODO rename it
     @Column(name = "word_in_english")
-    private String wordInEnglish;
+    private String word;
 
     @Column(name = "transcription")
     private String transcription;
@@ -31,28 +31,28 @@ public class EnglishWord {
     private String example;
 
     @Column(name = "example_translation")
-    private String exampleTranslation;
+    private String examplesTranslation;
 
     @Column(name = "creation_date")
     private LocalDate creationDate;
 
-    public EnglishWord() {
+    public VocabularyElement() {
     }
 
-    public EnglishWord(String wordInEnglish, String transcription, String translation,
-                       String example, String exampleTranslation) {
-        this.wordInEnglish = wordInEnglish;
+    public VocabularyElement(String word, String transcription, String translation,
+                             String example, String examplesTranslation) {
+        this.word = word;
         this.transcription = transcription;
         this.translation = translation;
         this.example = example;
-        this.exampleTranslation = exampleTranslation;
+        this.examplesTranslation = examplesTranslation;
     }
 
-    public String getWordAsString() {
+    public String getVocabularyElementAsString() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(wordInEnglish).append(";").append(transcription == null ? "" : transcription + ";")
+        stringBuilder.append(word).append(";").append(transcription == null ? "" : transcription + ";")
                 .append(translation).append(";").append(example == null? "" : example + ";")
-                .append(exampleTranslation == null ? "" : exampleTranslation + ";").append("\n");
+                .append(examplesTranslation == null ? "" : examplesTranslation + ";").append("\n");
         return stringBuilder.toString();
     }
 
@@ -72,12 +72,12 @@ public class EnglishWord {
         this.id = id;
     }
 
-    public String getWordInEnglish() {
-        return wordInEnglish;
+    public String getWord() {
+        return word;
     }
 
-    public void setWordInEnglish(String wordInEnglish) {
-        this.wordInEnglish = wordInEnglish;
+    public void setWord(String word) {
+        this.word = word;
     }
 
     public String getTranscription() {
@@ -104,36 +104,36 @@ public class EnglishWord {
         this.example = example;
     }
 
-    public String getExampleTranslation() {
-        return exampleTranslation;
+    public String getExamplesTranslation() {
+        return examplesTranslation;
     }
 
-    public void setExampleTranslation(String exampleTranslation) {
-        this.exampleTranslation = exampleTranslation;
+    public void setExamplesTranslation(String examplesTranslation) {
+        this.examplesTranslation = examplesTranslation;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        EnglishWord that = (EnglishWord) o;
-        return wordInEnglish.equals(that.wordInEnglish) &&
+        VocabularyElement that = (VocabularyElement) o;
+        return word.equals(that.word) &&
                 translation.equals(that.translation);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(wordInEnglish, translation);
+        return Objects.hash(word, translation);
     }
 
     @Override
     public String toString() {
-        return "EnglishWord{" +
-                "wordInEnglish='" + wordInEnglish + '\'' +
+        return "VocabularyElement{" +
+                "word='" + word + '\'' +
                 ", transcription='" + transcription + '\'' +
                 ", translation='" + translation + '\'' +
                 ", example='" + example + '\'' +
-                ", exampleTranslation='" + exampleTranslation + '\'' +
+                ", examplesTranslation='" + examplesTranslation + '\'' +
                 '}';
     }
 }

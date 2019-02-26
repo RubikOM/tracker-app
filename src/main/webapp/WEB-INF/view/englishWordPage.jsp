@@ -14,38 +14,24 @@
     <link type="text/css" rel="stylesheet" href="${root}/static/css/englishWordPage.css"/>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <%--TODO this script to js file--%>
-    <%--<script>
-        $(document).ready(function () {
-            $(".get-file-button").click(function () {
-                $.ajax({
-                    type: "GET",
-                    url: "/getTxtFile",
-                    success: function () {
-                        location.reload();
-                    }
-                })
-            })
-        })
-    </script>--%>
 </head>
 <body>
 <div class="content">
     <div class="first-section">
-        <div class="add-word">
-            <p>Input English word here:</p>
+        <div class="add-vocabularyElement">
+            <p>Input English vocabularyElement here:</p>
 
             <form:form method="post" action="createWord" modelAttribute="englishWord">
                 <div class="form-row">
                     <div class="col-md-3 mb-3">
-                        <label>Input English word *</label>
+                        <label>Input English vocabularyElement *</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                         <span class="input-group-text" id="validationTooltipWord">
                             <i class="fas fa-edit"></i></span>
                             </div>
-                            <form:input class="form-control" path="wordInEnglish" placeholder="Word"/>
-                                <%--<form:errors path="wordInEnglish" class="error"/>--%>
+                            <form:input class="form-control" path="word" placeholder="Word in English"/>
+                                <%--<form:errors path="word" class="error"/>--%>
                         </div>
                     </div>
 
@@ -94,9 +80,9 @@
                         <span class="input-group-text" id="validationTooltipExampleTranslation">
                             <i class="fas fa-book-open"></i></span>
                         </div>
-                        <form:input type="text" class="form-control" path="exampleTranslation"
+                        <form:input type="text" class="form-control" path="examplesTranslation"
                                     placeholder="Example's translation"/>
-                            <%--<form:errors path="exampleTranslation" class="error"/>--%>
+                            <%--<form:errors path="examplesTranslation" class="error"/>--%>
                     </div>
                 </div>
 
@@ -110,10 +96,10 @@
         </div>
     </div>
 
-    <div class="added-words">
-        <p>Your last added words down here
+    <div class="added-vocabularyElements">
+        <p>Your last added vocabularyElements down here
             <%--<button type="submit" class="btn btn-primary get-file-button">Get text file</button>--%>
-            <a href="${root}/getTxtFile">Get .txt file with all your today's words </a>
+            <a href="${root}/getTxtFile">Get .txt file with all your today's vocabularyElements </a>
         </p>
         <%--TODO limit by some number (1-10)--%>
         <table class="table table-condensed table-striped">
@@ -124,21 +110,54 @@
                 <td>Example</td>
                 <td>Example translation</td>
                 <td>Created</td>
-                <%--<td>Actions</td>--%>
+                <td>Actions</td>
             </tr>
             <c:forEach items="${words}" var="word">
                 <tr class="table">
-                    <td> ${word.wordInEnglish}</td>
+                    <td> ${word.word}</td>
                     <td> ${word.transcription}</td>
                     <td> ${word.translation}</td>
                     <td> ${word.example}</td>
-                    <td> ${word.exampleTranslation}</td>
+                    <td> ${word.examplesTranslation}</td>
                     <td> ${word.creationDate}</td>
-                    <%--<td> ${word.creationDate}</td>--%>
+                    <td><input type="button" class="btn-danger delete-button"
+                               delete-vocabularyElement=${word.word} value="Delete">
+                        <input type="button" class="btn btn-secondary edit-button"
+                               edit-vocabularyElement=${word.word} value="Edit">
+                    </td>
                 </tr>
             </c:forEach>
         </table>
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+        $(".delete-button").click(function () {
+            var deleteWord = $(this).attr("delete-vocabularyElement");
+            $.ajax({
+                type: "DELETE",
+                url: "/delete/" + deleteWord,
+                success: function () {
+                    location.reload();
+                }
+            })
+        })
+    });
+
+    $(document).ready(function () {
+        $(".edit-button").click(function () {
+            var editWord = $(this).attr("edit-vocabularyElement");
+            $.ajax({
+                type: "PATCH",
+                url: "/edit/" + editWord,
+                success: function () {
+                    location.reload();
+                }
+            })
+        })
+    });
+</script>
+
 </body>
 </html>
