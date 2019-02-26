@@ -1,5 +1,5 @@
 <p>Your last added dictionaryElements down here
-    <a href="${root}/getTxtFile">Get .txt file with all time created words </a>
+    <a href="${root}/dictionary/getTxtFile">Get .txt file with all time created words </a>
 </p>
 <table id="wordsTable" class="table table-condensed table-striped">
     <tr>

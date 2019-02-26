@@ -10,7 +10,6 @@
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
           integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
-
     <link type="text/css" rel="stylesheet" href="${root}/static/css/englishWordPage.css"/>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -21,10 +20,10 @@
         <div class="add-dictionaryElement">
             <p>Input English dictionaryElement here:</p>
 
-            <form:form method="post" action="createWord" modelAttribute="englishWord">
+            <form:form method="post" action="/dictionary/createWord" modelAttribute="englishWord">
                 <div class="form-row">
                     <div class="col-md-3 mb-3">
-                        <label>Input English dictionaryElement *</label>
+                        <form:label path="word">Input English dictionaryElement *</form:label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                         <span class="input-group-text" id="validationTooltipWord">
@@ -35,9 +34,8 @@
                         </div>
                     </div>
 
-                        <%--TODO form label--%>
                     <div class="col-md-3 mb-3">
-                        <label>Input Transcription </label>
+                        <form:label path="transcription">Input Transcription </form:label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                         <span class="input-group-text" id="validationTooltipTranscription">
@@ -49,20 +47,19 @@
                     </div>
 
                     <div class="col-md-6 mb-3">
-                        <label>Input Russian translation * </label>
+                        <form:label path="translation">Input Russian translation * </form:label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                         <span class="input-group-text" id="validationTooltipTranslation">
                             <i class="fas fa-edit"></i></span>
                             </div>
-                            <form:input type="text" class="form-control" id="validationTooltipUsername"
-                                        placeholder="Russian translation" path="translation"/>
+                            <form:input class="form-control" path="translation" placeholder="Russian translation" />
                         </div>
                     </div>
                 </div>
 
                 <div class="padding-top-required">
-                    <label>Input Example on English </label>
+                    <form:label path="example">Input Example on English </form:label>
                     <div class="input-group">
                         <div class="input-group-prepend">
                         <span class="input-group-text" id="validationTooltipExample">
@@ -74,14 +71,13 @@
                 </div>
 
                 <div class="padding-top-required">
-                    <label>Input Example's translation in Russian </label>
+                    <form:label path="examplesTranslation">Input Example's translation in Russian </form:label>
                     <div class="input-group ">
                         <div class="input-group-prepend ">
                         <span class="input-group-text" id="validationTooltipExampleTranslation">
                             <i class="fas fa-book-open"></i></span>
                         </div>
-                        <form:input type="text" class="form-control" path="examplesTranslation"
-                                    placeholder="Example's translation"/>
+                        <form:input type="text" class="form-control" path="examplesTranslation" placeholder="Example's translation"/>
                             <%--<form:errors path="examplesTranslation" class="error"/>--%>
                     </div>
                 </div>
@@ -107,33 +103,6 @@
     </div>
 </div>
 
-<script>
-    $(document).ready(function () {
-        $(".delete-button").click(function () {
-            var deleteWord = $(this).attr("delete-dictionaryElement");
-            $.ajax({
-                type: "DELETE",
-                url: "/delete/" + deleteWord,
-                success: function () {
-                    location.reload();
-                }
-            })
-        })
-    });
-
-    $(document).ready(function () {
-        $(".edit-button").click(function () {
-            var editWord = $(this).attr("edit-dictionaryElement");
-            $.ajax({
-                type: "PATCH",
-                url: "/edit/" + editWord,
-                success: function () {
-                    location.reload();
-                }
-            })
-        })
-    });
-</script>
-
+<script src="${root}/static/scripts/buttons-logic.js"></script>
 </body>
 </html>

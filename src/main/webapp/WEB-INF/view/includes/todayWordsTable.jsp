@@ -1,7 +1,7 @@
 <p>Your todays dictionaryElements down here
-    <a href="${root}/getTxtFile">Get .txt file with all your today's words </a>
+    <a href="${root}/dictionary/getTxtFile">Get .txt file with all your TODAY'S words </a>
 </p>
-<p><a href="${root}/getTxtFile">Get .txt file with all time created words </a></p>
+<p><a href="${root}/dictionary/getAllTimeTxtFile">Get .txt file with ALL TIME created words </a></p>
 <table id="wordsTable" class="table table-condensed table-striped">
     <tr>
         <td>Word</td>

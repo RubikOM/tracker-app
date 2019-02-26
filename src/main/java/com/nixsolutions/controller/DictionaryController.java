@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.nixsolutions.entity.DictionaryElement;
@@ -21,6 +22,7 @@ import com.nixsolutions.pojo.Pages;
 import com.nixsolutions.service.DictionaryService;
 
 @Controller
+@RequestMapping("/dictionary")
 public class DictionaryController {
     private static final String TODAY_FILE_NAME = LocalDate.now().toString() + ".txt";
     private static final String ALL_TIME_WORDS_FILE_NAME = "all your words.txt";
@@ -32,7 +34,7 @@ public class DictionaryController {
         this.dictionaryService = dictionaryService;
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public String getPage(Model model) {
         model.addAttribute("englishWord", new DictionaryElement());
         List<DictionaryElement> elements = dictionaryService.getTodaysDictionaryElements();
@@ -48,7 +50,7 @@ public class DictionaryController {
     public String addDictionaryElement(DictionaryElement dictionaryElement) {
         // TODO word SHOULD be in English and uniq
         dictionaryService.addDictionaryElement(dictionaryElement);
-        return "redirect:/";
+        return "redirect:/dictionary";
     }
 
     @DeleteMapping("/delete/{deleteWord}")
