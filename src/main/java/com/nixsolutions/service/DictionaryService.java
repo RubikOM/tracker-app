@@ -24,6 +24,10 @@ public class DictionaryService {
         return dictionaryDao.getAllDictionaryElements();
     }
 
+    public List<DictionaryElement> getLastDictionaryElementsWords() {
+        return dictionaryDao.getLastDictionaryElements();
+    }
+
     public List<DictionaryElement> getTodaysDictionaryElements() {
         return dictionaryDao.getTodaysDictionaryElements();
     }

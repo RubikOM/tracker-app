@@ -97,38 +97,13 @@
     </div>
 
     <div class="added-dictionaryElements">
-        <p>Your last added dictionaryElements down here
-            <%--<button type="submit" class="btn btn-primary get-file-button">Get text file</button>--%>
-            <a href="${root}/getTxtFile">Get .txt file with all your today's dictionaryElements </a>
-        </p>
-        <%--TODO limit by some number (1-10)--%>
-        <%--TODO separete this into other JSP--%>
-        <table class="table table-condensed table-striped">
-            <tr>
-                <td>Word</td>
-                <td>Transcription</td>
-                <td>Translation</td>
-                <td>Example</td>
-                <td>Example translation</td>
-                <td>Created</td>
-                <td>Actions</td>
-            </tr>
-            <c:forEach items="${words}" var="word">
-                <tr class="table">
-                    <td> ${word.word}</td>
-                    <td> ${word.transcription}</td>
-                    <td> ${word.translation}</td>
-                    <td> ${word.example}</td>
-                    <td> ${word.examplesTranslation}</td>
-                    <td> ${word.creationDate}</td>
-                    <td><input type="button" class="btn-danger delete-button"
-                               delete-dictionaryElement=${word.word} value="Delete">
-                        <input type="button" class="btn btn-secondary edit-button"
-                               edit-dictionaryElement=${word.word} value="Edit">
-                    </td>
-                </tr>
-            </c:forEach>
-        </table>
+        <c:if test="${todaysAddedElements != null}">
+            <%@include file="includes/todayWordsTable.jsp" %>
+        </c:if>
+
+        <c:if test="${lastAddedElements != null}">
+            <%@include file="includes/lastWordsTable.jsp" %>
+        </c:if>
     </div>
 </div>
 

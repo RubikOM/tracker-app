@@ -3,6 +3,8 @@ package com.nixsolutions.dao.impl;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +24,10 @@ public class DictionaryDaoImpl implements DictionaryDao {
 
     private final SessionFactory sessionFactory;
     private final static String SELECT_ALL_DICTIONARY_ELEMENTS = "from DictionaryElement";
+    private final static String SELECT_LAST_DICTIONARY_ELEMENTS = "from DictionaryElement order by creationDate DESC, id DESC";
     private final static String SELECT_ALL_TODAYS_DICTIONARY_ELEMENTS = "from DictionaryElement where creationDate = :today";
     private final static String SELECT_DICTIONARY_ELEMENT_BY_WORD = "from DictionaryElement where word = :param";
+    private final static Integer MAX_AMOUNT_OF_WORDS_DISPLAYED = 10;
 
     @Autowired
     public DictionaryDaoImpl(SessionFactory sessionFactory) {
@@ -34,6 +38,15 @@ public class DictionaryDaoImpl implements DictionaryDao {
     @Transactional(readOnly = true)
     public List<DictionaryElement> getAllDictionaryElements() {
         Query query = sessionFactory.getCurrentSession().createQuery(SELECT_ALL_DICTIONARY_ELEMENTS);
+        return query.list();
+    }
+
+    // TODO code duplication between this 2 methods
+    @Override
+    @Transactional(readOnly = true)
+    public List<DictionaryElement> getLastDictionaryElements() {
+        Query query = sessionFactory.getCurrentSession().createQuery(SELECT_LAST_DICTIONARY_ELEMENTS);
+        query.setMaxResults(MAX_AMOUNT_OF_WORDS_DISPLAYED);
         return query.list();
     }
 
@@ -50,7 +63,7 @@ public class DictionaryDaoImpl implements DictionaryDao {
     public DictionaryElement findByWord(String englishName) {
         Query query = sessionFactory.getCurrentSession().createQuery(SELECT_DICTIONARY_ELEMENT_BY_WORD);
         query.setParameter("param", englishName);
-        return (DictionaryElement) query.getSingleResult();
+        return (DictionaryElement) query.uniqueResult();
     }
 
     @Override
@@ -62,7 +75,13 @@ public class DictionaryDaoImpl implements DictionaryDao {
     @Override
     @Transactional
     public void removeDictionaryElement(String word) {
+        Session session;
+        try {
+            session = sessionFactory.getCurrentSession();
+        } catch (HibernateException e) {
+            session = sessionFactory.openSession();
+        }
         DictionaryElement element = findByWord(word);
-        sessionFactory.getCurrentSession().remove(element);
+        session.remove(element);
     }
 }

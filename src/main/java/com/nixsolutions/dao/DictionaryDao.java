@@ -8,6 +8,8 @@ public interface DictionaryDao {
 
     List<DictionaryElement> getAllDictionaryElements();
 
+    List<DictionaryElement> getLastDictionaryElements();
+
     List<DictionaryElement> getTodaysDictionaryElements();
 
     DictionaryElement findByWord(String wordInEnglish);

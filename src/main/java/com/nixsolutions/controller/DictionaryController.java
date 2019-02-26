@@ -1,6 +1,7 @@
 package com.nixsolutions.controller;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,7 +22,8 @@ import com.nixsolutions.service.DictionaryService;
 
 @Controller
 public class DictionaryController {
-    private static final String OUTPUT_FILE_NAME = "output.txt";
+    private static final String TODAY_FILE_NAME = LocalDate.now().toString() + ".txt";
+    private static final String ALL_TIME_WORDS_FILE_NAME = "all your words.txt";
 
     private final DictionaryService dictionaryService;
 
@@ -32,13 +35,18 @@ public class DictionaryController {
     @GetMapping("/")
     public String getPage(Model model) {
         model.addAttribute("englishWord", new DictionaryElement());
-//        model.addAttribute("words", vocabularyService.getDictionaryElementsWords());
-        model.addAttribute("words", dictionaryService.getTodaysDictionaryElements());
+        List<DictionaryElement> elements = dictionaryService.getTodaysDictionaryElements();
+        if (!elements.isEmpty()) {
+            model.addAttribute("todaysAddedElements", elements);
+        } else {
+            model.addAttribute("lastAddedElements", dictionaryService.getLastDictionaryElementsWords());
+        }
         return Pages.ENGLISH_WORD_PAGE.getPage();
     }
 
     @PostMapping("/createWord")
     public String addDictionaryElement(DictionaryElement dictionaryElement) {
+        // TODO word SHOULD be in English and uniq
         dictionaryService.addDictionaryElement(dictionaryElement);
         return "redirect:/";
     }
@@ -49,15 +57,36 @@ public class DictionaryController {
         dictionaryService.removeDictionaryElement(word);
     }
 
+    @PatchMapping("/edit/{editWord}")
+    @ResponseBody
+    public void editDictionaryElement(@PathVariable("editWord") DictionaryElement dictionaryElement) {
+        /* NOP */
+    }
+
     // TODO change this method after
-    // TODO try Baeldong's with text Plain
+    // TODO try Baeldong's with text Plain produces type
     @GetMapping(value = "/getTxtFile", produces = "text/plain;charset=UTF-8")
     @ResponseBody
     public String getTxtFile(HttpServletResponse response) {
-        response.setHeader("Content-Disposition", "attachment; filename=" + OUTPUT_FILE_NAME);
+        response.setHeader("Content-Disposition", "attachment; filename=" + TODAY_FILE_NAME);
         StringBuilder content = new StringBuilder();
 
+        // TODO try to do it with Java8 - have to look better anyway
         List<DictionaryElement> dictionaryElements = dictionaryService.getTodaysDictionaryElements();
+        for (DictionaryElement dictionaryElement : dictionaryElements) {
+            content.append(dictionaryElement.getVocabularyElementAsString());
+        }
+        return new String(content.toString().getBytes(), StandardCharsets.UTF_8);
+    }
+
+    @GetMapping(value = "/getAllTimeTxtFile", produces = "text/plain;charset=UTF-8")
+    @ResponseBody
+    public String getAllTimeTxtFile(HttpServletResponse response) {
+        response.setHeader("Content-Disposition", "attachment; filename=" + ALL_TIME_WORDS_FILE_NAME);
+        StringBuilder content = new StringBuilder();
+
+        // TODO code duplications with getTxtFile
+        List<DictionaryElement> dictionaryElements = dictionaryService.getDictionaryElementsWords();
         for (DictionaryElement dictionaryElement : dictionaryElements) {
             content.append(dictionaryElement.getVocabularyElementAsString());
         }
