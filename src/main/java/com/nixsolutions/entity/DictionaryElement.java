@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "english_words")
-public class VocabularyElement {
+public class DictionaryElement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -36,10 +36,10 @@ public class VocabularyElement {
     @Column(name = "creation_date")
     private LocalDate creationDate;
 
-    public VocabularyElement() {
+    public DictionaryElement() {
     }
 
-    public VocabularyElement(String word, String transcription, String translation,
+    public DictionaryElement(String word, String transcription, String translation,
                              String example, String examplesTranslation) {
         this.word = word;
         this.transcription = transcription;
@@ -116,7 +116,7 @@ public class VocabularyElement {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        VocabularyElement that = (VocabularyElement) o;
+        DictionaryElement that = (DictionaryElement) o;
         return word.equals(that.word) &&
                 translation.equals(that.translation);
     }
@@ -128,7 +128,7 @@ public class VocabularyElement {
 
     @Override
     public String toString() {
-        return "VocabularyElement{" +
+        return "DictionaryElement{" +
                 "word='" + word + '\'' +
                 ", transcription='" + transcription + '\'' +
                 ", translation='" + translation + '\'' +

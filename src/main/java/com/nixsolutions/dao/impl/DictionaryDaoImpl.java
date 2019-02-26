@@ -1,0 +1,68 @@
+package com.nixsolutions.dao.impl;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.nixsolutions.dao.DictionaryDao;
+import com.nixsolutions.entity.DictionaryElement;
+
+@Repository
+@Qualifier("hibernate")
+public class DictionaryDaoImpl implements DictionaryDao {
+    private final static Logger LOGGER = LoggerFactory.getLogger(DictionaryDaoImpl.class);
+
+    private final SessionFactory sessionFactory;
+    private final static String SELECT_ALL_DICTIONARY_ELEMENTS = "from DictionaryElement";
+    private final static String SELECT_ALL_TODAYS_DICTIONARY_ELEMENTS = "from DictionaryElement where creationDate = :today";
+    private final static String SELECT_DICTIONARY_ELEMENT_BY_WORD = "from DictionaryElement where word = :param";
+
+    @Autowired
+    public DictionaryDaoImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<DictionaryElement> getAllDictionaryElements() {
+        Query query = sessionFactory.getCurrentSession().createQuery(SELECT_ALL_DICTIONARY_ELEMENTS);
+        return query.list();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<DictionaryElement> getTodaysDictionaryElements() {
+        Query query = sessionFactory.getCurrentSession().createQuery(SELECT_ALL_TODAYS_DICTIONARY_ELEMENTS);
+        query.setParameter("today", LocalDate.now());
+        return query.list();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public DictionaryElement findByWord(String englishName) {
+        Query query = sessionFactory.getCurrentSession().createQuery(SELECT_DICTIONARY_ELEMENT_BY_WORD);
+        query.setParameter("param", englishName);
+        return (DictionaryElement) query.getSingleResult();
+    }
+
+    @Override
+    @Transactional
+    public void addDictionaryElement(DictionaryElement dictionaryElement) {
+        sessionFactory.getCurrentSession().persist(dictionaryElement);
+    }
+
+    @Override
+    @Transactional
+    public void removeDictionaryElement(String word) {
+        DictionaryElement element = findByWord(word);
+        sessionFactory.getCurrentSession().remove(element);
+    }
+}

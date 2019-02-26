@@ -14,39 +14,39 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.nixsolutions.entity.VocabularyElement;
+import com.nixsolutions.entity.DictionaryElement;
 import com.nixsolutions.pojo.Pages;
-import com.nixsolutions.service.VocabularyService;
+import com.nixsolutions.service.DictionaryService;
 
 @Controller
-public class VocabularyController {
+public class DictionaryController {
     private static final String OUTPUT_FILE_NAME = "output.txt";
 
-    private final VocabularyService vocabularyService;
+    private final DictionaryService dictionaryService;
 
     @Autowired
-    public VocabularyController(VocabularyService vocabularyService) {
-        this.vocabularyService = vocabularyService;
+    public DictionaryController(DictionaryService dictionaryService) {
+        this.dictionaryService = dictionaryService;
     }
 
     @GetMapping("/")
     public String getPage(Model model) {
-        model.addAttribute("englishWord", new VocabularyElement());
-//        model.addAttribute("words", vocabularyService.getVocabularyElementsWords());
-        model.addAttribute("words", vocabularyService.getTodaysVocabularyElements());
+        model.addAttribute("englishWord", new DictionaryElement());
+//        model.addAttribute("words", vocabularyService.getDictionaryElementsWords());
+        model.addAttribute("words", dictionaryService.getTodaysDictionaryElements());
         return Pages.ENGLISH_WORD_PAGE.getPage();
     }
 
     @PostMapping("/createWord")
-    public String addVocabularyElement(VocabularyElement vocabularyElement) {
-        vocabularyService.addVocabularyElement(vocabularyElement);
+    public String addDictionaryElement(DictionaryElement dictionaryElement) {
+        dictionaryService.addDictionaryElement(dictionaryElement);
         return "redirect:/";
     }
 
     @DeleteMapping("/delete/{deleteWord}")
     @ResponseBody
-    public void removeVocabularyElement(@PathVariable("deleteWord") String word) {
-        vocabularyService.removeVocabularyElement(word);
+    public void removeDictionaryElement(@PathVariable("deleteWord") String word) {
+        dictionaryService.removeDictionaryElement(word);
     }
 
     // TODO change this method after
@@ -57,9 +57,9 @@ public class VocabularyController {
         response.setHeader("Content-Disposition", "attachment; filename=" + OUTPUT_FILE_NAME);
         StringBuilder content = new StringBuilder();
 
-        List<VocabularyElement> vocabularyElements = vocabularyService.getTodaysVocabularyElements();
-        for (VocabularyElement vocabularyElement : vocabularyElements) {
-            content.append(vocabularyElement.getVocabularyElementAsString());
+        List<DictionaryElement> dictionaryElements = dictionaryService.getTodaysDictionaryElements();
+        for (DictionaryElement dictionaryElement : dictionaryElements) {
+            content.append(dictionaryElement.getVocabularyElementAsString());
         }
         return new String(content.toString().getBytes(), StandardCharsets.UTF_8);
     }

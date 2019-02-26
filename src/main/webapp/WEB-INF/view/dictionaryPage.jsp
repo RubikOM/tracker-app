@@ -18,13 +18,13 @@
 <body>
 <div class="content">
     <div class="first-section">
-        <div class="add-vocabularyElement">
-            <p>Input English vocabularyElement here:</p>
+        <div class="add-dictionaryElement">
+            <p>Input English dictionaryElement here:</p>
 
             <form:form method="post" action="createWord" modelAttribute="englishWord">
                 <div class="form-row">
                     <div class="col-md-3 mb-3">
-                        <label>Input English vocabularyElement *</label>
+                        <label>Input English dictionaryElement *</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                         <span class="input-group-text" id="validationTooltipWord">
@@ -96,12 +96,13 @@
         </div>
     </div>
 
-    <div class="added-vocabularyElements">
-        <p>Your last added vocabularyElements down here
+    <div class="added-dictionaryElements">
+        <p>Your last added dictionaryElements down here
             <%--<button type="submit" class="btn btn-primary get-file-button">Get text file</button>--%>
-            <a href="${root}/getTxtFile">Get .txt file with all your today's vocabularyElements </a>
+            <a href="${root}/getTxtFile">Get .txt file with all your today's dictionaryElements </a>
         </p>
         <%--TODO limit by some number (1-10)--%>
+        <%--TODO separete this into other JSP--%>
         <table class="table table-condensed table-striped">
             <tr>
                 <td>Word</td>
@@ -121,9 +122,9 @@
                     <td> ${word.examplesTranslation}</td>
                     <td> ${word.creationDate}</td>
                     <td><input type="button" class="btn-danger delete-button"
-                               delete-vocabularyElement=${word.word} value="Delete">
+                               delete-dictionaryElement=${word.word} value="Delete">
                         <input type="button" class="btn btn-secondary edit-button"
-                               edit-vocabularyElement=${word.word} value="Edit">
+                               edit-dictionaryElement=${word.word} value="Edit">
                     </td>
                 </tr>
             </c:forEach>
@@ -134,7 +135,7 @@
 <script>
     $(document).ready(function () {
         $(".delete-button").click(function () {
-            var deleteWord = $(this).attr("delete-vocabularyElement");
+            var deleteWord = $(this).attr("delete-dictionaryElement");
             $.ajax({
                 type: "DELETE",
                 url: "/delete/" + deleteWord,
@@ -147,7 +148,7 @@
 
     $(document).ready(function () {
         $(".edit-button").click(function () {
-            var editWord = $(this).attr("edit-vocabularyElement");
+            var editWord = $(this).attr("edit-dictionaryElement");
             $.ajax({
                 type: "PATCH",
                 url: "/edit/" + editWord,

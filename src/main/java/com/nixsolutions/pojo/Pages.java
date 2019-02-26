@@ -2,7 +2,7 @@ package com.nixsolutions.pojo;
 
 public enum Pages {
     ERROR_PAGE("showErrorPage"),
-    ENGLISH_WORD_PAGE("englishWordPage" );
+    ENGLISH_WORD_PAGE("dictionaryPage" );
 
     private final String page;
 
