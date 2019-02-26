@@ -28,7 +28,7 @@ public class EnglishWordsDaoImpl implements EnglishWordsDao {
 
     @Override
     @Transactional
-    public void createWord(EnglishWord englishWord) {
+    public void addWord(EnglishWord englishWord) {
         sessionFactory.getCurrentSession().persist(englishWord);
     }
 

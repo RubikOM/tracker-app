@@ -2,3 +2,36 @@ body {
     /*background:azure;*/
     background: darkgray;
 }
+
+.content {
+    width: 100%;
+}
+
+/*.form-row{
+    padding-left: 100px;
+    margin-left: 100px;
+}*/
+
+.add-word {
+    width: 80%;
+    margin: 0 auto;
+    padding-top: 3em;
+    border: 1px solid black;
+}
+
+.first-section {
+    /*height: 30em;*/
+    width: 100%;
+    border: 1px solid red;
+}
+
+.padding-top-required {
+    padding-top: 20px;
+}
+
+.added-words {
+    width: 80%;
+    margin: 0 auto;
+    padding-top: 20px;
+    border: 1px solid grey;
+}

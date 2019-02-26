@@ -39,14 +39,21 @@ public class EnglishWord {
     public EnglishWord() {
     }
 
-    public EnglishWord(LocalDate creationDate, String wordInEnglish, String transcription, String translation,
+    public EnglishWord(String wordInEnglish, String transcription, String translation,
                        String example, String exampleTranslation) {
-        this.creationDate = creationDate;
         this.wordInEnglish = wordInEnglish;
         this.transcription = transcription;
         this.translation = translation;
         this.example = example;
         this.exampleTranslation = exampleTranslation;
+    }
+
+    public String getWordAsString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(wordInEnglish).append(";").append(transcription == null ? "" : transcription + ";")
+                .append(translation).append(";").append(example == null? "" : example + ";")
+                .append(exampleTranslation == null ? "" : exampleTranslation + ";").append("\n");
+        return stringBuilder.toString();
     }
 
     public LocalDate getCreationDate() {

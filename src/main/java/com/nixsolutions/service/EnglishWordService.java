@@ -1,5 +1,6 @@
 package com.nixsolutions.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,10 @@ public class EnglishWordService {
         this.englishWordsDao = englishWordsDao;
     }
 
-    public void createWord(EnglishWord englishWord){
-        englishWordsDao.createWord(englishWord);
+    public void addWord(EnglishWord englishWord) {
+        // TODO some logic of setting date if word failed validation should be here
+        englishWord.setCreationDate(LocalDate.now());
+        englishWordsDao.addWord(englishWord);
     }
 
     // TODO get only last words

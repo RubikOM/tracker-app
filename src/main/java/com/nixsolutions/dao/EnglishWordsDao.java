@@ -6,7 +6,7 @@ import com.nixsolutions.entity.EnglishWord;
 
 public interface EnglishWordsDao {
 
-    void createWord(EnglishWord englishWord);
+    void addWord(EnglishWord englishWord);
 
     List<EnglishWord> getAllWords();
 }

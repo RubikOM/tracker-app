@@ -2,7 +2,6 @@ public class TODO {
 
     // TODO import DB data or release app on some free resource for gf to use.
     // TODO DB structure and data
-    // TODO change paths for view resolver and check it will work
     // TODO rebuild jsp to thymeleaf
     // TODO required fields with stars
     // TODO use TDD in project
