@@ -35,7 +35,6 @@ public class DictionaryDaoImpl implements DictionaryDao {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<DictionaryElement> getAllDictionaryElements() {
         Query query = sessionFactory.getCurrentSession().createQuery(SELECT_ALL_DICTIONARY_ELEMENTS);
         return query.list();
@@ -43,7 +42,6 @@ public class DictionaryDaoImpl implements DictionaryDao {
 
     // TODO code duplication between this 2 methods
     @Override
-    @Transactional(readOnly = true)
     public List<DictionaryElement> getLastDictionaryElements() {
         Query query = sessionFactory.getCurrentSession().createQuery(SELECT_LAST_DICTIONARY_ELEMENTS);
         query.setMaxResults(MAX_AMOUNT_OF_WORDS_DISPLAYED);
@@ -51,7 +49,6 @@ public class DictionaryDaoImpl implements DictionaryDao {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<DictionaryElement> getTodaysDictionaryElements() {
         Query query = sessionFactory.getCurrentSession().createQuery(SELECT_ALL_TODAYS_DICTIONARY_ELEMENTS);
         query.setParameter("today", LocalDate.now());
@@ -67,13 +64,11 @@ public class DictionaryDaoImpl implements DictionaryDao {
     }
 
     @Override
-    @Transactional
     public void addDictionaryElement(DictionaryElement dictionaryElement) {
         sessionFactory.getCurrentSession().persist(dictionaryElement);
     }
 
     @Override
-    @Transactional
     public void removeDictionaryElement(String word) {
         Session session;
         try {

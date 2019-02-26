@@ -88,7 +88,7 @@ public class DictionaryController {
         StringBuilder content = new StringBuilder();
 
         // TODO code duplications with getTxtFile
-        List<DictionaryElement> dictionaryElements = dictionaryService.getDictionaryElementsWords();
+        List<DictionaryElement> dictionaryElements = dictionaryService.getAllDictionaryElementsWords();
         for (DictionaryElement dictionaryElement : dictionaryElements) {
             content.append(dictionaryElement.getVocabularyElementAsString());
         }

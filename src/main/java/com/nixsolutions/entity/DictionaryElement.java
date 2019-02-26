@@ -17,7 +17,6 @@ public class DictionaryElement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    // TODO rename it
     @Column(name = "word_in_english")
     private String word;
 
@@ -48,6 +47,7 @@ public class DictionaryElement {
         this.examplesTranslation = examplesTranslation;
     }
 
+    //TODO test this method
     public String getVocabularyElementAsString() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(word).append(";").append(transcription == null ? "" : transcription + ";")
