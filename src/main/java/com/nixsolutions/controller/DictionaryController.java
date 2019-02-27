@@ -5,10 +5,12 @@ import java.time.LocalDate;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -36,21 +38,24 @@ public class DictionaryController {
 
     @GetMapping("")
     public String getPage(Model model) {
-        model.addAttribute("englishWord", new DictionaryElement());
-        List<DictionaryElement> elements = dictionaryService.getTodaysDictionaryElements();
-        if (!elements.isEmpty()) {
-            model.addAttribute("todaysAddedElements", elements);
-        } else {
-            model.addAttribute("lastAddedElements", dictionaryService.getLastDictionaryElementsWords());
-        }
-        return Pages.ENGLISH_WORD_PAGE.getPage();
+        model.addAttribute("dictionaryElement", new DictionaryElement());
+        return getWordsTable(model);
     }
 
     @PostMapping("/createWord")
-    public String addDictionaryElement(DictionaryElement dictionaryElement) {
-        // TODO word SHOULD be in English and uniq
-        dictionaryService.addDictionaryElement(dictionaryElement);
-        return "redirect:/dictionary";
+    public String addDictionaryElement(@Valid DictionaryElement dictionaryElement, BindingResult bindingResult,
+                                       Model model) {
+        // TODO make uniq in Database by annotation
+        if (bindingResult.hasErrors()) {
+            return getWordsTable(model);
+        }
+        if (dictionaryService.findByWord(dictionaryElement.getWord()) != null) {
+            bindingResult.rejectValue("word", "word.existInDb");
+            return getWordsTable(model);
+        } else {
+            dictionaryService.addDictionaryElement(dictionaryElement);
+            return "redirect:/dictionary";
+        }
     }
 
     @DeleteMapping("/delete/{deleteWord}")
@@ -93,5 +98,15 @@ public class DictionaryController {
             content.append(dictionaryElement.getVocabularyElementAsString());
         }
         return new String(content.toString().getBytes(), StandardCharsets.UTF_8);
+    }
+
+    private String getWordsTable(Model model) {
+        List<DictionaryElement> elements = dictionaryService.getTodaysDictionaryElements();
+        if (!elements.isEmpty()) {
+            model.addAttribute("todaysAddedElements", elements);
+        } else {
+            model.addAttribute("lastAddedElements", dictionaryService.getLastDictionaryElementsWords());
+        }
+        return Pages.ENGLISH_WORD_PAGE.getPage();
     }
 }

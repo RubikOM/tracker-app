@@ -9,6 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 @Table(name = "english_words")
@@ -18,12 +21,16 @@ public class DictionaryElement {
     private Integer id;
 
     @Column(name = "word_in_english")
+    @NotBlank(message = "Word {shouldNotBeEmpty}")
+    @Pattern(regexp = "^[A-Za-z]*$", message = "{shouldBeEnglish}")
     private String word;
 
     @Column(name = "transcription")
     private String transcription;
 
     @Column(name = "translation")
+    @NotBlank(message = "Translation {shouldNotBeEmpty}")
+//    @Pattern(regexp = "^[А-Яа-я]*$", message = "{shouldBeRussian}")
     private String translation;
 
     @Column(name = "example")
@@ -51,7 +58,7 @@ public class DictionaryElement {
     public String getVocabularyElementAsString() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(word).append(";").append(transcription == null ? "" : transcription + ";")
-                .append(translation).append(";").append(example == null? "" : example + ";")
+                .append(translation).append(";").append(example == null ? "" : example + ";")
                 .append(examplesTranslation == null ? "" : examplesTranslation + ";").append("\n");
         return stringBuilder.toString();
     }

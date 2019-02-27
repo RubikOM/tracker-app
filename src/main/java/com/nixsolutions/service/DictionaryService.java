@@ -20,7 +20,6 @@ public class DictionaryService {
         this.dictionaryDao = dictionaryDao;
     }
 
-
     @Transactional(readOnly = true)
     public List<DictionaryElement> getAllDictionaryElementsWords() {
         return dictionaryDao.getAllDictionaryElements();
@@ -36,9 +35,13 @@ public class DictionaryService {
         return dictionaryDao.getTodaysDictionaryElements();
     }
 
+    @Transactional(readOnly = true)
+    public DictionaryElement findByWord(String word){
+        return dictionaryDao.findByWord(word);
+    }
+
     @Transactional
     public void addDictionaryElement(DictionaryElement dictionaryElement) {
-        // TODO some logic of setting date if dictionaryElement failed validation should be here
         dictionaryElement.setCreationDate(LocalDate.now());
         dictionaryDao.addDictionaryElement(dictionaryElement);
     }

@@ -35,3 +35,8 @@ body {
     padding-top: 20px;
     border: 1px solid grey;
 }
+
+.larger-font {
+    font-size: 1.3em;
+    font-family: sans-serif;
+}

@@ -13,6 +13,12 @@
     <link type="text/css" rel="stylesheet" href="${root}/static/css/englishWordPage.css"/>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
 </head>
 <body>
 <div class="content">
@@ -20,18 +26,18 @@
         <div class="add-dictionaryElement">
             <p>Input English dictionaryElement here:</p>
 
-            <form:form method="post" action="/dictionary/createWord" modelAttribute="englishWord">
+            <form:form method="post" action="/dictionary/createWord" modelAttribute="dictionaryElement">
                 <div class="form-row">
                     <div class="col-md-3 mb-3">
-                        <form:label path="word">Input English dictionaryElement *</form:label>
+                        <form:label class="larger-font" path="word">Input word in English *</form:label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                         <span class="input-group-text" id="validationTooltipWord">
                             <i class="fas fa-edit"></i></span>
                             </div>
                             <form:input class="form-control" path="word" placeholder="Word in English"/>
-                                <%--<form:errors path="word" class="error"/>--%>
                         </div>
+                        <form:errors path="word" class="error"/>
                     </div>
 
                     <div class="col-md-3 mb-3">
@@ -42,7 +48,6 @@
                             <i class="fab fa-readme"></i></span>
                             </div>
                             <form:input class="form-control" path="transcription" placeholder="Transcription"/>
-                                <%--<form:errors path="transcription" class="error"/>--%>
                         </div>
                     </div>
 
@@ -55,6 +60,7 @@
                             </div>
                             <form:input class="form-control" path="translation" placeholder="Russian translation" />
                         </div>
+                        <form:errors path="translation" class="error"/>
                     </div>
                 </div>
 
@@ -66,7 +72,6 @@
                             <i class="fas fa-book-open"></i></span>
                         </div>
                         <form:input type="text" class="form-control" path="example" placeholder="Example in English"/>
-                            <%--<form:errors path="example" class="error"/>--%>
                     </div>
                 </div>
 
@@ -78,7 +83,6 @@
                             <i class="fas fa-book-open"></i></span>
                         </div>
                         <form:input type="text" class="form-control" path="examplesTranslation" placeholder="Example's translation"/>
-                            <%--<form:errors path="examplesTranslation" class="error"/>--%>
                     </div>
                 </div>
 

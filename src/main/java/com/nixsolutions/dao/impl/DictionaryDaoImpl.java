@@ -40,7 +40,6 @@ public class DictionaryDaoImpl implements DictionaryDao {
         return query.list();
     }
 
-    // TODO code duplication between this 2 methods
     @Override
     public List<DictionaryElement> getLastDictionaryElements() {
         Query query = sessionFactory.getCurrentSession().createQuery(SELECT_LAST_DICTIONARY_ELEMENTS);

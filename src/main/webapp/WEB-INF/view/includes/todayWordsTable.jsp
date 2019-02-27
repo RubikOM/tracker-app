@@ -20,7 +20,7 @@
             <td> ${dictionaryElement.example}</td>
             <td> ${dictionaryElement.examplesTranslation}</td>
             <td> ${dictionaryElement.creationDate}</td>
-            <td><input type="button" class="btn-danger delete-button"
+            <td><input type="button" class="btn btn-danger delete-button"
                        delete-dictionaryElement=${dictionaryElement.word} value="Delete">
                 <input type="button" class="btn btn-secondary edit-button"
                        edit-dictionaryElement=${dictionaryElement.word} value="Edit">
