@@ -36,7 +36,7 @@ public class DictionaryController {
         this.dictionaryService = dictionaryService;
     }
 
-    @GetMapping("")
+    @GetMapping
     public String getPage(Model model) {
         model.addAttribute("dictionaryElement", new DictionaryElement());
         return getWordsTable(model);
@@ -64,10 +64,16 @@ public class DictionaryController {
         dictionaryService.removeDictionaryElement(word);
     }
 
-    @PatchMapping("/edit/{editWord}")
+    /*@PatchMapping("/edit/{editWord}")
     @ResponseBody
     public void editDictionaryElement(@PathVariable("editWord") DictionaryElement dictionaryElement) {
-        /* NOP */
+//         NOP
+    }*/
+
+    @GetMapping("/edit/{editWord}")
+    public String getEditDictionaryElementPage(@PathVariable("editWord") String word, Model model) {
+        model.addAttribute("dictionaryElement", dictionaryService.findByWord(word));
+        return Pages.EDIT_WORD_PAGE.getPage();
     }
 
     // TODO change this method after

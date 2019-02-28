@@ -22,7 +22,7 @@ public class DictionaryElement {
 
     @Column(name = "word_in_english")
     @NotBlank(message = "Word {shouldNotBeEmpty}")
-    @Pattern(regexp = "^[A-Za-z]*$", message = "{shouldBeEnglish}")
+    @Pattern(regexp = "^[A-Za-z ,]*$", message = "{shouldBeEnglish}")
     private String word;
 
     @Column(name = "transcription")
@@ -30,7 +30,7 @@ public class DictionaryElement {
 
     @Column(name = "translation")
     @NotBlank(message = "Translation {shouldNotBeEmpty}")
-//    @Pattern(regexp = "^[А-Яа-я]*$", message = "{shouldBeRussian}")
+//    @Pattern(regexp = "^[А-Яа-я ,]*$", message = "{shouldBeRussian}")
     private String translation;
 
     @Column(name = "example")

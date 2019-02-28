@@ -1,42 +1,44 @@
 body {
-    /*background:azure;*/
     background: darkgray;
 }
 
-.content {
-    width: 100%;
+table {
+    table-layout: fixed;
 }
 
-/*.form-row{
-    padding-left: 100px;
-    margin-left: 100px;
-}*/
+.content {
+    width: 99%;
+}
 
-.add-word {
+.create-word-section {
+    padding-top: 2.5em;
     width: 80%;
     margin: 0 auto;
-    padding-top: 3em;
-    border: 1px solid black;
-}
-
-.first-section {
-    /*height: 30em;*/
-    width: 100%;
-    border: 1px solid red;
 }
 
 .padding-top-required {
     padding-top: 20px;
 }
 
-.added-words {
+.added-dictionaryElements {
     width: 80%;
     margin: 0 auto;
-    padding-top: 20px;
-    border: 1px solid grey;
+    padding-top: 2.5em;
+}
+
+.table-wrapper {
+    display: block;
+    height: 23.5em;
+    overflow: auto;
+    overflow-x: hidden;
 }
 
 .larger-font {
     font-size: 1.3em;
+    font-family: sans-serif;
+}
+
+.error {
+    color: red;
     font-family: sans-serif;
 }

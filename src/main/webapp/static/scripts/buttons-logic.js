@@ -11,15 +11,13 @@ $(document).ready(function () {
     })
 });
 
+// TODO if word contains several words - only 1 will be sent (FUUUUUUUUUUUUUUUUUUUUUUUUUUCK)
 $(document).ready(function () {
     $(".edit-button").click(function () {
         var editWord = $(this).attr("edit-dictionaryElement");
         $.ajax({
-            type: "PATCH",
-            url: "/dictionary/edit/" + editWord,
-            success: function () {
-                location.reload();
-            }
+            type: "GET",
+            url: "/dictionary/edit/" + editWord
         })
     })
 });

@@ -1,14 +1,14 @@
-<p>Your last added dictionaryElements down here
+<p>Your last added words down here
     <a href="${root}/dictionary/getTxtFile">Get .txt file with all time created words </a>
 </p>
 <table id="wordsTable" class="table table-condensed table-striped">
     <tr>
-        <td>Word</td>
-        <td>Transcription</td>
-        <td>Translation</td>
-        <td>Example</td>
-        <td>Example translation</td>
-        <td>Created</td>
+        <td style="width: 8%">Word</td>
+        <td style="width: 8%">Transcription</td>
+        <td style="width: 16%">Translation</td>
+        <td style="width: 25%">Example</td>
+        <td style="width: 25%">Example translation</td>
+        <td style="width: 6%">Created</td>
     </tr>
     <c:forEach items="${lastAddedElements}" var="dictionaryElement">
         <tr class="table">
