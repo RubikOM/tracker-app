@@ -3,14 +3,14 @@
 <div class="table-wrapper">
     <table id="wordsTable" class="table table-condensed table-striped table-hover">
         <caption class="larger-font">Your today created words are here</caption>
-        <tr style="height: 1em">
+        <tr>
             <td style="width: 8%">Word</td>
             <td style="width: 8%">Transcription</td>
             <td style="width: 20%">Translation</td>
             <td style="width: 20%">Example</td>
-            <td style="width: 25%">Example translation</td>
-            <td style="width: 6%">Created</td>
-            <td style="width: 8%">Actions</td>
+            <td style="width: 20%">Example translation</td>
+            <td style="width: 8%">Created</td>
+            <td style="width: 12%">Actions</td>
         </tr>
         <c:forEach items="${todaysAddedElements}" var="dictionaryElement">
             <tr>
@@ -24,7 +24,7 @@
                            delete-dictionaryElement=${dictionaryElement.word} value="Delete">
                         <%--<input type="button" class="btn btn-secondary edit-button"
                                edit-dictionaryElement=${dictionaryElement.word} value="Edit">--%>
-                    <a href="dictionary/edit/${dictionaryElement.word}">Edit </a>
+                    <a class="btn btn-info" href="dictionary/edit/${dictionaryElement.word}">Edit</a>
                 </td>
             </tr>
         </c:forEach>

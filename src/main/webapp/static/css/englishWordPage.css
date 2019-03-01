@@ -42,3 +42,7 @@ table {
     color: red;
     font-family: sans-serif;
 }
+
+td {
+    font-size: 0.9em;
+}
