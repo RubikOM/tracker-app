@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg">
     <a class="navbar-brand" href="#">
         <img src="../../static/img/robot-head-41.png" width="30" height="30" alt="">
     </a>

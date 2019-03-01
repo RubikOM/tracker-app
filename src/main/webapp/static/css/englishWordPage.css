@@ -1,5 +1,5 @@
 body {
-    background: darkgray;
+    background-color: #d4d4dc
 }
 
 table {
@@ -8,12 +8,14 @@ table {
 
 .content {
     width: 99%;
+    background-color: #d4d4dc
 }
 
 .create-word-section {
     padding-top: 2.5em;
     width: 80%;
     margin: 0 auto;
+    background-color: #d4d4dc;
 }
 
 .padding-top-required {
@@ -45,4 +47,13 @@ table {
 
 td {
     font-size: 0.9em;
+}
+
+.navbar {
+    background-color: #393f4d;
+    color: #feda6a;
+}
+
+.footer {
+    background-color: #393f4d;
 }
