@@ -4,9 +4,9 @@
     <table id="wordsTable" class="table table-condensed table-striped table-hover">
         <caption class="larger-font">Your today created words are here</caption>
         <tr>
-            <td style="width: 8%">Word</td>
+            <td style="width: 10%">Word</td>
             <td style="width: 8%">Transcription</td>
-            <td style="width: 20%">Translation</td>
+            <td style="width: 18%">Translation</td>
             <td style="width: 20%">Example</td>
             <td style="width: 20%">Example translation</td>
             <td style="width: 8%">Created</td>

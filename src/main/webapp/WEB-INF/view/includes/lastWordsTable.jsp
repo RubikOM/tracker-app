@@ -4,11 +4,11 @@
     <table id="wordsTable" class="table table-condensed table-striped table-hover">
         <caption class="larger-font">Your today created words are here</caption>
         <tr>
-            <td style="width: 8%">Word</td>
+            <td style="width: 10%">Word</td>
             <td style="width: 8%">Transcription</td>
             <td style="width: 16%">Translation</td>
-            <td style="width: 25%">Example</td>
-            <td style="width: 25%">Example translation</td>
+            <td style="width: 24%">Example</td>
+            <td style="width: 24%">Example translation</td>
             <td style="width: 6%">Created</td>
         </tr>
         <c:forEach items="${lastAddedElements}" var="dictionaryElement">

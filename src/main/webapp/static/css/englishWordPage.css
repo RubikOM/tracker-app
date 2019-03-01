@@ -47,6 +47,8 @@ table {
 
 td {
     font-size: 0.9em;
+    text-align: center;
+    vertical-align: middle;
 }
 
 .navbar {
