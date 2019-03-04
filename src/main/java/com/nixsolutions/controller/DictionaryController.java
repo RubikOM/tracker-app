@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.nixsolutions.entity.DictionaryElement;
+import com.nixsolutions.form.DictionaryElementForm;
 import com.nixsolutions.pojo.Pages;
 import com.nixsolutions.service.DictionaryService;
 
@@ -35,8 +36,12 @@ public class DictionaryController {
     }
 
     @GetMapping
+    /*
+     * @return Pages.ENGLISH_WORD_PAGE.getPage() from private method getWordsTable() and on of lists with
+     * dictionaryElements : created today one's if present and all time created if not.
+     */
     public String getPage(Model model) {
-        model.addAttribute("dictionaryElement", new DictionaryElement());
+        model.addAttribute("dictionaryElement", new DictionaryElementForm());
         return getWordsTable(model);
     }
 
