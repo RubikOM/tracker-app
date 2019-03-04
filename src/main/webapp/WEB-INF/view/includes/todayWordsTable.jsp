@@ -22,8 +22,6 @@
                 <td> ${dictionaryElement.creationDate}</td>
                 <td><input type="button" class="btn btn-danger delete-button"
                            delete-dictionaryElement=${dictionaryElement.word} value="Delete">
-                        <%--<input type="button" class="btn btn-secondary edit-button"
-                               edit-dictionaryElement=${dictionaryElement.word} value="Edit">--%>
                     <a class="btn btn-info" href="dictionary/edit/${dictionaryElement.word}">Edit</a>
                 </td>
             </tr>

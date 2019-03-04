@@ -1,6 +1,5 @@
 package com.nixsolutions.controller;
 
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -13,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -64,32 +62,21 @@ public class DictionaryController {
         dictionaryService.removeDictionaryElement(word);
     }
 
-    /*@PatchMapping("/edit/{editWord}")
-    @ResponseBody
-    public void editDictionaryElement(@PathVariable("editWord") DictionaryElement dictionaryElement) {
-//         NOP
-    }*/
-
     @GetMapping("/edit/{editWord}")
     public String getEditDictionaryElementPage(@PathVariable("editWord") String word, Model model) {
         model.addAttribute("dictionaryElement", dictionaryService.findByWord(word));
         return Pages.EDIT_WORD_PAGE.getPage();
     }
 
-    // TODO change this method after
-    // TODO try Baeldong's with text Plain produces type
     @GetMapping(value = "/getTxtFile", produces = "text/plain;charset=UTF-8")
     @ResponseBody
-    public String getTxtFile(HttpServletResponse response) {
+    public String getTodayTxtFile(HttpServletResponse response) {
         response.setHeader("Content-Disposition", "attachment; filename=" + TODAY_FILE_NAME);
         StringBuilder content = new StringBuilder();
 
-        // TODO try to do it with Java8 - have to look better anyway
         List<DictionaryElement> dictionaryElements = dictionaryService.getTodaysDictionaryElements();
-        for (DictionaryElement dictionaryElement : dictionaryElements) {
-            content.append(dictionaryElement.getVocabularyElementAsString());
-        }
-        return new String(content.toString().getBytes(), StandardCharsets.UTF_8);
+        dictionaryElements.forEach(dictionaryElement -> content.append(dictionaryElement.getDictionaryElementAsString()));
+        return content.toString();
     }
 
     @GetMapping(value = "/getAllTimeTxtFile", produces = "text/plain;charset=UTF-8")
@@ -98,12 +85,9 @@ public class DictionaryController {
         response.setHeader("Content-Disposition", "attachment; filename=" + ALL_TIME_WORDS_FILE_NAME);
         StringBuilder content = new StringBuilder();
 
-        // TODO code duplications with getTxtFile
         List<DictionaryElement> dictionaryElements = dictionaryService.getAllDictionaryElementsWords();
-        for (DictionaryElement dictionaryElement : dictionaryElements) {
-            content.append(dictionaryElement.getVocabularyElementAsString());
-        }
-        return new String(content.toString().getBytes(), StandardCharsets.UTF_8);
+        dictionaryElements.forEach(dictionaryElement -> content.append(dictionaryElement.getDictionaryElementAsString()));
+        return content.toString();
     }
 
     private String getWordsTable(Model model) {

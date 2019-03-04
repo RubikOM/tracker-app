@@ -1,4 +1,4 @@
-$(document).ready(function () {
+function deleteDictionaryElement () {
     $(".delete-button").click(function () {
         var deleteWord = $(this).attr("delete-dictionaryElement");
         $.ajax({
@@ -9,9 +9,8 @@ $(document).ready(function () {
             }
         })
     })
-});
+};
 
-// TODO if word contains several words - only 1 will be sent (FUUUUUUUUUUUUUUUUUUUUUUUUUUCK)
 $(document).ready(function () {
     $(".edit-button").click(function () {
         var editWord = $(this).attr("edit-dictionaryElement");

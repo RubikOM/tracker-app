@@ -22,6 +22,7 @@ public class DictionaryElement {
 
     @Column(name = "word_in_english")
     @NotBlank(message = "Word {shouldNotBeEmpty}")
+//    @Size(min = 2, message = "Word {shouldNotBeEmpty}")
     @Pattern(regexp = "^[A-Za-z ,']*$", message = "{shouldBeEnglish}")
     private String word;
 
@@ -29,6 +30,7 @@ public class DictionaryElement {
     private String transcription;
 
     @Column(name = "translation")
+//    @Size(min = 2, message = "Word {shouldNotBeEmpty}")
     @NotBlank(message = "Translation {shouldNotBeEmpty}")
 //    @Pattern(regexp = "^[А-Яа-я ,]*$", message = "{shouldBeRussian}")
     private String translation;
@@ -42,24 +44,52 @@ public class DictionaryElement {
     @Column(name = "creation_date")
     private LocalDate creationDate;
 
-    public DictionaryElement() {
+    public static class Builder {
+        private final String word;
+        private final String translation;
+
+        private String transcription = "";
+        private String example = "";
+        private String examplesTranslation = "";
+
+        public Builder(String word, String translation) {
+            this.word = word;
+            this.translation = translation;
+        }
+
+        public Builder transcription(String value) {
+            transcription = value;
+            return this;
+        }
+
+        public Builder example(String value) {
+            example = value;
+            return this;
+        }
+
+        public Builder exampleTranslation(String value) {
+            examplesTranslation = value;
+            return this;
+        }
+
+        public DictionaryElement build() {
+            return new DictionaryElement(this);
+        }
     }
 
-    public DictionaryElement(String word, String transcription, String translation,
-                             String example, String examplesTranslation) {
-        this.word = word;
-        this.transcription = transcription;
-        this.translation = translation;
-        this.example = example;
-        this.examplesTranslation = examplesTranslation;
+    private DictionaryElement(Builder builder) {
+        word = builder.word;
+        transcription = builder.transcription;
+        translation = builder.translation;
+        example = builder.example;
+        examplesTranslation = builder.examplesTranslation;
     }
 
-    //TODO test this method
-    public String getVocabularyElementAsString() {
+    public String getDictionaryElementAsString() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(word).append(";").append(transcription == null ? "" : transcription + ";")
-                .append(translation).append(";").append(example == null ? "" : example + ";")
-                .append(examplesTranslation == null ? "" : examplesTranslation + ";").append("\n");
+        stringBuilder.append(word).append(";").append(transcription.equals("") ? "" : transcription + ";")
+                .append(translation).append(";").append(example.equals("") ? "" : example + ";")
+                .append(examplesTranslation.equals("") ? "" : examplesTranslation + ";").append("\n");
         return stringBuilder.toString();
     }
 
@@ -83,36 +113,40 @@ public class DictionaryElement {
         return word;
     }
 
-    public void setWord(String word) {
-        this.word = word;
-    }
-
     public String getTranscription() {
         return transcription;
-    }
-
-    public void setTranscription(String transcription) {
-        this.transcription = transcription;
     }
 
     public String getTranslation() {
         return translation;
     }
 
-    public void setTranslation(String translation) {
-        this.translation = translation;
-    }
-
     public String getExample() {
         return example;
     }
 
-    public void setExample(String example) {
-        this.example = example;
-    }
-
     public String getExamplesTranslation() {
         return examplesTranslation;
+    }
+
+    public DictionaryElement() {
+        // For Spring
+    }
+
+    public void setWord(String word) {
+        this.word = word;
+    }
+
+    public void setTranscription(String transcription) {
+        this.transcription = transcription;
+    }
+
+    public void setTranslation(String translation) {
+        this.translation = translation;
+    }
+
+    public void setExample(String example) {
+        this.example = example;
     }
 
     public void setExamplesTranslation(String examplesTranslation) {

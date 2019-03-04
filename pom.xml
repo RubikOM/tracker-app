@@ -206,7 +206,7 @@
                 <version>2.2</version>
                 <configuration>
                     <path>/</path>
-                    <port>8080</port>
+                    <port>8885</port>
                     <charset>UTF-8</charset>
                 </configuration>
             </plugin>
