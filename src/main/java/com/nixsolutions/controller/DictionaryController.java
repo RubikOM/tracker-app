@@ -29,8 +29,9 @@ public class DictionaryController {
     }
 
     /*
-     * @return Pages.ENGLISH_WORD_PAGE.getPage() from private method getWordsTable() and on of lists with
-     * dictionaryElements : created today one's if present and all time created if not.
+     * @return value is Pages.ENGLISH_WORD_PAGE.getPage() from private method getWordsTable(). In addition, a lists with
+     * dictionaryElements. It consists from created today dictionaryElements if they are present or all time created
+     * dictionaryElements if they aren't present.
      */
     @GetMapping
     public String getPage(Model model) {
@@ -39,8 +40,7 @@ public class DictionaryController {
     }
 
     @PostMapping("/createWord")
-    public String addDictionaryElement(@Valid DictionaryElement dictionaryElement, BindingResult bindingResult,
-                                       Model model) {
+    public String addDictionaryElement(@Valid DictionaryElement dictionaryElement, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return getWordsTable(model);
         } else {

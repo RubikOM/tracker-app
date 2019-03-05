@@ -1,0 +1,22 @@
+table {
+    table-layout: fixed;
+}
+
+td {
+    font-size: 0.9em;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.table-wrapper {
+    display: block;
+    height: 23.5em;
+    overflow: auto;
+    overflow-x: hidden;
+}
+
+.added-dictionaryElements {
+    width: 80%;
+    margin: 0 auto;
+    padding-top: 2.5em;
+}

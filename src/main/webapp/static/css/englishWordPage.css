@@ -1,11 +1,3 @@
-body {
-    background-color: #d4d4dc
-}
-
-table {
-    table-layout: fixed;
-}
-
 .content {
     width: 99%;
     background-color: #d4d4dc
@@ -22,19 +14,6 @@ table {
     padding-top: 20px;
 }
 
-.added-dictionaryElements {
-    width: 80%;
-    margin: 0 auto;
-    padding-top: 2.5em;
-}
-
-.table-wrapper {
-    display: block;
-    height: 23.5em;
-    overflow: auto;
-    overflow-x: hidden;
-}
-
 .larger-font {
     font-size: 1.3em;
     font-family: sans-serif;
@@ -45,17 +24,7 @@ table {
     font-family: sans-serif;
 }
 
-td {
-    font-size: 0.9em;
-    text-align: center;
-    vertical-align: middle;
-}
-
 .navbar {
     background-color: #393f4d;
     color: #feda6a;
-}
-
-.footer {
-    background-color: #393f4d;
 }
