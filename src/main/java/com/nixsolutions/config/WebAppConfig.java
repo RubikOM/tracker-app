@@ -14,7 +14,7 @@ import org.springframework.web.servlet.view.JstlView;
 @EnableWebMvc
 @Configuration
 @EnableTransactionManagement
-@ComponentScan({"com.nixsolutions.service, com.nixsolutions.controller"})
+@ComponentScan({"com.nixsolutions.service, com.nixsolutions.controller, com.nixsolutions.validation"})
 public class WebAppConfig extends WebMvcConfigurerAdapter {
 
     @Bean

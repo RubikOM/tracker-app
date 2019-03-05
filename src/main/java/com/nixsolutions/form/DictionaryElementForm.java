@@ -1,4 +1,4 @@
-package com.nixsolutions.form;
+/*package com.nixsolutions.form;
 
 import javax.validation.constraints.Pattern;
 
@@ -70,4 +70,4 @@ public class DictionaryElementForm {
     public void setExamplesTranslation(String examplesTranslation) {
         this.examplesTranslation = examplesTranslation;
     }
-}
+}*/

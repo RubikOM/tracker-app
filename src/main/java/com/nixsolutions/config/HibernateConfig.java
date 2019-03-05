@@ -40,6 +40,8 @@ public class HibernateConfig {
                 setProperty("hibernate.dialect", environment.getRequiredProperty("hibernate.dialect"));
                 setProperty("hibernate.show_sql", environment.getRequiredProperty("hibernate.show_sql"));
                 setProperty("hibernate.format_sql", environment.getRequiredProperty("hibernate.format_sql"));
+
+                setProperty("javax.persistence.validation.mode", environment.getRequiredProperty("javax.persistence.validation.mode"));
             }
         };
     }
