@@ -24,16 +24,15 @@ import com.nixsolutions.service.DictionaryService;
 public class DictionaryController {
     private final DictionaryService dictionaryService;
 
-
     public DictionaryController(@Autowired DictionaryService dictionaryService) {
         this.dictionaryService = dictionaryService;
     }
 
-    @GetMapping
     /*
      * @return Pages.ENGLISH_WORD_PAGE.getPage() from private method getWordsTable() and on of lists with
      * dictionaryElements : created today one's if present and all time created if not.
      */
+    @GetMapping
     public String getPage(Model model) {
         model.addAttribute("dictionaryElement", new DictionaryElement());
         return getWordsTable(model);

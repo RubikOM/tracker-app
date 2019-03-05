@@ -20,7 +20,7 @@ public class TextFileController {
 
     private final DictionaryService dictionaryService;
 
-    public TextFileController(@Autowired DictionaryService dictionaryService){
+    public TextFileController(@Autowired DictionaryService dictionaryService) {
         this.dictionaryService = dictionaryService;
     }
 
@@ -28,20 +28,20 @@ public class TextFileController {
     @ResponseBody
     public String getTodayTxtFile(HttpServletResponse response) {
         response.setHeader("Content-Disposition", "attachment; filename=" + TODAY_FILE_NAME);
-        StringBuilder content = new StringBuilder();
-
         List<DictionaryElement> dictionaryElements = dictionaryService.getTodaysDictionaryElements();
-        dictionaryElements.forEach(dictionaryElement -> content.append(dictionaryElement.getDictionaryElementAsString()));
-        return content.toString();
+        return makeSingleStringWithFiles(dictionaryElements);
     }
 
     @GetMapping(value = "/getAllTimeTxtFile", produces = "text/plain;charset=UTF-8")
     @ResponseBody
     public String getAllTimeTxtFile(HttpServletResponse response) {
         response.setHeader("Content-Disposition", "attachment; filename=" + ALL_TIME_WORDS_FILE_NAME);
-        StringBuilder content = new StringBuilder();
+        List<DictionaryElement> allTimeDictionaryElements = dictionaryService.getAllDictionaryElementsWords();
+        return makeSingleStringWithFiles(allTimeDictionaryElements);
+    }
 
-        List<DictionaryElement> dictionaryElements = dictionaryService.getAllDictionaryElementsWords();
+    private String makeSingleStringWithFiles(List<DictionaryElement> dictionaryElements) {
+        StringBuilder content = new StringBuilder();
         dictionaryElements.forEach(dictionaryElement -> content.append(dictionaryElement.getDictionaryElementAsString()));
         return content.toString();
     }
