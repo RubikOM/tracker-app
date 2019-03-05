@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class MockController {
+public class RedirectController {
 
     @GetMapping({"", "/dictionary/createWord"})
     public String redirectToDictionaryController(){

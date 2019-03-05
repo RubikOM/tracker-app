@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.nixsolutions.validation.dictionaryElement.WordUniq;
+import com.nixsolutions.validation.dictionaryElement.UniqWord;
 
 @Entity
 @Table(name = "english_words")
@@ -27,7 +27,7 @@ public class DictionaryElement {
     @NotBlank(message = "Word {shouldNotBeEmpty}")
     @Size(max = 40, message = "Word {size.mustBeLess}")
     @Pattern(regexp = "^[A-Za-z ,']*$", message = "{shouldBeEnglish}")
-    @WordUniq
+    @UniqWord
     private String word;
 
     @Column(name = "transcription")
@@ -42,8 +42,6 @@ public class DictionaryElement {
 
     @Column(name = "example")
     @Size(max = 225, message = "Example {size.mustBeLess}")
-    /*@TranslationShouldPresent(message = "You should declare example and its translation both, or not declare any." +
-            " Hack 'fill the field with SPACE symbol if you really need it.'")*/
     private String example;
 
     @Column(name = "example_translation")

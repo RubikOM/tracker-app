@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import com.nixsolutions.service.DictionaryService;
 
 @Component
-public class WordUniqValidator implements ConstraintValidator<WordUniq, String> {
+public class WordUniqValidator implements ConstraintValidator<UniqWord, String> {
 
     private final DictionaryService dictionaryService;
 
@@ -19,7 +19,7 @@ public class WordUniqValidator implements ConstraintValidator<WordUniq, String> 
     }
 
     @Override
-    public void initialize(WordUniq wordUniq) {
+    public void initialize(UniqWord uniqWord) {
     }
 
     @Override
