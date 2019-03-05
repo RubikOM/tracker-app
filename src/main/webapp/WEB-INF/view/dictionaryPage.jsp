@@ -12,44 +12,28 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
           integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
     <link type="text/css" rel="stylesheet" href="../../static/css/englishWordPage.css"/>
+    <link type="text/css" rel="stylesheet" href="../../static/css/table.css"/>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
-<div class="main-wrapper">
-    <div class="header">
-        <%@include file="includes/header.jsp" %>
+<%@include file="includes/header.jsp" %>
+
+<div class="content">
+    <%@include file="includes/wordForm.jsp" %>
+
+    <div class="added-dictionaryElements">
+        <c:if test="${todaysAddedElements != null}">
+            <%@include file="includes/todayWordsTable.jsp" %>
+        </c:if>
+
+        <c:if test="${lastAddedElements != null}">
+            <%@include file="includes/lastWordsTable.jsp" %>
+        </c:if>
     </div>
-
-    <div class="content">
-        <div class="create-word-section">
-            <div class="add-dictionaryElement">
-                <form:form method="POST" action="/dictionary/createWord" modelAttribute="dictionaryElement">
-                    <%@include file="includes/wordForm.jsp" %>
-
-                    <div class="button-box col-lg-12 padding-top-required">
-                        <p><form:button type="submit" class="btn btn-primary my-button">Add word</form:button>
-                            <input type="button" class="btn btn-secondary my-button" onclick="history.back();"
-                                   value="Cancel"/>
-                        </p>
-                    </div>
-                </form:form>
-            </div>
-        </div>
-
-        <div class="added-dictionaryElements">
-            <c:if test="${todaysAddedElements != null}">
-                <%@include file="includes/todayWordsTable.jsp" %>
-            </c:if>
-
-            <c:if test="${lastAddedElements != null}">
-                <%@include file="includes/lastWordsTable.jsp" %>
-            </c:if>
-        </div>
-    </div>
-    <%@include file="includes/footer.jsp" %>
-
-    <script src="${root}/static/scripts/buttons-logic.js"></script>
 </div>
+<%@include file="includes/footer.jsp" %>
+
+<script src="${root}/static/scripts/buttons-logic.js"></script>
 </body>
 </html>
