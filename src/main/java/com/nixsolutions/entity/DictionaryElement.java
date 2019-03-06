@@ -154,11 +154,11 @@ public class DictionaryElement {
                 '}';
     }
 
-    // Builder is not necessary here, I can't afford validation to be in here (Spring MVC requires empty public constructor
-    // and public setters to initiate an instance of this class, and validation takes its place by annotations on field -
-    // not build() method in builder). But, this class is a good place to practice using creation patterns (e.g. Builder).
-    // it has usage in unit test of this class and has default access(instead of public) level because of it.
-    static class Builder {
+    // Builder is not necessary here, I can't afford validation to be in builder (Spring MVC requires empty public constructor
+    // and public setters to initiate an instance of class, and validation takes its place by annotations on field -
+    // not build() method in builder). But, this class is a good place to practice using creation patterns (e.g. Builder)
+    // because of variations in optional fields
+    public static class Builder {
         private final String word;
         private final String translation;
 
@@ -166,27 +166,27 @@ public class DictionaryElement {
         private String example = "";
         private String examplesTranslation = "";
 
-        Builder(String word, String translation) {
+        public Builder(String word, String translation) {
             this.word = word;
             this.translation = translation;
         }
 
-        Builder transcription(String value) {
+        public Builder transcription(String value) {
             transcription = value;
             return this;
         }
 
-        Builder example(String value) {
+        public Builder example(String value) {
             example = value;
             return this;
         }
 
-        Builder exampleTranslation(String value) {
+        public Builder exampleTranslation(String value) {
             examplesTranslation = value;
             return this;
         }
 
-        DictionaryElement build() {
+        public DictionaryElement build() {
             return new DictionaryElement(this);
         }
     }

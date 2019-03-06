@@ -28,21 +28,23 @@ public class DictionaryController {
         this.dictionaryService = dictionaryService;
     }
 
-    /*
-     * @return value is Pages.ENGLISH_WORD_PAGE.getPage() from private method getWordsTable(). In addition, a lists with
-     * dictionaryElements. It consists from created today dictionaryElements if they are present or all time created
-     * dictionaryElements if they aren't present.
-     */
     @GetMapping
     public String getPage(Model model) {
         model.addAttribute("dictionaryElement", new DictionaryElement());
-        return getWordsTable(model);
+        List<DictionaryElement> elements = dictionaryService.getTodaysDictionaryElements();
+        if (!elements.isEmpty()) {
+            model.addAttribute("todaysAddedElements", elements);
+        } else {
+            model.addAttribute("lastAddedElements", dictionaryService.getLastDictionaryElementsWords());
+        }
+        return Pages.ENGLISH_WORD_PAGE.getPage();
     }
 
     @PostMapping("/createWord")
     public String addDictionaryElement(@Valid DictionaryElement dictionaryElement, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            return getWordsTable(model);
+            model.addAttribute("todaysAddedElements", dictionaryService.getTodaysDictionaryElements());
+            return Pages.ENGLISH_WORD_PAGE.getPage();
         } else {
             dictionaryService.addDictionaryElement(dictionaryElement);
             return "redirect:/dictionary";
@@ -59,15 +61,5 @@ public class DictionaryController {
     public String getEditDictionaryElementPage(@PathVariable("editWord") String word, Model model) {
         model.addAttribute("dictionaryElement", dictionaryService.findByWord(word));
         return Pages.EDIT_WORD_PAGE.getPage();
-    }
-
-    private String getWordsTable(Model model) {
-        List<DictionaryElement> elements = dictionaryService.getTodaysDictionaryElements();
-        if (!elements.isEmpty()) {
-            model.addAttribute("todaysAddedElements", elements);
-        } else {
-            model.addAttribute("lastAddedElements", dictionaryService.getLastDictionaryElementsWords());
-        }
-        return Pages.ENGLISH_WORD_PAGE.getPage();
     }
 }
