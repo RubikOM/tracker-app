@@ -16,6 +16,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 
 import com.nixsolutions.config.HibernateConfig;
 import com.nixsolutions.config.WebAppConfig;
+import com.nixsolutions.config.SecurityConfig;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class ApplicationInitializer implements WebApplicationInitializer {
@@ -26,6 +27,7 @@ public class ApplicationInitializer implements WebApplicationInitializer {
     @Override
     public void onStartup(ServletContext container) {
         AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
+        ctx.register(SecurityConfig.class);
         ctx.register(WebAppConfig.class);
         ctx.register(HibernateConfig.class);
         ctx.setServletContext(container);

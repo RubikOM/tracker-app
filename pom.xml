@@ -12,6 +12,7 @@
     <properties>
         <java.version>1.8</java.version>
         <spring.version>4.3.13.RELEASE</spring.version>
+        <spring-security.version>4.2.3.RELEASE</spring-security.version>
         <hibernate.version>5.2.17.Final</hibernate.version>
         <junit.version>4.12</junit.version>
         <dbunit.version>2.5.3</dbunit.version>
@@ -57,6 +58,25 @@
             <artifactId>spring-test</artifactId>
             <version>${spring.version}</version>
             <scope>test</scope>
+        </dependency>
+
+        <!--Spring security-->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>${spring-security.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${spring-security.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${spring-security.version}</version>
         </dependency>
 
         <!--Servlets-->
@@ -120,19 +140,6 @@
             <artifactId>xmlunit</artifactId>
             <version>1.6</version>
             <scope>test</scope>
-        </dependency>
-
-        <!--Thymeleaf-->
-
-        <dependency>
-            <groupId>org.thymeleaf</groupId>
-            <artifactId>thymeleaf</artifactId>
-            <version>3.0.9.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>org.thymeleaf</groupId>
-            <artifactId>thymeleaf-spring4</artifactId>
-            <version>3.0.9.RELEASE</version>
         </dependency>
 
         <!-- Logging -->
