@@ -20,9 +20,10 @@
                 <td> ${dictionaryElement.example}</td>
                 <td> ${dictionaryElement.examplesTranslation}</td>
                 <td> ${dictionaryElement.creationDate}</td>
-                <td><input type="button" class="btn btn-danger delete-button"
-                           delete-dictionaryElement=${dictionaryElement.word} value="Delete">
-                    <a class="btn btn-info" href="dictionary/edit/${dictionaryElement.word}">Edit</a>
+                <td><input type="button" class="btn btn-danger" id="delete-button"
+                           delete-dictionaryElement='${dictionaryElement.word}' value="Delete">
+                    <input type="button" class="btn btn-primary" id="edit-button"
+                           edit-dictionaryElement='${dictionaryElement.word}' value=" Edit ">
                 </td>
             </tr>
         </c:forEach>

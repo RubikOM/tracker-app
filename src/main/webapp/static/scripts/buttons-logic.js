@@ -1,6 +1,5 @@
-// TODO if it is several words - app will fall
 $(document).ready(function () {
-    $(".delete-button").click(function () {
+    $("#delete-button").click(function () {
         var deleteWord = $(this).attr("delete-dictionaryElement");
         $.ajax({
             type: "DELETE",
@@ -8,6 +7,16 @@ $(document).ready(function () {
             success: function () {
                 location.reload();
             }
+        })
+    })
+});
+
+$(document).ready(function () {
+    $("#edit-button").click(function () {
+        var editWord = $(this).attr("edit-dictionaryElement");
+        $.ajax({
+            type: "GET",
+            url: "/dictionary/edit/" + editWord,
         })
     })
 });
