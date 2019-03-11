@@ -1,4 +1,4 @@
-package com.nixsolutions.config;
+package com.nixsolutions.config.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -54,7 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web
                 .ignoring()
-                .antMatchers("/view/**");
+                .antMatchers("/static/**");
     }
 
 

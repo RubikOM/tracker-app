@@ -2,6 +2,7 @@
 
 <footer class="footer">
     <div class="container">
-        <p class="text-muted">App written with love ^^</p>
+        <p class="text-muted">App written with love ^^
+        Hello </p>
     </div>
 </footer>

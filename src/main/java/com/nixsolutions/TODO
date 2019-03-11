@@ -1,0 +1,22 @@
+    // TODO import DB data or release app on some free resource for gf to use.
+    // TODO rebuild jsp to thymeleaf
+    // TODO use TDD in project
+    // TODO rebuild all DB and names in there (change entity and validation)
+
+    //////////////////////////////////////////////////////////CREATE TABLE//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    private final String CREATE_TABLE_ENGLISH_WORDS = "Create table english_words (id int auto_increment primary key,
+
+    word_in_english varchar(40) not null, transcription varchar(40), translation varchar(100) not null, example varchar(255) example_translation varchar(255), creation_date date);";
+
+    private final String CREATE_WORD1 = "INSERT INTO ENGLISH_WORDS(word_in_english, transcription, translation,
+
+    example, example_translation, creation_date) values('test', '[test]', 'тест', 'test test test', 'тест тест тест', '2019-02-22')";
+
+    /////////////////////////////////////////////////////////CREATE ROW/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    private final String CREATE_ABLE_USER = " CREATE TABLE USER(id int auto_increment primary key, name varchar(20), password varchar(20))";
+
+    private final String CREATE_USER1 = "INSERT INTO USER(name, password) VALUES('mike','qwerty3011')";
+
+    private final String CREATE_USER2 = "INSERT INTO USER(name, password) VALUES('juli','passwordToCopy')";

@@ -37,14 +37,14 @@ public class DictionaryController {
         } else {
             model.addAttribute("lastAddedElements", dictionaryService.getLastDictionaryElementsWords());
         }
-        return Pages.ENGLISH_WORD_PAGE.getPage();
+        return Pages.DICTIONARY_PAGE.getPage();
     }
 
     @PostMapping("/createWord")
     public String addDictionaryElement(@Valid DictionaryElement dictionaryElement, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("todaysAddedElements", dictionaryService.getTodaysDictionaryElements());
-            return Pages.ENGLISH_WORD_PAGE.getPage();
+            return Pages.DICTIONARY_PAGE.getPage();
         } else {
             dictionaryService.addDictionaryElement(dictionaryElement);
             return "redirect:/dictionary";

@@ -51,7 +51,7 @@ public class DictionaryControllerTest {
                 .perform(get("/dictionary"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("dictionaryElement"))
-                .andExpect(view().name(Pages.ENGLISH_WORD_PAGE.getPage()));
+                .andExpect(view().name(Pages.DICTIONARY_PAGE.getPage()));
 
 //        verify(dictionaryService, times(1)).getTodaysDictionaryElements();
     }

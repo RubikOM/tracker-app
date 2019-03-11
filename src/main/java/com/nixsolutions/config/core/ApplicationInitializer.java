@@ -16,7 +16,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 
 import com.nixsolutions.config.HibernateConfig;
 import com.nixsolutions.config.WebAppConfig;
-import com.nixsolutions.config.SecurityConfig;
+import com.nixsolutions.config.security.SecurityConfig;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class ApplicationInitializer implements WebApplicationInitializer {

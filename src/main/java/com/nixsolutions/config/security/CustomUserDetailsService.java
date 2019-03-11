@@ -1,4 +1,4 @@
-package com.nixsolutions.service.security;
+package com.nixsolutions.config.security;
 
 import java.util.Collections;
 
@@ -36,8 +36,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
         GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_USER");
 
-        return new org.springframework.security.core.userdetails.User(/*user.getLogin(), user.getPassword(),*/
-                "Mock", "Mock", true, true, true,
+        return new org.springframework.security.core.userdetails.User(user.getLogin(), user.getPassword(),
+                true, true, true,
                 true, Collections.singleton(authority));
     }
 }

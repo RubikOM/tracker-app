@@ -21,8 +21,8 @@ import com.nixsolutions.entity.DictionaryElement;
 @Qualifier("hibernate")
 public class DictionaryDaoImpl implements DictionaryDao {
     private final static Logger LOGGER = LoggerFactory.getLogger(DictionaryDaoImpl.class);
-
     private final SessionFactory sessionFactory;
+
     private final static String SELECT_ALL_DICTIONARY_ELEMENTS = "from DictionaryElement";
     private final static String SELECT_LAST_DICTIONARY_ELEMENTS = "from DictionaryElement order by creationDate DESC, id DESC";
     private final static String SELECT_ALL_TODAYS_DICTIONARY_ELEMENTS = "from DictionaryElement where creationDate = :today";
@@ -56,10 +56,15 @@ public class DictionaryDaoImpl implements DictionaryDao {
 
     @Override
     @Transactional(readOnly = true)
-    public DictionaryElement findByWord(String englishName) {
+    public DictionaryElement findByWord(String wordInEnglish) {
         Query query = sessionFactory.getCurrentSession().createQuery(SELECT_DICTIONARY_ELEMENT_BY_WORD);
-        query.setParameter("param", englishName);
-        return (DictionaryElement) query.uniqueResult();
+        query.setParameter("param", wordInEnglish);
+        try {
+            return (DictionaryElement) query.uniqueResult();
+        } catch (HibernateException e) {
+            LOGGER.error(wordInEnglish + " is not uniq in DB");
+            return (DictionaryElement) query.list().get(0);
+        }
     }
 
     @Override

@@ -2,7 +2,7 @@
 </p>
 <div class="table-wrapper">
     <table id="wordsTable" class="table table-condensed table-striped table-hover">
-        <span>You already created ${lastAddedElements.size()} words. You can scroll them down here</span>
+        <span>Your ${lastAddedElements.size()} last created words displayed here.</span>
         <tr>
             <td style="width: 10%">Word</td>
             <td style="width: 8%">Transcription</td>
