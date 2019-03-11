@@ -8,16 +8,18 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.nixsolutions.validation.dictionaryElement.UniqWord;
+import com.nixsolutions.validation.dictionaryElement.UniqWordPerUser;
 
 @Entity
-@Table(name = "english_words")
+@Table(name = "DICTIONARY_ELEMENTS")
 public class DictionaryElement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +29,7 @@ public class DictionaryElement {
     @NotBlank(message = "Word {shouldNotBeEmpty}")
     @Size(max = 40, message = "Word {size.mustBeLess}")
     @Pattern(regexp = "^[A-Za-z ,']*$", message = "{shouldBeEnglish}")
-    @UniqWord
+    @UniqWordPerUser
     private String word;
 
     @Column(name = "transcription")
@@ -37,7 +39,6 @@ public class DictionaryElement {
     @Column(name = "translation")
     @Size(max = 100, message = "Translation {size.mustBeLess}")
     @NotBlank(message = "Translation {shouldNotBeEmpty}")
-//    @Pattern(regexp = "^[А-Яа-я ,]*$", message = "{shouldBeRussian}")
     private String translation;
 
     @Column(name = "example")
@@ -51,8 +52,12 @@ public class DictionaryElement {
     @Column(name = "creation_date")
     private LocalDate creationDate;
 
+    @ManyToOne
+    @JoinColumn(name = "USER_ID", nullable = false)
+    private User author;
+
     public String getDictionaryElementAsString() {
-        makeWordValid();
+        makeWordValidForFile();
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(word).append(";").append(transcription.equals("") ? "" : transcription + ";")
@@ -61,7 +66,7 @@ public class DictionaryElement {
         return stringBuilder.toString();
     }
 
-    private void makeWordValid() {
+    private void makeWordValidForFile() {
         if (!example.equals("") && examplesTranslation.equals("")) {
             examplesTranslation = " ";
         }
@@ -127,6 +132,14 @@ public class DictionaryElement {
 
     public void setExamplesTranslation(String examplesTranslation) {
         this.examplesTranslation = examplesTranslation;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
     }
 
     @Override

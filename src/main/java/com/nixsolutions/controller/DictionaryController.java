@@ -20,14 +20,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.nixsolutions.entity.DictionaryElement;
 import com.nixsolutions.pojo.Pages;
 import com.nixsolutions.service.DictionaryService;
+import com.nixsolutions.service.UserService;
 
 @Controller
 @RequestMapping("/dictionary")
 public class DictionaryController {
     private final DictionaryService dictionaryService;
+    private final UserService userService;
 
-    public DictionaryController(@Autowired DictionaryService dictionaryService) {
+    public DictionaryController(@Autowired DictionaryService dictionaryService, @Autowired UserService userService) {
         this.dictionaryService = dictionaryService;
+        this.userService = userService;
     }
 
     @GetMapping
@@ -44,11 +47,13 @@ public class DictionaryController {
     }
 
     @PostMapping("/createWord")
-    public String addDictionaryElement(@Valid DictionaryElement dictionaryElement, BindingResult bindingResult, Model model) {
+    public String addDictionaryElement(@Valid DictionaryElement dictionaryElement, BindingResult bindingResult,
+                                       Model model, Principal principal) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("todaysAddedElements", dictionaryService.getTodaysDictionaryElements());
             return Pages.DICTIONARY_PAGE.getPage();
         } else {
+            dictionaryElement.setAuthor(userService.findByLogin(principal.getName()));
             dictionaryService.addDictionaryElement(dictionaryElement);
             return "redirect:/dictionary";
         }

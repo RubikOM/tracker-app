@@ -20,6 +20,12 @@ import com.nixsolutions.config.security.SecurityConfig;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class ApplicationInitializer implements WebApplicationInitializer {
+    // TODO import DB data or release app on some free resource for gf to use.
+    // TODO rebuild jsp to thymeleaf
+    // TODO use TDD in project
+    // TODO rebuild all DB and names in there (change entity and validation)
+    // TODO remember me in Spring Security
+    // TODO upperCase in authorization
 
     private static final String DISPATCHER_SERVLET_NAME = "dispatcher";
     private static final String DISPATCHER_SERVLET_MAPPING = "/";

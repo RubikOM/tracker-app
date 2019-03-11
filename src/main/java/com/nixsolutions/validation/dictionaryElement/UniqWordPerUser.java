@@ -13,7 +13,7 @@ import javax.validation.Payload;
 @Constraint(validatedBy = WordUniqValidator.class)
 @Target({ElementType.METHOD, ElementType.FIELD})
 @Retention(value = RetentionPolicy.RUNTIME)
-public @interface UniqWord {
+public @interface UniqWordPerUser {
     String message() default "You already created this word";
 
     Class<?>[] groups() default {};

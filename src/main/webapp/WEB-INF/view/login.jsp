@@ -18,8 +18,6 @@
     <input type="text" name="login" id="inputEmail" class="form-control" placeholder="login" required autofocus>
     <label for="inputPassword" class="sr-only">Password</label>
     <input type="password" name="password" id="inputPassword" class="form-control" placeholder="password" required>
-    <%--TODO remember me--%>
-    <%--TODO style it--%>
     <div class="checkbox mb-3">
         <input type="checkbox" id="remember" name="remember" checked>
         <label for="remember">Remember me</label>
