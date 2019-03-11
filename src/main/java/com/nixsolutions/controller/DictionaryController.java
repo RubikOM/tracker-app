@@ -1,5 +1,7 @@
 package com.nixsolutions.controller;
 
+
+import java.security.Principal;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -29,7 +31,7 @@ public class DictionaryController {
     }
 
     @GetMapping
-    public String getPage(Model model) {
+    public String getPage(Model model, Principal principal) {
         model.addAttribute("dictionaryElement", new DictionaryElement());
         List<DictionaryElement> elements = dictionaryService.getTodaysDictionaryElements();
         if (!elements.isEmpty()) {
@@ -37,6 +39,7 @@ public class DictionaryController {
         } else {
             model.addAttribute("lastAddedElements", dictionaryService.getLastDictionaryElementsWords());
         }
+        model.addAttribute("username", principal.getName());
         return Pages.DICTIONARY_PAGE.getPage();
     }
 

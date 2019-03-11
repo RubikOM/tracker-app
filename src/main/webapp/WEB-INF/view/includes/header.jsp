@@ -13,6 +13,8 @@
                 <a class="nav-item nav-link disabled" href="#">Wishes</a>
                 <a class="nav-item nav-link disabled" href="#">Not released</a>
                 <a class="nav-item nav-link disabled" href="#">Not released</a>
+                <a id="logout-link" style="color: peachpuff" class="nav-item nav-link" href="/logout">${username},
+                    logout here</a>
             </div>
         </div>
     </nav>
