@@ -16,7 +16,7 @@ $(document).ready(function () {
         var editWord = $(this).attr("edit-dictionaryElement");
         $.ajax({
             type: "GET",
-            url: "/dictionary/edit/" + editWord,
+            url: "/dictionary/edit/" + editWord
         })
     })
 });
