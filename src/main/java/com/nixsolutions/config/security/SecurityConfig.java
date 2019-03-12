@@ -38,23 +38,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
+        http.authorizeRequests()
                 .antMatchers("/", "/login").permitAll()
-                .anyRequest()
-                .authenticated().and().csrf().disable()
+                .anyRequest().authenticated()
+
+                .and()
+                .csrf().disable()
+
                 .formLogin().loginPage("/login")
                 .defaultSuccessUrl("/successful")
                 .usernameParameter("login")
                 .passwordParameter("password")
-                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/login");
+
+                .and()
+                .logout().deleteCookies("JSESSIONID")
+                .logoutUrl("/logout").logoutSuccessUrl("/login")
+
+                .and()
+                .rememberMe().key("uniqueAndSecret").tokenValiditySeconds(19280000)
+        ;
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
-        web
-                .ignoring()
-                .antMatchers("/static/**");
+    public void configure(WebSecurity web) {
+        web.ignoring().antMatchers("/static/**");
     }
 
 
