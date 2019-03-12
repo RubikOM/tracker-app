@@ -7,12 +7,12 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.nixsolutions.dao.DictionaryDao;
 import com.nixsolutions.entity.DictionaryElement;
@@ -53,7 +53,6 @@ public class DictionaryDaoImpl implements DictionaryDao {
     @Override
     public List<DictionaryElement> getTodaysDictionaryElements(User author, LocalDate today) {
         Query query = sessionFactory.getCurrentSession().createQuery(SELECT_ALL_TODAYS_DICTIONARY_ELEMENTS);
-        // TODO this to service???
         query.setParameter("today", today);
         query.setParameter("author", author.getId());
         return query.list();
