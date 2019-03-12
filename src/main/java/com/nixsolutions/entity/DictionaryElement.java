@@ -145,12 +145,13 @@ public class DictionaryElement {
         if (o == null || getClass() != o.getClass()) return false;
         DictionaryElement that = (DictionaryElement) o;
         return word.equals(that.word) &&
-                translation.equals(that.translation);
+                translation.equals(that.translation) &&
+                author.equals(that.author);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(word, translation);
+        return Objects.hash(word, translation, author);
     }
 
     @Override
@@ -161,6 +162,8 @@ public class DictionaryElement {
                 ", translation='" + translation + '\'' +
                 ", example='" + example + '\'' +
                 ", examplesTranslation='" + examplesTranslation + '\'' +
+                ", created=" + creationDate +
+                ", author=" + author +
                 '}';
     }
 
@@ -175,6 +178,7 @@ public class DictionaryElement {
         private String transcription = "";
         private String example = "";
         private String examplesTranslation = "";
+        private User author = null;
 
         public Builder(String word, String translation) {
             this.word = word;
@@ -196,6 +200,11 @@ public class DictionaryElement {
             return this;
         }
 
+        public Builder author(User value) {
+            author = value;
+            return this;
+        }
+
         public DictionaryElement build() {
             return new DictionaryElement(this);
         }
@@ -207,5 +216,6 @@ public class DictionaryElement {
         translation = builder.translation;
         example = builder.example;
         examplesTranslation = builder.examplesTranslation;
+        author = builder.author;
     }
 }

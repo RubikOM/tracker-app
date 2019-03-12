@@ -1,0 +1,25 @@
+<dataset>
+    <USERS id="1" name="user1" password="user1Pass"/>
+    <USERS id="2" name="user2" password="user2Pass"/>
+    <USERS id="3" name="testUser" password="testUserPass"/>
+
+    <DICTIONARY_ELEMENTS ID="1" WORD_IN_ENGLISH="test" TRANSCRIPTION="[test]" TRANSLATION="тест"
+                         EXAMPLE="testTestTest" EXAMPLE_TRANSLATION="тестТестТест" CREATION_DATE="2019-01-02"
+                         USER_ID="3"/>
+
+    <DICTIONARY_ELEMENTS ID="2" WORD_IN_ENGLISH="test2" TRANSCRIPTION="[test2]" TRANSLATION="тест2"
+                         EXAMPLE="testTestTest2" EXAMPLE_TRANSLATION="тестТестТест2" CREATION_DATE="2019-01-01"
+                         USER_ID="3"/>
+
+    <DICTIONARY_ELEMENTS ID="3" WORD_IN_ENGLISH="testUser1_1" TRANSCRIPTION="[test1_1]" TRANSLATION="тест1_1"
+                         CREATION_DATE="2019-01-02" USER_ID="1"/>
+
+    <DICTIONARY_ELEMENTS ID="4" WORD_IN_ENGLISH="testUser1_2" TRANSCRIPTION="[test1_2]" TRANSLATION="тест1_2"
+                         CREATION_DATE="2019-01-01" USER_ID="1"/>
+
+    <DICTIONARY_ELEMENTS ID="5" WORD_IN_ENGLISH="testUser2_1" TRANSLATION="тест2_1"
+                         CREATION_DATE="2019-01-02" USER_ID="2"/>
+
+    <DICTIONARY_ELEMENTS ID="6" WORD_IN_ENGLISH="testUser2_2" TRANSLATION="тест2_2"
+                         CREATION_DATE="2019-01-01" USER_ID="2"/>
+</dataset>

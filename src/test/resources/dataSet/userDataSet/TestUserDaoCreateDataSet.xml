@@ -1,0 +1,6 @@
+<dataset>
+    <my_user id="1" login="mike" password="password" email="mike@gmail.com" first_name ="Mikhail" last_name = "Rubinskyi" birthday = "1996-11-30" id_role = "1"/>
+    <my_user id="2" login="vasya" password="password2" email="vasya@gmail.com" first_name ="Vasiliy" last_name = "Rubinskyi" birthday = "1974-12-13" id_role = "2"/>
+    <my_user id="3" login="log" password="passw" email="user@gmail.com" first_name ="User" last_name = "user" birthday = "2000-10-10" id_role = "2"/>
+    <my_user id="4" login="loggz" password="pas" email="mail" first_name ="fname" last_name = "lname" birthday = "2016-08-16" id_role = "2"/>
+</dataset>

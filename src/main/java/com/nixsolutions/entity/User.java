@@ -1,5 +1,6 @@
 package com.nixsolutions.entity;
 
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -28,6 +29,11 @@ public class User {
     private Set<DictionaryElement> usersElements;
 
     public User() {
+    }
+
+    public User(String login, String password) {
+        this.login = login;
+        this.password = password;
     }
 
     public int getId() {
@@ -60,5 +66,25 @@ public class User {
 
     public void setUsersElements(Set<DictionaryElement> usersElements) {
         this.usersElements = usersElements;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return login.equals(user.login);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(login);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "login='" + login + '\'' +
+                '}';
     }
 }
