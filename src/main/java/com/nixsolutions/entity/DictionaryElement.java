@@ -16,8 +16,6 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.nixsolutions.validation.dictionaryElement.UniqWordPerUser;
-
 @Entity
 @Table(name = "DICTIONARY_ELEMENTS")
 public class DictionaryElement {
@@ -29,7 +27,6 @@ public class DictionaryElement {
     @NotBlank(message = "Word {shouldNotBeEmpty}")
     @Size(max = 40, message = "Word {size.mustBeLess}")
     @Pattern(regexp = "^[A-Za-z ,']*$", message = "{shouldBeEnglish}")
-    @UniqWordPerUser
     private String word;
 
     @Column(name = "transcription")
