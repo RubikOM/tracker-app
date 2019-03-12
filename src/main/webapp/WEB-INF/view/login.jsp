@@ -19,8 +19,8 @@
     <label for="inputPassword" class="sr-only">Password</label>
     <input type="password" name="password" id="inputPassword" class="form-control" placeholder="password" required>
     <div class="checkbox mb-3">
-        <input type="checkbox" id="remember" name="remember" checked>
-        <label for="remember">Remember me</label>
+        <input type="checkbox" id="remember-me" name="remember-me" checked>
+        <label for="remember-me">Remember me</label>
     </div>
     <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
     <p style="margin-left: 7em" class="mt-5 mb-3 text-muted">&copy; 2019

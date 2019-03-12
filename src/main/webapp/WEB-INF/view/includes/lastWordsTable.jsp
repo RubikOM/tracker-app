@@ -1,4 +1,4 @@
-<p>Get your ALL TIME added words by click <a href="${root}/dictionary/getAllTimeTxtFile">here </a>
+<p>Get your ALL TIME added words by click <a href="${root}/getAllTimeTxtFile">here </a>
 </p>
 <div class="table-wrapper">
     <table id="wordsTable" class="table table-condensed table-striped table-hover">

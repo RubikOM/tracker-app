@@ -1,5 +1,5 @@
-<p>Get your today added words by click <a href="${root}/dictionary/getTxtFile">here </a> ||
-    Get your ALL TIME added words by click <a href="${root}/dictionary/getAllTimeTxtFile">here </a></p>
+<p>Get your today added words by click <a href="${root}/getTxtFile">here </a> ||
+    Get your ALL TIME added words by click <a href="${root}/getAllTimeTxtFile">here </a></p>
 <div class="table-wrapper">
     <table id="wordsTable" class="table table-condensed table-striped table-hover">
         <caption class="larger-font">Your today created words are here</caption>
