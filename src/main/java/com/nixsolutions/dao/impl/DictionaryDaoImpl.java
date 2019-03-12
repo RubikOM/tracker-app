@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import com.nixsolutions.dao.DictionaryDao;
 import com.nixsolutions.entity.DictionaryElement;
+import com.nixsolutions.entity.User;
 
 @Repository
 @Qualifier("hibernate")
@@ -23,10 +24,10 @@ public class DictionaryDaoImpl implements DictionaryDao {
     private final static Logger LOGGER = LoggerFactory.getLogger(DictionaryDaoImpl.class);
     private final SessionFactory sessionFactory;
 
-    private final static String SELECT_ALL_DICTIONARY_ELEMENTS = "from DictionaryElement";
-    private final static String SELECT_LAST_DICTIONARY_ELEMENTS = "from DictionaryElement order by creationDate DESC, id DESC";
-    private final static String SELECT_ALL_TODAYS_DICTIONARY_ELEMENTS = "from DictionaryElement where creationDate = :today";
-    private final static String SELECT_DICTIONARY_ELEMENT_BY_WORD = "from DictionaryElement where word = :param";
+    private final static String SELECT_ALL_DICTIONARY_ELEMENTS = "from DictionaryElement where author.id = :author";
+    private final static String SELECT_LAST_DICTIONARY_ELEMENTS = "from DictionaryElement where author.id = :author order by creationDate DESC, id DESC";
+    private final static String SELECT_ALL_TODAYS_DICTIONARY_ELEMENTS = "from DictionaryElement where creationDate = :today and author.id = :author";
+    private final static String SELECT_DICTIONARY_ELEMENT_BY_WORD = "from DictionaryElement where word = :word and author.id = :author";
     private final static Integer MAX_AMOUNT_OF_WORDS_DISPLAYED = 10;
 
     @Autowired
@@ -35,35 +36,41 @@ public class DictionaryDaoImpl implements DictionaryDao {
     }
 
     @Override
-    public List<DictionaryElement> getAllDictionaryElements() {
+    public List<DictionaryElement> getAllDictionaryElements(User author) {
         Query query = sessionFactory.getCurrentSession().createQuery(SELECT_ALL_DICTIONARY_ELEMENTS);
+        query.setParameter("author", author.getId());
         return query.list();
     }
 
     @Override
-    public List<DictionaryElement> getLastDictionaryElements() {
+    public List<DictionaryElement> getLastDictionaryElements(User author) {
         Query query = sessionFactory.getCurrentSession().createQuery(SELECT_LAST_DICTIONARY_ELEMENTS);
+        query.setParameter("author", author.getId());
         query.setMaxResults(MAX_AMOUNT_OF_WORDS_DISPLAYED);
         return query.list();
     }
 
     @Override
-    public List<DictionaryElement> getTodaysDictionaryElements() {
+    public List<DictionaryElement> getTodaysDictionaryElements(User author, LocalDate today) {
         Query query = sessionFactory.getCurrentSession().createQuery(SELECT_ALL_TODAYS_DICTIONARY_ELEMENTS);
-        query.setParameter("today", LocalDate.now());
+        // TODO this to service???
+        query.setParameter("today", today);
+        query.setParameter("author", author.getId());
         return query.list();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public DictionaryElement findByWord(String wordInEnglish) {
+    public DictionaryElement findByWord(String wordInEnglish, User author) {
         Query query = sessionFactory.getCurrentSession().createQuery(SELECT_DICTIONARY_ELEMENT_BY_WORD);
-        query.setParameter("param", wordInEnglish);
+        query.setParameter("word", wordInEnglish);
+        query.setParameter("author", author.getId());
         try {
             return (DictionaryElement) query.uniqueResult();
         } catch (HibernateException e) {
             LOGGER.error(wordInEnglish + " is not uniq in DB");
-            return (DictionaryElement) query.list().get(0);
+            List<DictionaryElement> result = query.list();
+            return result.get(result.size() - 1);
         }
     }
 
@@ -73,14 +80,14 @@ public class DictionaryDaoImpl implements DictionaryDao {
     }
 
     @Override
-    public void removeDictionaryElement(String word) {
+    public void removeDictionaryElement(String word, User author) {
         Session session;
         try {
             session = sessionFactory.getCurrentSession();
         } catch (HibernateException e) {
             session = sessionFactory.openSession();
         }
-        DictionaryElement element = findByWord(word);
+        DictionaryElement element = findByWord(word, author);
         session.remove(element);
     }
 }

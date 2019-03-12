@@ -1,5 +1,7 @@
 package com.nixsolutions.dao.impl;
 
+import java.util.List;
+
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -31,7 +33,8 @@ public class UserDaoImpl implements UserDao {
             return (User) query.uniqueResult();
         } catch (HibernateException e) {
             LOGGER.error(login + "not uniq user in system");
-            return (User) query.list().get(0);
+            List<User> result = query.list();
+            return result.get(result.size() - 1);
         }
     }
 }

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.nixsolutions.entity.DictionaryElement;
+import com.nixsolutions.entity.User;
 import com.nixsolutions.pojo.Pages;
 import com.nixsolutions.service.DictionaryService;
 import com.nixsolutions.service.UserService;
@@ -28,6 +29,8 @@ public class DictionaryController {
     private final DictionaryService dictionaryService;
     private final UserService userService;
 
+    private User authenticatedUser = null;
+
     public DictionaryController(@Autowired DictionaryService dictionaryService, @Autowired UserService userService) {
         this.dictionaryService = dictionaryService;
         this.userService = userService;
@@ -36,25 +39,41 @@ public class DictionaryController {
     @GetMapping
     public String getPage(Model model, Principal principal) {
         model.addAttribute("dictionaryElement", new DictionaryElement());
-        List<DictionaryElement> elements = dictionaryService.getTodaysDictionaryElements();
+
+        User user = userService.findByLogin(principal.getName());
+        if (authenticatedUser == null) authenticatedUser = user;
+
+        List<DictionaryElement> elements = dictionaryService.getTodaysDictionaryElements(user);
         if (!elements.isEmpty()) {
             model.addAttribute("todaysAddedElements", elements);
         } else {
-            model.addAttribute("lastAddedElements", dictionaryService.getLastDictionaryElementsWords());
+            model.addAttribute("lastAddedElements", dictionaryService.getLastDictionaryElements(user));
         }
+
         model.addAttribute("username", principal.getName());
         return Pages.DICTIONARY_PAGE.getPage();
     }
 
+    @GetMapping("/edit/{editWord}")
+    public String getEditDictionaryElementPage(@PathVariable("editWord") String word, Model model, Principal principal) {
+        User user = userService.findByLogin(principal.getName());
+        if (authenticatedUser == null) authenticatedUser = user;
+
+        model.addAttribute("dictionaryElement", dictionaryService.findByWord(word, authenticatedUser));
+
+        return Pages.EDIT_WORD_PAGE.getPage();
+    }
+
     @PostMapping("/createWord")
-    public String addDictionaryElement(@Valid DictionaryElement dictionaryElement, BindingResult bindingResult,
-                                       Model model, Principal principal) {
+    public String createDictionaryElement(@Valid DictionaryElement dictionaryElement, BindingResult bindingResult,
+                                          Model model, Principal principal) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("todaysAddedElements", dictionaryService.getTodaysDictionaryElements());
+            model.addAttribute("todaysAddedElements", dictionaryService.getTodaysDictionaryElements(authenticatedUser));
             return Pages.DICTIONARY_PAGE.getPage();
         } else {
-            dictionaryElement.setAuthor(userService.findByLogin(principal.getName()));
-            dictionaryService.addDictionaryElement(dictionaryElement);
+            User author = userService.findByLogin(principal.getName());
+            dictionaryService.createDictionaryElement(dictionaryElement, author);
+
             return "redirect:/dictionary";
         }
     }
@@ -62,12 +81,6 @@ public class DictionaryController {
     @DeleteMapping("/delete/{deleteWord}")
     @ResponseBody
     public void removeDictionaryElement(@PathVariable("deleteWord") String word) {
-        dictionaryService.removeDictionaryElement(word);
-    }
-
-    @GetMapping("/edit/{editWord}")
-    public String getEditDictionaryElementPage(@PathVariable("editWord") String word, Model model) {
-        model.addAttribute("dictionaryElement", dictionaryService.findByWord(word));
-        return Pages.EDIT_WORD_PAGE.getPage();
+        dictionaryService.removeDictionaryElement(word, authenticatedUser);
     }
 }

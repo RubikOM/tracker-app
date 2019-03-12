@@ -1,5 +1,6 @@
 package com.nixsolutions.controller;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -11,7 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.nixsolutions.entity.DictionaryElement;
+import com.nixsolutions.entity.User;
 import com.nixsolutions.service.DictionaryService;
+import com.nixsolutions.service.UserService;
 
 @Controller
 public class TextFileController {
@@ -19,30 +22,39 @@ public class TextFileController {
     private static final String ALL_TIME_WORDS_FILE_NAME = "all your words.txt";
 
     private final DictionaryService dictionaryService;
+    private final UserService userService;
 
-    public TextFileController(@Autowired DictionaryService dictionaryService) {
+    public TextFileController(@Autowired DictionaryService dictionaryService, @Autowired UserService userService) {
         this.dictionaryService = dictionaryService;
+        this.userService = userService;
     }
 
     @GetMapping(value = "/getTxtFile", produces = "text/plain;charset=UTF-8")
     @ResponseBody
-    public String getTodayTxtFile(HttpServletResponse response) {
+    public String getTodayTxtFile(HttpServletResponse response, Principal principal) {
+        User authenticatedUser = userService.findByLogin(principal.getName());
+
         response.setHeader("Content-Disposition", "attachment; filename=" + TODAY_FILE_NAME);
-        List<DictionaryElement> dictionaryElements = dictionaryService.getTodaysDictionaryElements();
+        List<DictionaryElement> dictionaryElements = dictionaryService.getTodaysDictionaryElements(authenticatedUser);
+
         return makeSingleStringWithFiles(dictionaryElements);
     }
 
     @GetMapping(value = "/getAllTimeTxtFile", produces = "text/plain;charset=UTF-8")
     @ResponseBody
-    public String getAllTimeTxtFile(HttpServletResponse response) {
+    public String getAllTimeTxtFile(HttpServletResponse response, Principal principal) {
+        User authenticatedUser = userService.findByLogin(principal.getName());
+
         response.setHeader("Content-Disposition", "attachment; filename=" + ALL_TIME_WORDS_FILE_NAME);
-        List<DictionaryElement> allTimeDictionaryElements = dictionaryService.getAllDictionaryElementsWords();
+        List<DictionaryElement> allTimeDictionaryElements = dictionaryService.getAllDictionaryElements(authenticatedUser);
+
         return makeSingleStringWithFiles(allTimeDictionaryElements);
     }
 
     private String makeSingleStringWithFiles(List<DictionaryElement> dictionaryElements) {
         StringBuilder content = new StringBuilder();
         dictionaryElements.forEach(dictionaryElement -> content.append(dictionaryElement.getDictionaryElementAsString()));
+
         return content.toString();
     }
 }
