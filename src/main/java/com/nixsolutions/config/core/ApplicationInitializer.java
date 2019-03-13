@@ -25,6 +25,9 @@ public class ApplicationInitializer implements WebApplicationInitializer {
     // TODO rebuild jsp to thymeleaf
     // jdbc:h2:./home/NIX/rubinskyi/Desktop/tracker-app/database/main;DB_CLOSE_DELAY=-1
 
+    // https://api.lingvolive.com/Translation/Minicard?text=threshold&dict=Electronics&srcLang=1033&dstLang=1049&returnJsonArticles=true
+    // https://api.lingvolive.com/Translation/Translate?text=threshold&dict=Electronics&srcLang=1033&dstLang=1049&returnJsonArticles=true
+
     private static final String DISPATCHER_SERVLET_NAME = "dispatcher";
     private static final String DISPATCHER_SERVLET_MAPPING = "/";
 

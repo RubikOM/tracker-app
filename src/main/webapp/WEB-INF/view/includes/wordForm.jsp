@@ -10,7 +10,7 @@
                         <span class="input-group-text" id="validationTooltipWord">
                             <i class="fas fa-edit"></i></span>
                         </div>
-                        <form:input class="form-control" path="word" placeholder="Word in English"/>
+                        <form:input class="form-control" id="word-input" path="word" placeholder="Word in English"/>
                     </div>
                     <form:errors path="word" class="error"/>
                 </div>
@@ -60,8 +60,8 @@
             </div>
             <div class="button-box col-lg-12 padding-top-required">
                 <p><form:button type="submit" class="btn btn-primary my-button">Add word</form:button>
-                    <input type="button" class="btn btn-secondary my-button" onclick="history.back();"
-                           value="Cancel"/>
+                    <input type="button" id="go-to-api-button" class="btn btn-secondary my-button"
+                           word-for-api='${dictionaryElement.word}' value="Autofill"/>
                 </p>
             </div>
 
