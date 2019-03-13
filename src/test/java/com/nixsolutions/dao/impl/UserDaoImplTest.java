@@ -9,15 +9,19 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.nixsolutions.config.HibernateConfig;
+import com.nixsolutions.config.SpringConfiguration;
 import com.nixsolutions.dao.UserDao;
 import com.nixsolutions.entity.User;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = HibernateConfig.class)
+@Transactional
+// TODO this is not working
+@ContextConfiguration(classes = {HibernateConfig.class, SpringConfiguration.class})
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class,
         DbUnitTestExecutionListener.class})
 public class UserDaoImplTest {

@@ -20,6 +20,7 @@ import com.nixsolutions.entity.User;
 
 @Repository
 @Qualifier("hibernate")
+@Transactional
 public class DictionaryDaoImpl implements DictionaryDao {
     private final static Logger LOGGER = LoggerFactory.getLogger(DictionaryDaoImpl.class);
     private final SessionFactory sessionFactory;

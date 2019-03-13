@@ -15,6 +15,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 
 import com.nixsolutions.config.HibernateConfig;
+import com.nixsolutions.config.SpringConfiguration;
 import com.nixsolutions.config.WebAppConfig;
 import com.nixsolutions.config.security.SecurityConfig;
 
@@ -30,6 +31,7 @@ public class ApplicationInitializer implements WebApplicationInitializer {
     @Override
     public void onStartup(ServletContext container) {
         AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
+        ctx.register(SpringConfiguration.class);
         ctx.register(SecurityConfig.class);
         ctx.register(WebAppConfig.class);
         ctx.register(HibernateConfig.class);

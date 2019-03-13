@@ -1,4 +1,0 @@
-<dataset>
-    <my_user id="1" login="mike" password="password" email="mike@gmail.com" first_name ="Mikhail" last_name = "Rubinskyi" birthday = "1996-11-30" id_role = "1"/>
-    <my_user id="2" login="vasya" password="password2" email="vasya@gmail.com" first_name ="Vasiliy" last_name = "Rubinskyi" birthday = "1974-12-13" id_role = "2"/>
-</dataset>
