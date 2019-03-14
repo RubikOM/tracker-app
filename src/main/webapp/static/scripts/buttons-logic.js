@@ -13,13 +13,12 @@ $(document).ready(function () {
 
 $(document).ready(function () {
     $("#go-to-api-button").click(function () {
-      /*  var word = $(this).attr("word-for-api");*/
         $.ajax({
             type: "GET",
             url: "/fillPage/" + $('#word-input').val(),
-            success: function () {
+           /* success: function () {
                 location.reload();
-            }
+            }*/
         })
     })
 });

@@ -38,7 +38,9 @@ public class DictionaryController {
 
     @GetMapping
     public String getPage(Model model, Principal principal) {
-        model.addAttribute("dictionaryElement", new DictionaryElement());
+        if (!model.containsAttribute("dictionaryElement")) {
+            model.addAttribute("dictionaryElement", new DictionaryElement());
+        }
 
         User user = userService.findByLogin(principal.getName());
         if (authenticatedUser == null) authenticatedUser = user;
