@@ -16,9 +16,10 @@ $(document).ready(function () {
         $.ajax({
             type: "GET",
             url: "/fillPage/" + $('#word-input').val(),
-           /* success: function () {
-                location.reload();
-            }*/
+            success: function (data) {
+                document.getElementById("word-input").value = data.word;
+                document.getElementById("translation-input").value = data.translation;
+            }
         })
     })
 });

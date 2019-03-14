@@ -1,18 +1,16 @@
 package com.nixsolutions.controller;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.nixsolutions.entity.DictionaryElement;
 
 // TODO rename it
-@Controller
+@RestController
 public class DataSearchController {
 
-    @GetMapping("/fillPage/{word}")
+    /*@GetMapping("/fillPage/{word}")
     public RedirectView returnWordTranslationFromApi(@PathVariable String word, RedirectAttributes redir) {
         DictionaryElement result = new DictionaryElement.Builder(word, "mock").build();
         redir.addFlashAttribute("dictionaryElement", result);
@@ -21,5 +19,12 @@ public class DataSearchController {
         redirectView.setContextRelative(true);
         redirectView.setUrl("/dictionary");
         return redirectView;
+    }*/
+
+    @GetMapping("/fillPage/{word}")
+    public DictionaryElement returnWordTranslationFromApi(@PathVariable String word) {
+        DictionaryElement result = new DictionaryElement.Builder(word, "mock").build();
+
+        return result;
     }
 }

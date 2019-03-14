@@ -29,8 +29,6 @@ public class DictionaryController {
     private final DictionaryService dictionaryService;
     private final UserService userService;
 
-    private User authenticatedUser = null;
-
     public DictionaryController(@Autowired DictionaryService dictionaryService, @Autowired UserService userService) {
         this.dictionaryService = dictionaryService;
         this.userService = userService;
@@ -43,7 +41,6 @@ public class DictionaryController {
         }
 
         User user = userService.findByLogin(principal.getName());
-        if (authenticatedUser == null) authenticatedUser = user;
 
         List<DictionaryElement> elements = dictionaryService.getTodaysDictionaryElements(user);
         if (!elements.isEmpty()) {
@@ -52,29 +49,30 @@ public class DictionaryController {
             model.addAttribute("lastAddedElements", dictionaryService.getLastDictionaryElements(user));
         }
 
-        model.addAttribute("username", principal.getName());
+        model.addAttribute("username", user.getLogin());
         return Pages.DICTIONARY_PAGE.getPage();
     }
 
     @GetMapping("/edit/{editWord}")
     public String getEditDictionaryElementPage(@PathVariable("editWord") String word, Model model, Principal principal) {
         User user = userService.findByLogin(principal.getName());
-        if (authenticatedUser == null) authenticatedUser = user;
 
-        model.addAttribute("dictionaryElement", dictionaryService.findByWord(word, authenticatedUser));
+        model.addAttribute("dictionaryElement", dictionaryService.findByWord(word, user));
 
         return Pages.EDIT_WORD_PAGE.getPage();
     }
 
     @PostMapping("/createWord")
+    // TODO try here flashAttributes instead of if() statement
     public String createDictionaryElement(@Valid DictionaryElement dictionaryElement, BindingResult bindingResult,
                                           Model model, Principal principal) {
+        User authenticatedUser = userService.findByLogin(principal.getName());
+
         if (bindingResult.hasErrors()) {
             model.addAttribute("todaysAddedElements", dictionaryService.getTodaysDictionaryElements(authenticatedUser));
             return Pages.DICTIONARY_PAGE.getPage();
         } else {
-            User author = userService.findByLogin(principal.getName());
-            dictionaryService.createDictionaryElement(dictionaryElement, author);
+            dictionaryService.createDictionaryElement(dictionaryElement, authenticatedUser);
 
             return "redirect:/dictionary";
         }
@@ -82,7 +80,9 @@ public class DictionaryController {
 
     @DeleteMapping("/delete/{deleteWord}")
     @ResponseBody
-    public void removeDictionaryElement(@PathVariable("deleteWord") String word) {
+    public void removeDictionaryElement(@PathVariable("deleteWord") String word, Principal principal) {
+        User authenticatedUser = userService.findByLogin(principal.getName());
+
         dictionaryService.removeDictionaryElement(word, authenticatedUser);
     }
 }
