@@ -9,7 +9,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
@@ -29,7 +28,7 @@ public class UserDaoImplTest {
     private UserDao userDao;
 
     @Test
-    @DatabaseSetup("/dataSet/TestDataSet.xml")
+    @DatabaseSetup("/dataSet/DictionaryElements.xml")
     public void findByName() {
         User expectedUser = new User();
         expectedUser.setId(1);

@@ -21,28 +21,23 @@ public class DictionaryService {
         this.dictionaryDao = dictionaryDao;
     }
 
-    @Transactional(readOnly = true)
     public List<DictionaryElement> getAllDictionaryElements(User user) {
         return dictionaryDao.getAllDictionaryElements(user);
     }
 
-    @Transactional(readOnly = true)
     public List<DictionaryElement> getLastDictionaryElements(User user) {
         return dictionaryDao.getLastDictionaryElements(user);
     }
 
-    @Transactional(readOnly = true)
     public List<DictionaryElement> getTodaysDictionaryElements(User user) {
         LocalDate today = LocalDate.now();
         return dictionaryDao.getTodaysDictionaryElements(user, today);
     }
 
-    @Transactional(readOnly = true)
     public DictionaryElement findByWord(String word, User user) {
         return dictionaryDao.findByWord(word, user);
     }
 
-    @Transactional
     public void createDictionaryElement(DictionaryElement dictionaryElement, User user) {
         dictionaryElement.setCreationDate(LocalDate.now());
         dictionaryElement.setAuthor(user);
@@ -50,7 +45,6 @@ public class DictionaryService {
         dictionaryDao.addDictionaryElement(dictionaryElement);
     }
 
-    @Transactional
     public void removeDictionaryElement(String wordToDelete, User user) {
         dictionaryDao.removeDictionaryElement(wordToDelete, user);
     }

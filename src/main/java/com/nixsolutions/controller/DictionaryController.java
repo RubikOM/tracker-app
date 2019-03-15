@@ -36,10 +36,7 @@ public class DictionaryController {
 
     @GetMapping
     public String getPage(Model model, Principal principal) {
-        if (!model.containsAttribute("dictionaryElement")) {
-            model.addAttribute("dictionaryElement", new DictionaryElement());
-        }
-
+        model.addAttribute("dictionaryElement", new DictionaryElement());
         User user = userService.findByLogin(principal.getName());
 
         List<DictionaryElement> elements = dictionaryService.getTodaysDictionaryElements(user);
@@ -63,7 +60,7 @@ public class DictionaryController {
     }
 
     @PostMapping("/createWord")
-    // TODO try here flashAttributes instead of if() statement
+    // TODO try here flashAttributes instead of body if() statement
     public String createDictionaryElement(@Valid DictionaryElement dictionaryElement, BindingResult bindingResult,
                                           Model model, Principal principal) {
         User authenticatedUser = userService.findByLogin(principal.getName());
