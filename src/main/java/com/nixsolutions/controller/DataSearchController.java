@@ -11,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nixsolutions.entity.DictionaryElement;
+import com.nixsolutions.pojo.ElementFromApi;
 
 // TODO rename it
 @RestController
@@ -22,17 +23,19 @@ public class DataSearchController {
     @GetMapping("/fillPage/{word}")
     public DictionaryElement returnWordTranslationFromApi(@PathVariable String word) {
         String jsonInput = getDictionaryElementFromApi(word);
-        Map<String, Object> response = null;
+
+        ElementFromApi element;
+        ObjectMapper mapper = new ObjectMapper();
+        ElementFromApi.Translation translation = null;
         try {
-            response = new ObjectMapper().readValue(jsonInput, HashMap.class);
+            element = mapper.readValue(jsonInput, ElementFromApi.class);
+            translation = element.getTranslation();
         } catch (IOException e) {
-            // NOP
+            e.printStackTrace();
             // TODO something here
         }
-        Map<String, String> translation = (Map<String, String>) response.get("translation");
-        String result = translation.get("lingvoTranslations");
 
-        return new DictionaryElement.Builder(word, result).build();
+        return new DictionaryElement.Builder(word, translation.getLingvoTranslations()).build();
     }
 
     private String getDictionaryElementFromApi(String word) {
