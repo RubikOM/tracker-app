@@ -1,9 +1,9 @@
 package com.nixsolutions.controller;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,12 +16,14 @@ import com.nixsolutions.pojo.ElementFromApi;
 // TODO rename it
 @RestController
 public class DataSearchController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DataSearchController.class);
     private final String ENGLISH_LANGUAGE = "1033";
     private final String RUSSIAN_LANGUAGE = "1049";
-
+    private final String REQUEST_MICICARD = "Minicard";
 
     @GetMapping("/fillPage/{word}")
     public DictionaryElement returnWordTranslationFromApi(@PathVariable String word) {
+        // TODO try not to readToString, but instantly in the mapper.readValue();
         String jsonInput = getDictionaryElementFromApi(word);
 
         ElementFromApi element;
@@ -31,7 +33,7 @@ public class DataSearchController {
             element = mapper.readValue(jsonInput, ElementFromApi.class);
             translation = element.getTranslation();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error(e.toString(), e);
             // TODO something here
         }
 
@@ -39,12 +41,11 @@ public class DataSearchController {
     }
 
     private String getDictionaryElementFromApi(String word) {
-        String API_CALL = "https://api.lingvolive.com/Translation/Minicard?text=" + word +
-                "&srcLang=" + ENGLISH_LANGUAGE + "&dstLang=" + RUSSIAN_LANGUAGE + "&returnJsonArticles=true";
+        String apiCall = "https://api.lingvolive.com/Translation/" + REQUEST_MICICARD + "?text=" + word
+                + "&srcLang=" + ENGLISH_LANGUAGE + "&dstLang=" + RUSSIAN_LANGUAGE + "&returnJsonArticles=true";
 
         RestTemplate restTemplate = new RestTemplate();
-        String result = restTemplate.getForObject(API_CALL, String.class);
 
-        return result;
+        return restTemplate.getForObject(apiCall, String.class);
     }
 }
