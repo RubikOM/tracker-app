@@ -1,9 +1,12 @@
 package com.nixsolutions.service;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Properties;
+import java.util.ResourceBundle;
 
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -24,14 +27,14 @@ public class TranslationApiService {
     private static final Logger LOGGER = LoggerFactory.getLogger(TranslationApiService.class);
     private final String ENGLISH_LANGUAGE = "1033";
     private final String RUSSIAN_LANGUAGE = "1049";
-    private final String REQUEST_MICICARD = "Minicard";
+    private final String REQUEST_TYPE_MICICARD = "Minicard";
     private final String AUTHORIZATION_URL = "https://developers.lingvolive.com/api/v1.1/authenticate";
 
     // TODO this looks little weird, mb take it from props as well (looks totally good)
-    private String todayKey = "";
+    /* private String todayKey = "";*/
 
     public DictionaryElement getDictionaryElementFromApi(String word) {
-        String apiCall = "https://api.lingvolive.com/Translation/" + REQUEST_MICICARD + "?text=" + word
+        String apiCall = "https://api.lingvolive.com/Translation/" + REQUEST_TYPE_MICICARD + "?text=" + word
                 + "&srcLang=" + ENGLISH_LANGUAGE + "&dstLang=" + RUSSIAN_LANGUAGE;
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headersGet = new HttpHeaders();
@@ -46,6 +49,7 @@ public class TranslationApiService {
         }
 
         String jsonInput = exchange.getBody();
+        // TODO one more private method here
         try {
             element = mapper.readValue(jsonInput, Minicard.class);
         } catch (IOException e) {
@@ -60,26 +64,41 @@ public class TranslationApiService {
     private void refreshTodaySecretKey(@NotNull RestTemplate restTemplate) {
         HttpHeaders headersPost = new HttpHeaders();
 
-        headersPost.add(HttpHeaders.AUTHORIZATION, getApiKey());
+        headersPost.add(HttpHeaders.AUTHORIZATION, getValueFromProperties("apiKey"));
         HttpEntity<String> entityPost = new HttpEntity<>("parameters", headersPost);
-        todayKey = restTemplate.postForObject(AUTHORIZATION_URL, entityPost, String.class);
+        String key = restTemplate.postForObject(AUTHORIZATION_URL, entityPost, String.class);
+
+        rewriteTodayKey(key);
     }
 
     private ResponseEntity getApiString(String apiCall, @NotNull RestTemplate restTemplate, @NotNull HttpHeaders headersGet) {
-        headersGet.add(HttpHeaders.AUTHORIZATION, "Bearer ".concat(todayKey));
+        headersGet.add(HttpHeaders.AUTHORIZATION, "Bearer ".concat(getValueFromProperties("todayKey")));
         HttpEntity<String> entity = new HttpEntity<>("parameters", headersGet);
         ResponseEntity<String> exchange = restTemplate.exchange(apiCall, HttpMethod.GET, entity, String.class);
         return exchange;
     }
 
-    private String getApiKey() {
+    private String getValueFromProperties(String key) {
         Properties prop = new Properties();
-        try (InputStream input = new FileInputStream("config.properties")) {
+        try (InputStream input = new FileInputStream("api.properties")) {
             prop.load(input);
-            return prop.getProperty("apiKey");
+            return prop.getProperty(key);
         } catch (Exception e) {
             LOGGER.error(e.toString(), e);
             throw new RuntimeException(e);
+            // TODO rethrow or do something with this exception
+        }
+    }
+
+    private void rewriteTodayKey(String key) {
+        Properties prop = new Properties();
+        try (OutputStream output = new FileOutputStream("api.properties")) {
+            prop.setProperty("todayKey", key);
+            prop.store(output, null);
+        } catch (IOException e) {
+            LOGGER.error(e.toString(), e);
+            throw new RuntimeException(e);
+            // TODO rethrow or do something with this exception
         }
     }
 }
