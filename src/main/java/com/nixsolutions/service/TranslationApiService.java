@@ -28,7 +28,7 @@ public class TranslationApiService {
     private static final Logger LOGGER = LoggerFactory.getLogger(TranslationApiService.class);
     private static final String ENGLISH_LANGUAGE = "1033";
     private static final String RUSSIAN_LANGUAGE = "1049";
-    private static final String REQUEST_TYPE_MICICARD = "Minicard";
+    private static final String REQUEST_TYPE_MINICARD = "Minicard";
     private static final String AUTHORIZATION_URL = "https://developers.lingvolive.com/api/v1.1/authenticate";
 
     private final Environment environment;
@@ -38,7 +38,7 @@ public class TranslationApiService {
     }
 
     public DictionaryElement getDictionaryElementFromApi(String word) {
-        String apiCall = "https://api.lingvolive.com/Translation/" + REQUEST_TYPE_MICICARD + "?text=" + word
+        String apiCall = "https://api.lingvolive.com/Translation/" + REQUEST_TYPE_MINICARD + "?text=" + word
                 + "&srcLang=" + ENGLISH_LANGUAGE + "&dstLang=" + RUSSIAN_LANGUAGE;
 
         ResponseEntity<String> responseEntity = getApiString(apiCall);
