@@ -6,19 +6,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nixsolutions.entity.DictionaryElement;
-import com.nixsolutions.service.TranslationApiService;
+import com.nixsolutions.service.ApiService;
 
 @RestController
 public class TranslationApiController {
-    private final TranslationApiService translationApiService;
+    private final ApiService apiService;
 
     @Autowired
-    public TranslationApiController(TranslationApiService translationApiService) {
-        this.translationApiService = translationApiService;
+    public TranslationApiController(ApiService apiService) {
+        this.apiService = apiService;
     }
 
-    @GetMapping("/fillPage/{word}")
-    public DictionaryElement returnWordTranslationFromApi(@PathVariable String word) {
-        return translationApiService.getDictionaryElementFromApi(word);
+    @GetMapping("/fillPage/{wordInEnglish}")
+    public DictionaryElement returnWordTranslationFromApi(@PathVariable String wordInEnglish) {
+        return apiService.getDictionaryElementFromApi(wordInEnglish);
     }
 }
