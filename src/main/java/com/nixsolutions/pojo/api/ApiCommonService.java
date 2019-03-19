@@ -5,9 +5,12 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Properties;
 
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -18,20 +21,22 @@ import org.springframework.web.client.RestTemplate;
 
 // TODO rename this class
 @Component
-public class DataHolder {
-    private static final String ENGLISH_LANGUAGE = "1033";
-    private static final String RUSSIAN_LANGUAGE = "1049";
-    private static final String AUTHORIZATION_URL = "https://developers.lingvolive.com/api/v1.1/authenticate";
-    public static final String API_CALL_TEMPLATE = "https://api.lingvolive.com/Translation/%s?text=%s" +
-            "&srcLang=" + ENGLISH_LANGUAGE + "&dstLang=" + RUSSIAN_LANGUAGE;
-    public static final String REQUEST_TYPE_MINICARD = "Minicard";
-    public static final String REQUEST_TYPE_TRANSLATION = "Translate";
+@PropertySource(value = {"classpath:api.properties"})
+public class ApiCommonService {
+    private final static String ENGLISH_LANGUAGE = "1033";
+    private final static String RUSSIAN_LANGUAGE = "1049";
+    public final static String REQUEST_TYPE_MINI = "Minicard";
+    public final static String REQUEST_TYPE_FULL = "Translate";
+    public final static String API_CALL_TEMPLATE = "https://api.lingvolive.com/Translation/" + "%s" + "?text=" + "%s"
+            + "&srcLang=" + ENGLISH_LANGUAGE + "&dstLang=" + RUSSIAN_LANGUAGE;
+    @Value("${authorizationUrl}")
+    private String AUTHORIZATION_URL;
 
     private final Environment environment;
-    private static final Logger LOGGER = LoggerFactory.getLogger(DataHolder.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ApiCommonService.class);
 
     @Autowired
-    public DataHolder(Environment environment) {
+    public ApiCommonService(@NotNull Environment environment) {
         this.environment = environment;
     }
 
@@ -45,6 +50,7 @@ public class DataHolder {
         return restTemplate.exchange(apiCall, HttpMethod.GET, entity, String.class);
     }
 
+    // TODO investigate this method because it looks like not working
     public void refreshTodaySecretKey() {
         HttpHeaders headersPost = new HttpHeaders();
         RestTemplate restTemplate = new RestTemplate();
