@@ -6,14 +6,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nixsolutions.entity.DictionaryElement;
-import com.nixsolutions.service.ApiService;
+import com.nixsolutions.service.api.ApiService;
 
+// TODO rename it
+// TODO 500 if no such word
+// TODO suggest in JS??
+// TODO Java class for today key with String key and LocalDate creationTime
 @RestController
-public class TranslationApiController {
+public class ApiController {
     private final ApiService apiService;
 
     @Autowired
-    public TranslationApiController(ApiService apiService) {
+    public ApiController(ApiService apiService) {
         this.apiService = apiService;
     }
 

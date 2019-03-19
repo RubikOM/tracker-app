@@ -5,9 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Minicard {
-    // TODO boolean isEmpty if word doesn't exist in API's DB
     private Translation translation;
 
+    @JsonProperty("Translation")
     public Translation getTranslation() {
         return translation;
     }
@@ -22,12 +22,12 @@ public class Minicard {
         private String translations;
         private String dictionary;
 
-        @JsonProperty("lingvoTranslations")
+        @JsonProperty("Translation")
         public String getTranslations() {
             return translations;
         }
 
-        @JsonProperty("lingvoDictionaryName")
+        @JsonProperty("DictionaryName")
         public String getDictionary() {
             return dictionary;
         }

@@ -1,7 +1,7 @@
-package com.nixsolutions.service;
+package com.nixsolutions.service.api;
 
-import static com.nixsolutions.pojo.api.ApiCommonService.API_CALL_TEMPLATE;
-import static com.nixsolutions.pojo.api.ApiCommonService.REQUEST_TYPE_MINI;
+import static com.nixsolutions.service.api.CommonApiService.API_CALL_TEMPLATE;
+import static com.nixsolutions.service.api.CommonApiService.REQUEST_TYPE_MINI;
 
 import java.io.IOException;
 
@@ -13,29 +13,24 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nixsolutions.pojo.api.ApiCommonService;
 import com.nixsolutions.pojo.api.Minicard;
 
 @Service
-public class TranslationApiService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(TranslationApiService.class);
-    private final ApiCommonService apiCommonService;
+public class TranslationService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(TranslationService.class);
+    private final CommonApiService commonApiService;
 
     @Autowired
-    public TranslationApiService(ApiCommonService apiCommonService) {
-        this.apiCommonService = apiCommonService;
+    public TranslationService(CommonApiService commonApiService) {
+        this.commonApiService = commonApiService;
     }
 
     public String getTranslationFromApi(String wordInEnglish) {
         String apiCall = String.format(API_CALL_TEMPLATE, REQUEST_TYPE_MINI, wordInEnglish);
 
-        ResponseEntity<String> responseEntity = apiCommonService.getResponseAsString(apiCall);
-        if (responseEntity.getStatusCodeValue() != 200) {
-            apiCommonService.refreshTodaySecretKey();
-            responseEntity = apiCommonService.getResponseAsString(apiCall);
-        }
-
+        ResponseEntity<String> responseEntity = commonApiService.getResponseFromApi(apiCall);
         Minicard minicard = mapJsonToMinicard(responseEntity);
+
         return minicard.getTranslation().getTranslations();
     }
 

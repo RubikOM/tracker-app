@@ -19,6 +19,7 @@ $(document).ready(function () {
             success: function (data) {
                 document.getElementById("word-input").value = data.word;
                 document.getElementById("translation-input").value = data.translation;
+                document.getElementById("transcription-input").value = data.transcription;
             }
         })
     })
