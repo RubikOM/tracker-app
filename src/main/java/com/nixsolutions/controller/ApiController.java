@@ -11,7 +11,6 @@ import com.nixsolutions.service.api.ApiService;
 // TODO rename it
 // TODO 500 if no such word
 // TODO suggest in JS??
-// TODO Java class for today key with String key and LocalDate creationTime
 @RestController
 public class ApiController {
     private final ApiService apiService;

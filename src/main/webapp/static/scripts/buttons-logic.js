@@ -20,6 +20,7 @@ $(document).ready(function () {
                 document.getElementById("word-input").value = data.word;
                 document.getElementById("translation-input").value = data.translation;
                 document.getElementById("transcription-input").value = data.transcription;
+                document.getElementById("example-input").value = data.example;
             }
         })
     })
