@@ -21,6 +21,9 @@ import org.springframework.web.client.RestTemplate;
 
 @Component
 @PropertySource(value = {"classpath:api.properties"})
+
+///// LAST COMMIT ON API V1
+
 public class CommonApiService {
     private final static String ENGLISH_LANGUAGE = "1033";
     private final static String RUSSIAN_LANGUAGE = "1049";
