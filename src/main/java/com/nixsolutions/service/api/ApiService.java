@@ -1,28 +1,31 @@
 package com.nixsolutions.service.api;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nixsolutions.entity.DictionaryElement;
+import com.nixsolutions.pojo.api.TutorCard;
 
 // TODO rename all this services
 @Service
 public class ApiService {
     private final TranslationService translationService;
-    private final PhoneticService phoneticService;
-    private static final Logger LOGGER = LoggerFactory.getLogger(ApiService.class);
+    private final ExamplesAndTranscriptionService examplesAndTranscriptionService;
 
-    public ApiService(@Autowired TranslationService translationService, PhoneticService phoneticService) {
+    public ApiService(@Autowired TranslationService translationService, ExamplesAndTranscriptionService examplesAndTranscriptionService) {
         this.translationService = translationService;
-        this.phoneticService = phoneticService;
+        this.examplesAndTranscriptionService = examplesAndTranscriptionService;
     }
 
     public DictionaryElement getDictionaryElementFromApi(String wordInEnglish) {
         String translation = translationService.getTranslationFromApi(wordInEnglish);
-        String phonetic = phoneticService.getPhoneticFromApi(wordInEnglish);
+        List<TutorCard> tutorCards = examplesAndTranscriptionService.getTranslationFromApi(wordInEnglish);
+        // TODO move this to some service
+        String transcription = tutorCards.get(0).getTranscription();
+        String example = tutorCards.get(0).getExamples();
 
-        return new DictionaryElement.Builder(wordInEnglish, translation).transcription(phonetic).build();
+        return new DictionaryElement.Builder(wordInEnglish, translation).transcription(transcription).example(example).build();
     }
 }

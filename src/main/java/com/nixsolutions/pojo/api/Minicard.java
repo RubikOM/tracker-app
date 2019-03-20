@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Minicard {
     private Translation translation;
 
-    @JsonProperty("Translation")
     public Translation getTranslation() {
         return translation;
     }
@@ -22,12 +21,12 @@ public class Minicard {
         private String translations;
         private String dictionary;
 
-        @JsonProperty("Translation")
+        @JsonProperty("lingvoTranslations")
         public String getTranslations() {
             return translations;
         }
 
-        @JsonProperty("DictionaryName")
+        @JsonProperty("lingvoDictionaryName")
         public String getDictionary() {
             return dictionary;
         }

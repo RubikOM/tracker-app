@@ -1,14 +1,14 @@
 package com.nixsolutions.service.api;
 
-import static com.nixsolutions.service.api.CommonApiService.API_CALL_TEMPLATE;
-import static com.nixsolutions.service.api.CommonApiService.REQUEST_TYPE_MINI;
+import static com.nixsolutions.service.api.CommonApiService.getResponseFromApi;
 
 import java.io.IOException;
 
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -16,19 +16,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nixsolutions.pojo.api.Minicard;
 
 @Service
+@PropertySource(value = {"classpath:api.properties"})
 public class TranslationService {
+    @Value("${minicardCall}")
+    private String API_CALL_TEMPLATE_MINICARD;
     private static final Logger LOGGER = LoggerFactory.getLogger(TranslationService.class);
-    private final CommonApiService commonApiService;
-
-    @Autowired
-    public TranslationService(CommonApiService commonApiService) {
-        this.commonApiService = commonApiService;
-    }
 
     public String getTranslationFromApi(String wordInEnglish) {
-        String apiCall = String.format(API_CALL_TEMPLATE, REQUEST_TYPE_MINI, wordInEnglish);
+        String apiCall = String.format(API_CALL_TEMPLATE_MINICARD, wordInEnglish);
 
-        ResponseEntity<String> responseEntity = commonApiService.getResponseFromApi(apiCall);
+        ResponseEntity<String> responseEntity = getResponseFromApi(apiCall);
         Minicard minicard = mapJsonToMinicard(responseEntity);
 
         return minicard.getTranslation().getTranslations();
