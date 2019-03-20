@@ -1,7 +1,5 @@
 package com.nixsolutions.service.api;
 
-import static com.nixsolutions.service.api.CommonApiService.getResponseFromApi;
-
 import java.io.IOException;
 
 import org.jetbrains.annotations.NotNull;
@@ -11,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nixsolutions.pojo.api.Minicard;
@@ -22,12 +21,13 @@ public class TranslationService {
     private String API_CALL_TEMPLATE_MINICARD;
     private static final Logger LOGGER = LoggerFactory.getLogger(TranslationService.class);
 
+    // TODO return entity or List<String> in both methods
     public String getTranslationFromApi(String wordInEnglish) {
+        RestTemplate restTemplate = new RestTemplate();
         String apiCall = String.format(API_CALL_TEMPLATE_MINICARD, wordInEnglish);
 
-        ResponseEntity<String> responseEntity = getResponseFromApi(apiCall);
+        ResponseEntity<String> responseEntity = restTemplate.getForEntity(apiCall, String.class);
         Minicard minicard = mapJsonToMinicard(responseEntity);
-
         return minicard.getTranslation().getTranslations();
     }
 

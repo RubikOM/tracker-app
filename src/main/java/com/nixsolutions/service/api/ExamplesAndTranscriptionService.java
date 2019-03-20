@@ -1,7 +1,5 @@
 package com.nixsolutions.service.api;
 
-import static com.nixsolutions.service.api.CommonApiService.getResponseFromApi;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,12 +24,11 @@ public class ExamplesAndTranscriptionService {
     private static final Logger LOGGER = LoggerFactory.getLogger(TranslationService.class);
 
     public List<TutorCard> getTranslationFromApi(String wordInEnglish) {
+        RestTemplate restTemplate = new RestTemplate();
         String apiCall = String.format(API_CALL_TEMPLATE_FULL, wordInEnglish);
 
-        ResponseEntity<String> responseEntity = getResponseFromApi(apiCall);
-        List<TutorCard> tutorCards = mapJsonToTutorCards(responseEntity);
-
-        return tutorCards;
+        ResponseEntity<String> responseEntity = restTemplate.getForEntity(apiCall, String.class);
+        return mapJsonToTutorCards(responseEntity);
     }
 
     private List<TutorCard> mapJsonToTutorCards(@NotNull ResponseEntity<String> responseEntity) {
