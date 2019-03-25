@@ -60,7 +60,6 @@ public class DictionaryController {
     }
 
     @PostMapping("/createWord")
-    // TODO try here flashAttributes instead of body if() statement
     public String createDictionaryElement(@Valid DictionaryElement dictionaryElement, BindingResult bindingResult,
                                           Model model, Principal principal) {
         User authenticatedUser = userService.findByLogin(principal.getName());

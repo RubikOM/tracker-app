@@ -16,13 +16,13 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nixsolutions.pojo.api.TutorCard;
 
-// TODO renameItLater
 @Service
-public class ExamplesAndTranscriptionService {
+public class AdditionalDataService {
     @Value("${apiCall}")
     private String API_CALL_TEMPLATE_FULL;
     private static final Logger LOGGER = LoggerFactory.getLogger(TranslationService.class);
 
+    // TODO return Translation with example and transcription here
     public List<TutorCard> getTranslationFromApi(String wordInEnglish) {
         RestTemplate restTemplate = new RestTemplate();
         String apiCall = String.format(API_CALL_TEMPLATE_FULL, wordInEnglish);
@@ -43,7 +43,5 @@ public class ExamplesAndTranscriptionService {
             LOGGER.error(e.toString(), e);
         }
         return elements;
-
-        // TODO how to map list of entities??? 1) Parse String to list of strings and parse to array 2) should be some instrument
     }
 }

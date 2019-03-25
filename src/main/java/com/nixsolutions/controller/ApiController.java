@@ -8,9 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nixsolutions.entity.DictionaryElement;
 import com.nixsolutions.service.api.ApiService;
 
-// TODO rename it
-// TODO 500 if no such word
-// TODO suggest in JS??
 @RestController
 public class ApiController {
     private final ApiService apiService;

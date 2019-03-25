@@ -15,7 +15,6 @@ public class Minicard {
         this.translation = translation;
     }
 
-    // TODO make this class private
     @JsonIgnoreProperties(ignoreUnknown = true)
     public class Translation {
         private String translations;

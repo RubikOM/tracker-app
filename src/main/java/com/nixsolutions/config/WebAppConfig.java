@@ -14,9 +14,6 @@ import org.springframework.web.servlet.view.JstlView;
 @EnableWebMvc
 @Configuration
 public class WebAppConfig extends WebMvcConfigurerAdapter {
-
-    // TODO https://api.lingvolive.com/Translation/Translate?text=threshold&srcLang=1033&dstLang=1049&returnJsonArticles=true
-
     @Bean
     public InternalResourceViewResolver viewResolver() {
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();

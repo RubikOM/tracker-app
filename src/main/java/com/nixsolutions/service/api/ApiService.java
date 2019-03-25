@@ -8,23 +8,22 @@ import org.springframework.stereotype.Service;
 import com.nixsolutions.entity.DictionaryElement;
 import com.nixsolutions.pojo.api.TutorCard;
 
-// TODO rename all this services
 @Service
 public class ApiService {
     private final TranslationService translationService;
-    private final ExamplesAndTranscriptionService examplesAndTranscriptionService;
+    private final AdditionalDataService additionalDataService;
 
-    public ApiService(@Autowired TranslationService translationService, ExamplesAndTranscriptionService examplesAndTranscriptionService) {
+    public ApiService(@Autowired TranslationService translationService, AdditionalDataService additionalDataService) {
         this.translationService = translationService;
-        this.examplesAndTranscriptionService = examplesAndTranscriptionService;
+        this.additionalDataService = additionalDataService;
     }
 
     public DictionaryElement getDictionaryElementFromApi(String wordInEnglish) {
         String translation = translationService.getTranslationFromApi(wordInEnglish);
-        List<TutorCard> tutorCards = examplesAndTranscriptionService.getTranslationFromApi(wordInEnglish);
-        // TODO move this to some service
+        List<TutorCard> tutorCards = additionalDataService.getTranslationFromApi(wordInEnglish);
         String transcription = tutorCards.get(0).getTranscription();
         String example = tutorCards.get(0).getExamples();
+        example.split("—");
 
         return new DictionaryElement.Builder(wordInEnglish, translation).transcription(transcription).example(example).build();
     }
