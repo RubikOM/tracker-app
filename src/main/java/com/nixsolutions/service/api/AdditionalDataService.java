@@ -22,7 +22,8 @@ public class AdditionalDataService {
     private String API_CALL_TEMPLATE_FULL;
     private static final Logger LOGGER = LoggerFactory.getLogger(TranslationService.class);
 
-    // TODO return Translation with example and transcription here
+    // TODO return Translation with example and transcription here!!!
+    // TODO return map here
     public List<TutorCard> getTranslationFromApi(String wordInEnglish) {
         RestTemplate restTemplate = new RestTemplate();
         String apiCall = String.format(API_CALL_TEMPLATE_FULL, wordInEnglish);

@@ -20,10 +20,9 @@ public class ApiService {
 
     public DictionaryElement getDictionaryElementFromApi(String wordInEnglish) {
         String translation = translationService.getTranslationFromApi(wordInEnglish);
-        List<TutorCard> tutorCards = additionalDataService.getTranslationFromApi(wordInEnglish);
+        /*List<TutorCard> tutorCards = additionalDataService.getTranslationFromApi(wordInEnglish);
         String transcription = tutorCards.get(0).getTranscription();
-        String example = tutorCards.get(0).getExamples();
-        example.split("—");
+        String example = tutorCards.get(0).getExamples();*/
 
         return new DictionaryElement.Builder(wordInEnglish, translation).transcription(transcription).example(example).build();
     }
