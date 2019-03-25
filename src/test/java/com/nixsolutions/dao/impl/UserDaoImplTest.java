@@ -18,7 +18,6 @@ import com.nixsolutions.dao.UserDao;
 import com.nixsolutions.entity.User;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-// TODO @Transactional this is not working on test class
 @ContextConfiguration(classes = {HibernateConfig.class, SpringConfiguration.class})
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class,
         DbUnitTestExecutionListener.class})

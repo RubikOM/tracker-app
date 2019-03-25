@@ -21,7 +21,6 @@ public class TranslationService {
     private String API_CALL_TEMPLATE_MINICARD;
     private static final Logger LOGGER = LoggerFactory.getLogger(TranslationService.class);
 
-    // TODO return entity or List<String> in both methods
     public String getTranslationFromApi(String wordInEnglish) {
         RestTemplate restTemplate = new RestTemplate();
         String apiCall = String.format(API_CALL_TEMPLATE_MINICARD, wordInEnglish);
