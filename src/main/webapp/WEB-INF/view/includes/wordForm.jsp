@@ -51,14 +51,14 @@
             </div>
             <div class="padding-top-required">
                 <form:label class="larger-font"
-                            path="examplesTranslation">Input Example's translation in Russian </form:label>
+                            path="exampleTranslation">Input Example's translation in Russian </form:label>
                 <div class="input-group ">
                     <div class="input-group-prepend ">
                         <span class="input-group-text" id="validationTooltipExampleTranslation">
                             <i class="fas fa-book-open"></i></span>
                     </div>
-                    <form:input type="text" class="form-control" id="examplesTranslation-input"
-                                path="examplesTranslation"
+                    <form:input type="text" class="form-control" id="exampleTranslation-input"
+                                path="exampleTranslation"
                                 placeholder="Example's translation"/>
                 </div>
             </div>

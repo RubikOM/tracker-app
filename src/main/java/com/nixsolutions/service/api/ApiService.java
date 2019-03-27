@@ -1,12 +1,11 @@
 package com.nixsolutions.service.api;
 
-import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nixsolutions.entity.DictionaryElement;
-import com.nixsolutions.pojo.api.TutorCard;
 
 @Service
 public class ApiService {
@@ -20,10 +19,16 @@ public class ApiService {
 
     public DictionaryElement getDictionaryElementFromApi(String wordInEnglish) {
         String translation = translationService.getTranslationFromApi(wordInEnglish);
-        /*List<TutorCard> tutorCards = additionalDataService.getTranslationFromApi(wordInEnglish);
-        String transcription = tutorCards.get(0).getTranscription();
-        String example = tutorCards.get(0).getExamples();*/
+        Map additionalData = additionalDataService.getTranslationFromApi(wordInEnglish);
+        // TODO prior translation(or concatenate) if it's made by needed Dictionary
+        String transcription = (String) additionalData.getOrDefault("transcription", "");
+        String example = (String) additionalData.getOrDefault("example", "");
+        String exampleTranslation = (String) additionalData.getOrDefault("exampleTranslation", "");
 
-        return new DictionaryElement.Builder(wordInEnglish, translation).transcription(transcription).example(example).build();
+        return new DictionaryElement.Builder(wordInEnglish, translation)
+                .transcription("[" + transcription + "]")
+                .example(example)
+                .exampleTranslation(exampleTranslation)
+                .build();
     }
 }

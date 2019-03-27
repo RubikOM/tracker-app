@@ -17,7 +17,7 @@
                 <td> ${dictionaryElement.transcription}</td>
                 <td> ${dictionaryElement.translation}</td>
                 <td> ${dictionaryElement.example}</td>
-                <td> ${dictionaryElement.examplesTranslation}</td>
+                <td> ${dictionaryElement.exampleTranslation}</td>
                 <td> ${dictionaryElement.creationDate}</td>
             </tr>
         </c:forEach>

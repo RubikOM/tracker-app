@@ -17,6 +17,7 @@ public class ApiController {
         this.apiService = apiService;
     }
 
+    // TODO principal here
     @GetMapping("/fillPage/{wordInEnglish}")
     public DictionaryElement returnWordTranslationFromApi(@PathVariable String wordInEnglish) {
         return apiService.getDictionaryElementFromApi(wordInEnglish);

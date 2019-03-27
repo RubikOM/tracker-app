@@ -21,6 +21,7 @@ $(document).ready(function () {
                 document.getElementById("translation-input").value = data.translation;
                 document.getElementById("transcription-input").value = data.transcription;
                 document.getElementById("example-input").value = data.example;
+                document.getElementById("exampleTranslation-input").value = data.exampleTranslation;
             }
         })
     })
