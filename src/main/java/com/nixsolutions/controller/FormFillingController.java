@@ -9,19 +9,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nixsolutions.entity.DictionaryElement;
 import com.nixsolutions.service.UserService;
-import com.nixsolutions.service.api.ApiService;
+import com.nixsolutions.service.api.FormFillingService;
 
 @RestController
-public class ApiController {
-    private final ApiService apiService;
+public class FormFillingController {
+    private final FormFillingService formFillingService;
 
     @Autowired
-    public ApiController(ApiService apiService, UserService userService) {
-        this.apiService = apiService;
+    public FormFillingController(FormFillingService formFillingService, UserService userService) {
+        this.formFillingService = formFillingService;
     }
 
     @GetMapping("/fillPage/{wordInEnglish}")
     public DictionaryElement returnWordTranslationFromApi(@PathVariable String wordInEnglish, Principal principal) {
-        return apiService.getDictionaryElementFromApi(wordInEnglish, principal);
+        return formFillingService.getDictionaryElementFromApi(wordInEnglish, principal);
     }
 }

@@ -2,6 +2,7 @@ package com.nixsolutions.service.api;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,11 +31,10 @@ public class AdditionalDataService {
     public Map getDataFromApi(String wordInEnglish, User user) {
         String apiCall = String.format(API_CALL_TEMPLATE_ADDITIONAL, wordInEnglish);
         Map<String, String> result = new HashMap<>();
+        List<TutorCard> tutorCardFiltered = new ArrayList<>();
 
         List<TutorCard> tutorCards = mapJsonToTutorCards(apiCall);
-        List<TutorCard> tutorCardFiltered = new ArrayList<>();
         for (TutorCard tutorCard : tutorCards) {
-            // TODO make this in boolean method????
             if (IsInterestedToUser(tutorCard, user)) {
                 tutorCardFiltered.add(tutorCard);
             }
@@ -42,7 +42,8 @@ public class AdditionalDataService {
                 result.put("transcription", tutorCard.getTranscription());
             }
         }
-        Map<String, String> map = getExampleAndItsTranslation(tutorCardFiltered, user);
+        tutorCardFiltered.sort(new SortByDictionary());
+        Map<String, String> map = getExampleAndItsTranslation(tutorCardFiltered);
         return addMapToMap(map, result);
     }
 
@@ -63,14 +64,11 @@ public class AdditionalDataService {
         return elements;
     }
 
-    private Map<String, String> getExampleAndItsTranslation(List<TutorCard> cards, User user) {
+    private Map<String, String> getExampleAndItsTranslation(List<TutorCard> cards) {
         for (TutorCard tutorCard : cards) {
-            for (Interest interest : user.getInterests()) {
-                // TODO this is fully duplicating method above
-                if (tutorCard.getDictionaryName().contains(interest.getDictionary().getName())
-                        && !tutorCard.getExamples().isEmpty()) {
-                    return extractFromString(tutorCard.getExamples());
-                }
+            String examples = tutorCard.getExamples();
+            if (!examples.isEmpty()) {
+                return extractFromString(examples);
             }
         }
         return new HashMap<>();
@@ -92,8 +90,23 @@ public class AdditionalDataService {
     }
 
     private Map<String, String> addMapToMap(Map<String, String> mapToAdd, Map<String, String> mapToReceive) {
-        // TODO check for nulls?
         mapToAdd.forEach(mapToReceive::putIfAbsent);
         return mapToReceive;
+    }
+
+    class SortByDictionary implements Comparator<TutorCard> {
+        @Override
+        public int compare(TutorCard tutorCard1, TutorCard tutorCard2) {
+            return calculateValue(tutorCard1) - calculateValue(tutorCard2);
+        }
+
+        private int calculateValue(TutorCard tutorCard) {
+            String dictionary = tutorCard.getDictionaryName();
+            if (dictionary.contains("Learning")) {
+                return 1;
+            } else if (dictionary.contains("Universal")) {
+                return 2;
+            } else return 3;
+        }
     }
 }

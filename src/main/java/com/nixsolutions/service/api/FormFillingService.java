@@ -13,13 +13,13 @@ import com.nixsolutions.service.UserService;
 
 @Service
 @Transactional
-public class ApiService {
+public class FormFillingService {
     private final TranslationService translationService;
     private final AdditionalDataService additionalDataService;
     private final UserService userService;
 
-    public ApiService(@Autowired TranslationService translationService, AdditionalDataService additionalDataService,
-                      UserService userService) {
+    public FormFillingService(@Autowired TranslationService translationService, AdditionalDataService additionalDataService,
+                              UserService userService) {
         this.translationService = translationService;
         this.additionalDataService = additionalDataService;
         this.userService = userService;
