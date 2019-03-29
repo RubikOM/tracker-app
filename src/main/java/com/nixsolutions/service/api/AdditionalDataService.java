@@ -26,42 +26,74 @@ public class AdditionalDataService {
     private String API_CALL_TEMPLATE_ADDITIONAL;
     private static final Logger LOGGER = LoggerFactory.getLogger(TranslationService.class);
 
-    public Map getTranslationFromApi(String wordInEnglish, User user) {
-        RestTemplate restTemplate = new RestTemplate();
+    // TODO rename everything here
+    public Map getDataFromApi(String wordInEnglish, User user) {
         String apiCall = String.format(API_CALL_TEMPLATE_ADDITIONAL, wordInEnglish);
         Map<String, String> result = new HashMap<>();
 
-        ResponseEntity<String> responseEntity = restTemplate.getForEntity(apiCall, String.class);
-        List<TutorCard> tutorCards = mapJsonToTutorCards(responseEntity);
+        List<TutorCard> tutorCards = mapJsonToTutorCards(apiCall);
+        List<TutorCard> tutorCardFiltered = new ArrayList<>();
         for (TutorCard tutorCard : tutorCards) {
-            if (!tutorCard.getTranscription().isEmpty()) {
+            // TODO make this in boolean method????
+            if (IsInterestedToUser(tutorCard, user)) {
+                tutorCardFiltered.add(tutorCard);
+            }
+            if (!tutorCard.getTranscription().isEmpty() && !result.containsKey("transcription")) {
                 result.put("transcription", tutorCard.getTranscription());
             }
-            for (Interest interest : user.getInterests())
-                if (tutorCard.getDictionaryName().contains(interest.getDictionary().getName())) {
-                    // TODO Lots of optimisation must be here
-                    if (!tutorCard.getExamples().isEmpty()) {
-                        String[] examples = tutorCard.getExamples().split("—|\\r?\\n");
-                        result.put("example", examples[0]);
-                        result.put("exampleTranslation", examples[1]);
-
-                        if (result.containsKey("transcription") && result.containsKey("example")) return result;
-                    }
-                }
         }
-        return result;
+        Map<String, String> map = getExampleAndItsTranslation(tutorCardFiltered, user);
+        return addMapToMap(map, result);
     }
 
-    private List<TutorCard> mapJsonToTutorCards(@NotNull ResponseEntity<String> responseEntity) {
-        List<TutorCard> elements = new ArrayList<>();
+    private List<TutorCard> mapJsonToTutorCards(@NotNull String apiCall) {
+        RestTemplate restTemplate = new RestTemplate();
+        List<TutorCard> elements;
         ObjectMapper mapper = new ObjectMapper();
+
+        ResponseEntity<String> responseEntity = restTemplate.getForEntity(apiCall, String.class);
         String jsonInput = responseEntity.getBody();
         try {
             elements = mapper.readValue(jsonInput, new TypeReference<List<TutorCard>>() {
             });
         } catch (IOException e) {
             LOGGER.error(e.toString(), e);
+            throw new RuntimeException(e);
         }
         return elements;
+    }
+
+    private Map<String, String> getExampleAndItsTranslation(List<TutorCard> cards, User user) {
+        for (TutorCard tutorCard : cards) {
+            for (Interest interest : user.getInterests()) {
+                // TODO this is fully duplicating method above
+                if (tutorCard.getDictionaryName().contains(interest.getDictionary().getName())
+                        && !tutorCard.getExamples().isEmpty()) {
+                    return extractFromString(tutorCard.getExamples());
+                }
+            }
+        }
+        return new HashMap<>();
+    }
+
+    private Map<String, String> extractFromString(String examplesAsString) {
+        Map<String, String> result = new HashMap<>();
+        String[] examples = examplesAsString.split("—|\\r?\\n");
+        result.put("example", examples[0]);
+        result.put("exampleTranslation", examples[1]);
+        return result;
+    }
+
+    private boolean IsInterestedToUser(TutorCard tutorCard, @NotNull User user) {
+        for (Interest interest : user.getInterests()) {
+            if (tutorCard.getDictionaryName().contains(interest.getDictionary().getName())) return true;
+        }
+        return false;
+    }
+
+    private Map<String, String> addMapToMap(Map<String, String> mapToAdd, Map<String, String> mapToReceive) {
+        // TODO check for nulls?
+        mapToAdd.forEach(mapToReceive::putIfAbsent);
+        return mapToReceive;
     }
 }

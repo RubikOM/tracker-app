@@ -28,7 +28,7 @@ public class ApiService {
     public DictionaryElement getDictionaryElementFromApi(String wordInEnglish, Principal principal) {
         User user = userService.findByLogin(principal.getName());
         String translation = translationService.getTranslationFromApi(wordInEnglish);
-        Map additionalData = additionalDataService.getTranslationFromApi(wordInEnglish, user);
+        Map additionalData = additionalDataService.getDataFromApi(wordInEnglish, user);
 
         // TODO prior translation(or concatenate) if it's made by needed Dictionary
         String transcription = (String) additionalData.getOrDefault("transcription", "");
