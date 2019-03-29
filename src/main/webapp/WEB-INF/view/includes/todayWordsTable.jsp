@@ -7,9 +7,8 @@
             <td style="width: 10%">Word</td>
             <td style="width: 8%">Transcription</td>
             <td style="width: 18%">Translation</td>
-            <td style="width: 20%">Example</td>
-            <td style="width: 20%">Example translation</td>
-            <td style="width: 8%">Created</td>
+            <td style="width: 24%">Example</td>
+            <td style="width: 24%">Example translation</td>
             <td style="width: 12%">Actions</td>
         </tr>
         <c:forEach items="${todaysAddedElements}" var="dictionaryElement">
@@ -19,7 +18,6 @@
                 <td> ${dictionaryElement.translation}</td>
                 <td> ${dictionaryElement.example}</td>
                 <td> ${dictionaryElement.exampleTranslation}</td>
-                <td> ${dictionaryElement.creationDate}</td>
                 <td><input type="button" class="btn btn-danger" id="delete-button"
                            delete-dictionaryElement='${dictionaryElement.word}' value="Delete">
                     <input type="button" class="btn btn-primary" id="edit-button"

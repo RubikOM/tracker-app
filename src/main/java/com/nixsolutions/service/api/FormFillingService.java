@@ -14,21 +14,21 @@ import com.nixsolutions.service.UserService;
 @Service
 @Transactional
 public class FormFillingService {
-    private final TranslationService translationService;
-    private final AdditionalDataService additionalDataService;
+    private final PartialDataService partialDataService;
+    private final ComprehensiveDataService comprehensiveDataService;
     private final UserService userService;
 
-    public FormFillingService(@Autowired TranslationService translationService, AdditionalDataService additionalDataService,
+    public FormFillingService(@Autowired PartialDataService partialDataService, ComprehensiveDataService comprehensiveDataService,
                               UserService userService) {
-        this.translationService = translationService;
-        this.additionalDataService = additionalDataService;
+        this.partialDataService = partialDataService;
+        this.comprehensiveDataService = comprehensiveDataService;
         this.userService = userService;
     }
 
     public DictionaryElement getDictionaryElementFromApi(String wordInEnglish, Principal principal) {
         User user = userService.findByLogin(principal.getName());
-        String translation = translationService.getTranslationFromApi(wordInEnglish);
-        Map additionalData = additionalDataService.getDataFromApi(wordInEnglish, user);
+        String translation = partialDataService.getTranslationFromApi(wordInEnglish);
+        Map additionalData = comprehensiveDataService.obtainDataFromApi(wordInEnglish, user);
 
         // TODO prior translation(or concatenate) if it's made by needed Dictionary
         String transcription = (String) additionalData.getOrDefault("transcription", "");

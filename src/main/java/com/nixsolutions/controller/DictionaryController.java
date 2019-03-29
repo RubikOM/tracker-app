@@ -2,6 +2,7 @@ package com.nixsolutions.controller;
 
 
 import java.security.Principal;
+import java.util.Collections;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -41,6 +42,7 @@ public class DictionaryController {
 
         List<DictionaryElement> elements = dictionaryService.getTodaysDictionaryElements(user);
         if (!elements.isEmpty()) {
+            Collections.reverse(elements);
             model.addAttribute("todaysAddedElements", elements);
         } else {
             model.addAttribute("lastAddedElements", dictionaryService.getLastDictionaryElements(user));

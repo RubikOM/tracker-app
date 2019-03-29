@@ -16,10 +16,10 @@ import com.nixsolutions.pojo.api.Minicard;
 
 @Service
 @PropertySource(value = {"classpath:api.properties"})
-public class TranslationService {
+public class PartialDataService {
     @Value("${minicardCall}")
     private String API_CALL_TEMPLATE_MINICARD;
-    private static final Logger LOGGER = LoggerFactory.getLogger(TranslationService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PartialDataService.class);
 
     public String getTranslationFromApi(String wordInEnglish) {
         RestTemplate restTemplate = new RestTemplate();
