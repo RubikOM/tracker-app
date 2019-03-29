@@ -21,7 +21,7 @@ import org.hibernate.validator.constraints.NotBlank;
 public class DictionaryElement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(name = "word_in_english")
     @NotBlank(message = "Word {shouldNotBeEmpty}")
@@ -83,11 +83,11 @@ public class DictionaryElement {
         this.creationDate = creationDate;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -35,7 +35,7 @@ public class DictionaryDaoImplTest {
     @Test
     @DatabaseSetup("/dataSet/DictionaryElements.xml")
     public void getAllDictionaryElements() {
-        User author = new User(2, "user2", "user2Pass");
+        User author = new User(2L, "user2", "user2Pass");
         LocalDate creationDate = LocalDate.parse("2019-01-02");
 
         DictionaryElement expectedValue1 = new DictionaryElement();
@@ -62,7 +62,7 @@ public class DictionaryDaoImplTest {
     @Test
     @DatabaseSetup("/dataSet/DictionaryElements.xml")
     public void getAllDictionaryElements_emptyList() {
-        User author = new User(100500, "NoSuchUserHere", "NoSuchUserHere");
+        User author = new User(100500L, "NoSuchUserHere", "NoSuchUserHere");
 
         List expectedResult = new ArrayList();
         List<DictionaryElement> result = dictionaryDao.getAllDictionaryElements(author);
@@ -73,7 +73,7 @@ public class DictionaryDaoImplTest {
     @Test
     @DatabaseSetup("/dataSet/DictionaryElements.xml")
     public void findByWord() {
-        User author = new User(2, "user2", "user2Pass");
+        User author = new User(2L, "user2", "user2Pass");
         LocalDate creationDate = LocalDate.parse("2019-01-02");
 
         DictionaryElement expectedResult = new DictionaryElement();
@@ -90,7 +90,7 @@ public class DictionaryDaoImplTest {
     @Test
     @DatabaseSetup("/dataSet/DictionaryElements.xml")
     public void findByWord_emptyResult() {
-        User author = new User(2, "user2", "user2Pass");
+        User author = new User(2L, "user2", "user2Pass");
 
         DictionaryElement result = dictionaryDao.findByWord("NoSuchWordHere", author);
 
@@ -101,7 +101,7 @@ public class DictionaryDaoImplTest {
     @DatabaseSetup("/dataSet/DictionaryElements.xml")
     @ExpectedDatabase(assertionMode = DatabaseAssertionMode.NON_STRICT, value = "/dataSet/afterChange/addElement.xml")
     public void createWord() {
-        User author = new User(2, "user2", "user2Pass");
+        User author = new User(2L, "user2", "user2Pass");
         LocalDate creationDate = LocalDate.parse("2019-01-01");
 
         DictionaryElement element = new DictionaryElement();
@@ -117,7 +117,7 @@ public class DictionaryDaoImplTest {
     @DatabaseSetup("/dataSet/DictionaryElements.xml")
     @ExpectedDatabase(assertionMode = DatabaseAssertionMode.NON_STRICT, value = "/dataSet/afterChange/removeElement.xml")
     public void deleteWord() {
-        User author = new User(2, "user2", "user2Pass");
+        User author = new User(2L, "user2", "user2Pass");
 
         String wordToDelete = "testUser2_2";
 
