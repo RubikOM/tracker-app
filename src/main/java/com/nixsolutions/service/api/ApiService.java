@@ -1,29 +1,44 @@
 package com.nixsolutions.service.api;
 
-import java.util.List;
+import java.security.Principal;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.nixsolutions.entity.DictionaryElement;
-import com.nixsolutions.pojo.api.TutorCard;
+import com.nixsolutions.entity.User;
+import com.nixsolutions.service.UserService;
 
 @Service
+@Transactional
 public class ApiService {
     private final TranslationService translationService;
     private final AdditionalDataService additionalDataService;
+    private final UserService userService;
 
-    public ApiService(@Autowired TranslationService translationService, AdditionalDataService additionalDataService) {
+    public ApiService(@Autowired TranslationService translationService, AdditionalDataService additionalDataService,
+                      UserService userService) {
         this.translationService = translationService;
         this.additionalDataService = additionalDataService;
+        this.userService = userService;
     }
 
-    public DictionaryElement getDictionaryElementFromApi(String wordInEnglish) {
+    public DictionaryElement getDictionaryElementFromApi(String wordInEnglish, Principal principal) {
         String translation = translationService.getTranslationFromApi(wordInEnglish);
-        /*List<TutorCard> tutorCards = additionalDataService.getTranslationFromApi(wordInEnglish);
-        String transcription = tutorCards.get(0).getTranscription();
-        String example = tutorCards.get(0).getExamples();*/
+        Map additionalData = additionalDataService.getTranslationFromApi(wordInEnglish);
+        User user = userService.findByLogin(principal.getName());
 
-        return new DictionaryElement.Builder(wordInEnglish, translation).transcription(transcription).example(example).build();
+        // TODO prior translation(or concatenate) if it's made by needed Dictionary
+        String transcription = (String) additionalData.getOrDefault("transcription", "");
+        String example = (String) additionalData.getOrDefault("example", "");
+        String exampleTranslation = (String) additionalData.getOrDefault("exampleTranslation", "");
+
+        return new DictionaryElement.Builder(wordInEnglish, translation)
+                .transcription("[" + transcription + "]")
+                .example(example)
+                .exampleTranslation(exampleTranslation)
+                .build();
     }
 }

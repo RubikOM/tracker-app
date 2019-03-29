@@ -2,7 +2,9 @@ package com.nixsolutions.service.api;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -19,23 +21,33 @@ import com.nixsolutions.pojo.api.TutorCard;
 @Service
 public class AdditionalDataService {
     @Value("${apiCall}")
-    private String API_CALL_TEMPLATE_FULL;
+    private String API_CALL_TEMPLATE_ADDITIONAL;
     private static final Logger LOGGER = LoggerFactory.getLogger(TranslationService.class);
 
-    // TODO return Translation with example and transcription here!!!
-    // TODO return map here
-    public List<TutorCard> getTranslationFromApi(String wordInEnglish) {
+    public Map getTranslationFromApi(String wordInEnglish) {
         RestTemplate restTemplate = new RestTemplate();
-        String apiCall = String.format(API_CALL_TEMPLATE_FULL, wordInEnglish);
+        String apiCall = String.format(API_CALL_TEMPLATE_ADDITIONAL, wordInEnglish);
+        Map<String, String> result = new HashMap<>();
 
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(apiCall, String.class);
-        return mapJsonToTutorCards(responseEntity);
+        List<TutorCard> tutorCards = mapJsonToTutorCards(responseEntity);
+        for (TutorCard tutorCard : tutorCards) {
+            // TODO Lots of optimisation here
+            if (!tutorCard.getTranscription().equals("")) {
+                result.put("transcription", tutorCard.getTranscription());
+            }
+            if (!tutorCard.getExamples().equals("")) {
+                String[] examples = tutorCard.getExamples().split("—|\\r?\\n");
+                result.put("example", examples[0]);
+                result.put("exampleTranslation", examples[1]);
+            }
+        }
+        return result;
     }
 
     private List<TutorCard> mapJsonToTutorCards(@NotNull ResponseEntity<String> responseEntity) {
         List<TutorCard> elements = new ArrayList<>();
         ObjectMapper mapper = new ObjectMapper();
-
         String jsonInput = responseEntity.getBody();
         try {
             elements = mapper.readValue(jsonInput, new TypeReference<List<TutorCard>>() {

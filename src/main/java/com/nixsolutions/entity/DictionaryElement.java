@@ -21,7 +21,7 @@ import org.hibernate.validator.constraints.NotBlank;
 public class DictionaryElement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(name = "word_in_english")
     @NotBlank(message = "Word {shouldNotBeEmpty}")
@@ -44,7 +44,7 @@ public class DictionaryElement {
 
     @Column(name = "example_translation")
     @Size(max = 225, message = "Example translation {size.mustBeLess}")
-    private String examplesTranslation;
+    private String exampleTranslation;
 
     @Column(name = "creation_date")
     private LocalDate creationDate;
@@ -59,15 +59,15 @@ public class DictionaryElement {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(word).append(";").append(transcription.equals("") ? "" : transcription + ";")
                 .append(translation).append(";").append(example.equals("") ? "" : example + ";")
-                .append(examplesTranslation.equals("") ? "" : examplesTranslation + ";").append("\n");
+                .append(exampleTranslation.equals("") ? "" : exampleTranslation + ";").append("\n");
         return stringBuilder.toString();
     }
 
     private void makeWordValidForFile() {
-        if (!example.equals("") && examplesTranslation.equals("")) {
-            examplesTranslation = " ";
+        if (!example.equals("") && exampleTranslation.equals("")) {
+            exampleTranslation = " ";
         }
-        if (!examplesTranslation.equals("") && example.equals("")) {
+        if (!exampleTranslation.equals("") && example.equals("")) {
             example = " ";
         }
     }
@@ -83,11 +83,11 @@ public class DictionaryElement {
         this.creationDate = creationDate;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -107,8 +107,8 @@ public class DictionaryElement {
         return example;
     }
 
-    public String getExamplesTranslation() {
-        return examplesTranslation;
+    public String getExampleTranslation() {
+        return exampleTranslation;
     }
 
     public void setWord(String word) {
@@ -127,8 +127,8 @@ public class DictionaryElement {
         this.example = example;
     }
 
-    public void setExamplesTranslation(String examplesTranslation) {
-        this.examplesTranslation = examplesTranslation;
+    public void setExampleTranslation(String exampleTranslation) {
+        this.exampleTranslation = exampleTranslation;
     }
 
     public User getAuthor() {
@@ -161,7 +161,7 @@ public class DictionaryElement {
                 ", transcription='" + transcription + '\'' +
                 ", translation='" + translation + '\'' +
                 ", example='" + example + '\'' +
-                ", examplesTranslation='" + examplesTranslation + '\'' +
+                ", exampleTranslation='" + exampleTranslation + '\'' +
                 ", created=" + creationDate +
                 ", author=" + author +
                 '}';
@@ -177,7 +177,7 @@ public class DictionaryElement {
 
         private String transcription = "";
         private String example = "";
-        private String examplesTranslation = "";
+        private String exampleTranslation = "";
         private User author = null;
 
         public Builder(String word, String translation) {
@@ -196,7 +196,7 @@ public class DictionaryElement {
         }
 
         public Builder exampleTranslation(String value) {
-            examplesTranslation = value;
+            exampleTranslation = value;
             return this;
         }
 
@@ -215,7 +215,7 @@ public class DictionaryElement {
         transcription = builder.transcription;
         translation = builder.translation;
         example = builder.example;
-        examplesTranslation = builder.examplesTranslation;
+        exampleTranslation = builder.exampleTranslation;
         author = builder.author;
     }
 }

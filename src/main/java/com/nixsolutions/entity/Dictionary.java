@@ -13,33 +13,26 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "USERS")
-public class User {
-
+@Table(name = "DICTIONARIES")
+public class Dictionary {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "name")
-    private String login;
+    private String name;
 
-    @Column(name = "password")
-    private String password;
-
+    // TODO insure that we can delete this mapping
+    // TODO test this mappings
+    // https://vladmihalcea.com/the-best-way-to-map-a-many-to-many-association-with-extra-columns-when-using-jpa-and-hibernate/
     @OneToMany(
-            mappedBy = "user",
+            mappedBy = "dictionary",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
     private Set<Interest> interests;
 
-    public User() {
-    }
-
-    public User(Long id, String login, String password) {
-        this.id = id;
-        this.login = login;
-        this.password = password;
+    public Dictionary() {
     }
 
     public Long getId() {
@@ -50,47 +43,32 @@ public class User {
         this.id = id;
     }
 
-    public String getLogin() {
-        return login;
+    public String getName() {
+        return name;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Set<Interest> getInterests() {
-        return interests;
-    }
-
-    public void setInterests(Set<Interest> interests) {
-        this.interests = interests;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return login.equals(user.login);
+        Dictionary that = (Dictionary) o;
+        return Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(login);
+        return Objects.hash(name);
     }
 
     @Override
     public String toString() {
-        return "User{" +
-                "login='" + login + '\'' +
+        return "Dictionary{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 '}';
     }
 }

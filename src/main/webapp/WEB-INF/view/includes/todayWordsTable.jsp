@@ -18,7 +18,7 @@
                 <td> ${dictionaryElement.transcription}</td>
                 <td> ${dictionaryElement.translation}</td>
                 <td> ${dictionaryElement.example}</td>
-                <td> ${dictionaryElement.examplesTranslation}</td>
+                <td> ${dictionaryElement.exampleTranslation}</td>
                 <td> ${dictionaryElement.creationDate}</td>
                 <td><input type="button" class="btn btn-danger" id="delete-button"
                            delete-dictionaryElement='${dictionaryElement.word}' value="Delete">

@@ -30,7 +30,7 @@ public class UserDaoImplTest {
     @DatabaseSetup("/dataSet/DictionaryElements.xml")
     public void findByName() {
         User expectedUser = new User();
-        expectedUser.setId(1);
+        expectedUser.setId(1L);
         expectedUser.setLogin("user1");
         expectedUser.setPassword("user1Pass");
 
