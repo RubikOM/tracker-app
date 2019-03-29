@@ -16,6 +16,8 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nixsolutions.entity.Interest;
+import com.nixsolutions.entity.User;
 import com.nixsolutions.pojo.api.TutorCard;
 
 @Service
@@ -24,7 +26,7 @@ public class AdditionalDataService {
     private String API_CALL_TEMPLATE_ADDITIONAL;
     private static final Logger LOGGER = LoggerFactory.getLogger(TranslationService.class);
 
-    public Map getTranslationFromApi(String wordInEnglish) {
+    public Map getTranslationFromApi(String wordInEnglish, User user) {
         RestTemplate restTemplate = new RestTemplate();
         String apiCall = String.format(API_CALL_TEMPLATE_ADDITIONAL, wordInEnglish);
         Map<String, String> result = new HashMap<>();
@@ -32,15 +34,20 @@ public class AdditionalDataService {
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(apiCall, String.class);
         List<TutorCard> tutorCards = mapJsonToTutorCards(responseEntity);
         for (TutorCard tutorCard : tutorCards) {
-            // TODO Lots of optimisation here
-            if (!tutorCard.getTranscription().equals("")) {
+            if (!tutorCard.getTranscription().isEmpty()) {
                 result.put("transcription", tutorCard.getTranscription());
             }
-            if (!tutorCard.getExamples().equals("")) {
-                String[] examples = tutorCard.getExamples().split("—|\\r?\\n");
-                result.put("example", examples[0]);
-                result.put("exampleTranslation", examples[1]);
-            }
+            for (Interest interest : user.getInterests())
+                if (tutorCard.getDictionaryName().contains(interest.getDictionary().getName())) {
+                    // TODO Lots of optimisation must be here
+                    if (!tutorCard.getExamples().isEmpty()) {
+                        String[] examples = tutorCard.getExamples().split("—|\\r?\\n");
+                        result.put("example", examples[0]);
+                        result.put("exampleTranslation", examples[1]);
+
+                        if (result.containsKey("transcription") && result.containsKey("example")) return result;
+                    }
+                }
         }
         return result;
     }
