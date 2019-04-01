@@ -27,7 +27,7 @@ public class FormFillingService {
 
     public DictionaryElement getDictionaryElementFromApi(String wordInEnglish, Principal principal) {
         User user = userService.findByLogin(principal.getName());
-        String translation = partialDataService.getTranslationFromApi(wordInEnglish);
+        String translation = partialDataService.obtainTranslationFromApi(wordInEnglish);
         Map additionalData = comprehensiveDataService.obtainDataFromApi(wordInEnglish, user);
 
         // TODO prior translation(or concatenate) if it's made by needed Dictionary
@@ -35,10 +35,14 @@ public class FormFillingService {
         String example = (String) additionalData.getOrDefault("example", "");
         String exampleTranslation = (String) additionalData.getOrDefault("exampleTranslation", "");
 
-        return new DictionaryElement.Builder(wordInEnglish, translation)
+        return new DictionaryElement.Builder(wordInEnglish, removeExtraSymbols(translation))
                 .transcription("[" + transcription + "]")
-                .example(example)
-                .exampleTranslation(exampleTranslation)
+                .example(removeExtraSymbols(example))
+                .exampleTranslation(removeExtraSymbols(exampleTranslation))
                 .build();
+    }
+
+    private String removeExtraSymbols(String stringToClean) {
+        return stringToClean.replace(";", "");
     }
 }

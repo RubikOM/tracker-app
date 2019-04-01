@@ -18,13 +18,12 @@ import com.nixsolutions.pojo.api.PartialElement;
 @PropertySource(value = {"classpath:api.properties"})
 public class PartialDataService {
     @Value("${minicardCall}")
-    private String API_CALL_TEMPLATE_PARTIL;
+    private String API_CALL_TEMPLATE_PARTIAL;
     private static final Logger LOGGER = LoggerFactory.getLogger(PartialDataService.class);
 
-    public String getTranslationFromApi(String wordInEnglish) {
+    public String obtainTranslationFromApi(String wordInEnglish) {
         RestTemplate restTemplate = new RestTemplate();
-        // TODO make _ instead of spaces in this String
-        String apiCall = String.format(API_CALL_TEMPLATE_PARTIL, wordInEnglish);
+        String apiCall = String.format(API_CALL_TEMPLATE_PARTIAL, makeWordValidToUrl(wordInEnglish));
 
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(apiCall, String.class);
         PartialElement partialElement = mapJsonToMinicard(responseEntity);
@@ -43,5 +42,10 @@ public class PartialDataService {
             LOGGER.error(e.toString(), e);
             return new PartialElement();
         }
+    }
+
+    private String makeWordValidToUrl(@NotNull String word) {
+        String[] wordAsArray = word.split(" ");
+        return wordAsArray.length > 0 ? wordAsArray[wordAsArray.length - 1] : word;
     }
 }

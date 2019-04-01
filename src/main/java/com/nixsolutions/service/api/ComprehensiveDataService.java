@@ -28,7 +28,7 @@ public class ComprehensiveDataService {
     private static final Logger LOGGER = LoggerFactory.getLogger(PartialDataService.class);
 
     public Map obtainDataFromApi(String wordInEnglish, User user) {
-        String apiCall = String.format(API_CALL_TEMPLATE_COMPREHENSIVE, wordInEnglish);
+        String apiCall = String.format(API_CALL_TEMPLATE_COMPREHENSIVE, makeWordValidToUrl(wordInEnglish));
 
         List<ComprehensiveElement> comprehensiveElements = mapJsonToTutorCards(apiCall);
         List<ComprehensiveElement> comprehensiveElementFiltered = comprehensiveElements.stream().
@@ -99,6 +99,11 @@ public class ComprehensiveDataService {
 
     private void addMapToMap(@NotNull Map<String, String> mapToAdd, @NotNull Map<String, String> mapToReceive) {
         mapToAdd.forEach(mapToReceive::putIfAbsent);
+    }
+
+    private String makeWordValidToUrl(@NotNull String word) {
+        String[] wordAsArray = word.split(" ");
+        return wordAsArray.length > 0 ? wordAsArray[wordAsArray.length - 1] : word;
     }
 
     class SortByDictionary implements Comparator<ComprehensiveElement> {
