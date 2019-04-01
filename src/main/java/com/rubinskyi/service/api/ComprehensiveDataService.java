@@ -23,7 +23,7 @@ import com.rubinskyi.pojo.api.ComprehensiveElement;
 
 @Service
 public class ComprehensiveDataService {
-    @Value("${apiCall}")
+    @Value("${comprehensiveDataCall}")
     private String API_CALL_TEMPLATE_COMPREHENSIVE;
     private static final Logger LOGGER = LoggerFactory.getLogger(PartialDataService.class);
 
@@ -76,8 +76,10 @@ public class ComprehensiveDataService {
         String examplesAsString = comprehensiveElement.getExamples();
         Map<String, String> exampleMap = new HashMap<>();
         String[] examples = examplesAsString.split("—|\\r?\\n");
-        exampleMap.put("example", examples[0]);
-        exampleMap.put("exampleTranslation", examples[1]);
+        if (examples.length >= 2) {
+            exampleMap.put("example", examples[0]);
+            exampleMap.put("exampleTranslation", examples[1]);
+        }
         return exampleMap;
     }
 

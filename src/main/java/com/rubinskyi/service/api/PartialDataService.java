@@ -6,7 +6,6 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -15,9 +14,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rubinskyi.pojo.api.PartialElement;
 
 @Service
-@PropertySource(value = {"classpath:api.properties"})
 public class PartialDataService {
-    @Value("${minicardCall}")
+    @Value("${partialDataCall}")
     private String API_CALL_TEMPLATE_PARTIAL;
     private static final Logger LOGGER = LoggerFactory.getLogger(PartialDataService.class);
 
