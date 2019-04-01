@@ -19,35 +19,35 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nixsolutions.entity.Interest;
 import com.nixsolutions.entity.User;
-import com.nixsolutions.pojo.api.TutorCard;
+import com.nixsolutions.pojo.api.ComprehensiveElement;
 
 @Service
 public class ComprehensiveDataService {
     @Value("${apiCall}")
-    private String API_CALL_TEMPLATE_ADDITIONAL;
+    private String API_CALL_TEMPLATE_COMPREHENSIVE;
     private static final Logger LOGGER = LoggerFactory.getLogger(PartialDataService.class);
 
     public Map obtainDataFromApi(String wordInEnglish, User user) {
-        String apiCall = String.format(API_CALL_TEMPLATE_ADDITIONAL, wordInEnglish);
+        String apiCall = String.format(API_CALL_TEMPLATE_COMPREHENSIVE, wordInEnglish);
 
-        List<TutorCard> tutorCards = mapJsonToTutorCards(apiCall);
-        List<TutorCard> tutorCardFiltered = tutorCards.stream().
-                filter(tutorCard -> isInterestedToUser(tutorCard, user))
+        List<ComprehensiveElement> comprehensiveElements = mapJsonToTutorCards(apiCall);
+        List<ComprehensiveElement> comprehensiveElementFiltered = comprehensiveElements.stream().
+                filter(comprehensiveElement -> isInterestedToUser(comprehensiveElement, user))
                 .sorted(new SortByDictionary())
                 .collect(Collectors.toList());
 
-        return extract(tutorCardFiltered);
+        return extract(comprehensiveElementFiltered);
     }
 
-    private List<TutorCard> mapJsonToTutorCards(@NotNull String apiCall) {
+    private List<ComprehensiveElement> mapJsonToTutorCards(@NotNull String apiCall) {
         RestTemplate restTemplate = new RestTemplate();
         ObjectMapper mapper = new ObjectMapper();
-        List<TutorCard> elements;
+        List<ComprehensiveElement> elements;
 
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(apiCall, String.class);
         String jsonInput = responseEntity.getBody();
         try {
-            elements = mapper.readValue(jsonInput, new TypeReference<List<TutorCard>>() {
+            elements = mapper.readValue(jsonInput, new TypeReference<List<ComprehensiveElement>>() {
             });
         } catch (IOException e) {
             LOGGER.error(e.toString(), e);
@@ -56,51 +56,59 @@ public class ComprehensiveDataService {
         return elements;
     }
 
-    // TODO this method should be renamed
-    private Map<String, String> extract(List<TutorCard> cards) {
+    private Map<String, String> extract(@NotNull List<ComprehensiveElement> cards) {
         Map<String, String> result = new HashMap<>();
-        for (TutorCard tutorCard : cards) {
-            String examples = tutorCard.getExamples();
-            String transcription = tutorCard.getTranscription();
-
-            if (!transcription.isEmpty() && !result.containsKey("transcription")) {
-                result.put("transcription", transcription);
+        for (ComprehensiveElement comprehensiveElement : cards) {
+            if (!result.containsKey("transcription")) {
+                Map<String, String> transcriptionMap = extractTranscription(comprehensiveElement);
+                addMapToMap(transcriptionMap, result);
             }
-            if (!examples.isEmpty()) {
-                return addMapToMap(extractExampleFromString(examples), result);
+            if (!result.containsKey("example")) {
+                Map<String, String> exampleMap = extractExample(comprehensiveElement);
+                addMapToMap(exampleMap, result);
             }
+            if (result.containsKey("transcription") && result.containsKey("example")) return result;
         }
-        return new HashMap<>();
-    }
-
-    private Map<String, String> extractExampleFromString(String examplesAsString) {
-        Map<String, String> result = new HashMap<>();
-        String[] examples = examplesAsString.split("—|\\r?\\n");
-        result.put("example", examples[0]);
-        result.put("exampleTranslation", examples[1]);
         return result;
     }
 
-    private boolean isInterestedToUser(TutorCard tutorCard, @NotNull User user) {
+    private Map<String, String> extractExample(@NotNull ComprehensiveElement comprehensiveElement) {
+        String examplesAsString = comprehensiveElement.getExamples();
+        Map<String, String> exampleMap = new HashMap<>();
+        String[] examples = examplesAsString.split("—|\\r?\\n");
+        exampleMap.put("example", examples[0]);
+        exampleMap.put("exampleTranslation", examples[1]);
+        return exampleMap;
+    }
+
+    private Map<String, String> extractTranscription(@NotNull ComprehensiveElement comprehensiveElement) {
+        String transcription = comprehensiveElement.getTranscription();
+        Map<String, String> transcriptionMap = new HashMap<>();
+        if (!transcription.isEmpty()) {
+            transcriptionMap.put("transcription", transcription);
+        }
+        return transcriptionMap;
+    }
+
+    private boolean isInterestedToUser(ComprehensiveElement comprehensiveElement, @NotNull User user) {
         for (Interest interest : user.getInterests()) {
-            if (tutorCard.getDictionaryName().contains(interest.getDictionary().getName())) return true;
+            if (comprehensiveElement.getDictionaryName().contains(interest.getDictionary().getName())) return true;
         }
         return false;
     }
 
-    private Map<String, String> addMapToMap(Map<String, String> mapToAdd, Map<String, String> mapToReceive) {
+    private void addMapToMap(@NotNull Map<String, String> mapToAdd, @NotNull Map<String, String> mapToReceive) {
         mapToAdd.forEach(mapToReceive::putIfAbsent);
-        return mapToReceive;
     }
 
-    class SortByDictionary implements Comparator<TutorCard> {
+    class SortByDictionary implements Comparator<ComprehensiveElement> {
         @Override
-        public int compare(TutorCard tutorCard1, TutorCard tutorCard2) {
-            return calculateValue(tutorCard1) - calculateValue(tutorCard2);
+        public int compare(ComprehensiveElement comprehensiveElement1, ComprehensiveElement comprehensiveElement2) {
+            return calculateValue(comprehensiveElement1) - calculateValue(comprehensiveElement2);
         }
 
-        private int calculateValue(TutorCard tutorCard) {
-            String dictionary = tutorCard.getDictionaryName();
+        private int calculateValue(@NotNull ComprehensiveElement comprehensiveElement) {
+            String dictionary = comprehensiveElement.getDictionaryName();
             if (dictionary.contains("Learning")) {
                 return 1;
             } else if (dictionary.contains("Universal")) {

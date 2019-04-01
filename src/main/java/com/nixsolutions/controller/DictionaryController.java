@@ -1,6 +1,5 @@
 package com.nixsolutions.controller;
 
-
 import java.security.Principal;
 import java.util.Collections;
 import java.util.List;
@@ -53,7 +52,7 @@ public class DictionaryController {
     }
 
     @GetMapping("/edit/{editWord}")
-    public String getEditDictionaryElementPage(@PathVariable("editWord") String word, Model model, Principal principal) {
+    public String getEditPage(@PathVariable("editWord") String word, Model model, Principal principal) {
         User user = userService.findByLogin(principal.getName());
 
         model.addAttribute("dictionaryElement", dictionaryService.findByWord(word, user));
@@ -71,7 +70,6 @@ public class DictionaryController {
             return Pages.DICTIONARY_PAGE.getPage();
         } else {
             dictionaryService.createDictionaryElement(dictionaryElement, authenticatedUser);
-
             return "redirect:/dictionary";
         }
     }

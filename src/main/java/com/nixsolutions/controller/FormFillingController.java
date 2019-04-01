@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nixsolutions.entity.DictionaryElement;
-import com.nixsolutions.service.UserService;
 import com.nixsolutions.service.api.FormFillingService;
 
 @RestController
@@ -16,7 +15,7 @@ public class FormFillingController {
     private final FormFillingService formFillingService;
 
     @Autowired
-    public FormFillingController(FormFillingService formFillingService, UserService userService) {
+    public FormFillingController(FormFillingService formFillingService) {
         this.formFillingService = formFillingService;
     }
 

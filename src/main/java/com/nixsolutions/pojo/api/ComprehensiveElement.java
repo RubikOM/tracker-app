@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @NoArgsConstructor @Getter @Setter
-public class TutorCard {
+public class ComprehensiveElement {
     private String dictionaryName;
     private String heading;
     private String complexHeading;
