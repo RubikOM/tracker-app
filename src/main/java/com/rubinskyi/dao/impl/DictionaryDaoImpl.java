@@ -60,7 +60,6 @@ public class DictionaryDaoImpl implements DictionaryDao {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public DictionaryElement findByWord(String wordInEnglish, User author) {
         Query query = sessionFactory.getCurrentSession().createQuery(SELECT_DICTIONARY_ELEMENT_BY_WORD);
         query.setParameter("word", wordInEnglish);
