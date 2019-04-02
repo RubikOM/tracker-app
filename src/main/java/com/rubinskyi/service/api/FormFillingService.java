@@ -30,7 +30,6 @@ public class FormFillingService {
         String translation = partialDataService.obtainTranslationFromApi(wordInEnglish);
         Map additionalData = comprehensiveDataService.obtainDataFromApi(wordInEnglish, user);
 
-        // TODO prior translation(or concatenate) if it's made by needed Dictionary
         String transcription = (String) additionalData.getOrDefault("transcription", "");
         String example = (String) additionalData.getOrDefault("example", "");
         String exampleTranslation = (String) additionalData.getOrDefault("exampleTranslation", "");
