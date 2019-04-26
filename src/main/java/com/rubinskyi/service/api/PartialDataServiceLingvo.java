@@ -27,7 +27,7 @@ public class PartialDataServiceLingvo implements  PartialDataService {
 
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(apiCall, String.class);
         PartialElement partialElement = mapJsonToMinicard(responseEntity);
-        return partialElement.getTranslation().getTranslations();
+        return partialElement.getTranslation() == null ? "" : partialElement.getTranslation().getTranslations();
     }
 
     private PartialElement mapJsonToMinicard(@NotNull ResponseEntity<String> responseEntity) {

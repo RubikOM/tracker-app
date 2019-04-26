@@ -33,6 +33,7 @@ public class ComprehensiveDataServiceLingvo implements ComprehensiveDataService 
         String apiCall = String.format(API_CALL_TEMPLATE_COMPREHENSIVE, makeWordValidToUrl(wordInEnglish));
 
         List<ComprehensiveElement> comprehensiveElements = mapJsonToTutorCards(apiCall);
+        if (comprehensiveElements == null) return new HashMap();
         List<ComprehensiveElement> comprehensiveElementFiltered = comprehensiveElements.stream().
                 filter(comprehensiveElement -> isInterestedToUser(comprehensiveElement, user))
                 .sorted(new SortByDictionary())

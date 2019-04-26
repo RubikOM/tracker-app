@@ -13,6 +13,7 @@
                         <form:input class="form-control" id="word-input" path="word" placeholder="Word in English"/>
                     </div>
                     <form:errors path="word" class="error"/>
+
                 </div>
                 <div class="col-md-2 mb-3">
                     <form:label class="larger-font" path="transcription">Transcription </form:label>

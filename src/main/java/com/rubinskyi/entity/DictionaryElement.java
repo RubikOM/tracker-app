@@ -54,6 +54,8 @@ public class DictionaryElement {
     private User author;
 
     public String getDictionaryElementAsString() {
+        // TODO estimate why autofill method enters this one. Jackson for some reason runs it by reflection?
+        if (translation == null) return "";
         makeWordValidForFile();
 
         StringBuilder stringBuilder = new StringBuilder();
