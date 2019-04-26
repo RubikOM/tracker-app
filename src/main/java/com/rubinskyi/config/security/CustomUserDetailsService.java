@@ -14,16 +14,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.rubinskyi.entity.User;
-import com.rubinskyi.service.UserService;
+import com.rubinskyi.service.UserServiceImpl;
 
 @Service("userDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {
-    private UserService userService;
+    private UserServiceImpl userService;
 
     private final static Logger LOGGER = LoggerFactory.getLogger(CustomUserDetailsService.class);
 
     @Autowired
-    public CustomUserDetailsService(UserService userService) {
+    public CustomUserDetailsService(UserServiceImpl userService) {
         this.userService = userService;
     }
 
