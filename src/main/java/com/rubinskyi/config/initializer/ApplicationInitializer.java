@@ -1,4 +1,4 @@
-package com.rubinskyi.config.core;
+package com.rubinskyi.config.initializer;
 
 import java.util.EnumSet;
 

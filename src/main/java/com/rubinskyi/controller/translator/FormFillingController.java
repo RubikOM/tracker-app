@@ -1,4 +1,4 @@
-package com.rubinskyi.controller;
+package com.rubinskyi.controller.translator;
 
 import java.security.Principal;
 
@@ -21,6 +21,12 @@ public class FormFillingController {
 
     @GetMapping("/fillPage/{wordInEnglish}")
     public DictionaryElement returnWordTranslationFromApi(@PathVariable String wordInEnglish, Principal principal) {
-        return formFillingService.getDictionaryElementFromApi(wordInEnglish, principal);
+        DictionaryElement dictionaryElementFromApi = formFillingService.getDictionaryElementFromApi(wordInEnglish, principal);
+        // TODO spellchecker here : if word isn't correct guess what user wanted to add + Some normal way to show error
+        if (dictionaryElementFromApi.getTranslation().equals("")) {
+            // TODO returning this looks very-very bad
+            return new DictionaryElement.Builder(wordInEnglish, "!!! We can't find this word in DB, please try something else").build();
+        }
+        else return dictionaryElementFromApi;
     }
 }

@@ -34,6 +34,6 @@
 </div>
 <%@include file="includes/footer.jsp" %>
 
-<script src="${root}/static/scripts/buttons-logic.js"></script>
+<script src="${root}/static/scripts/word-form-buttons-logic.js"></script>
 </body>
 </html>

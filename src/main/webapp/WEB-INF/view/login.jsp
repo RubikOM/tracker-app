@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Log in</title>
     <link rel="icon" type="image/x-icon" href="../../static/img/robot-head-round.png">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link type="text/css" rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
     <link type="text/css" rel="stylesheet" href="../../static/css/login.css"/>
 </head>
 <body>

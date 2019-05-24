@@ -22,9 +22,6 @@ public class Dictionary {
     @Column(name = "name")
     private String name;
 
-    // TODO insure that we can delete this mapping
-    // TODO test this mappings
-    // https://vladmihalcea.com/the-best-way-to-map-a-many-to-many-association-with-extra-columns-when-using-jpa-and-hibernate/
     @OneToMany(
             mappedBy = "dictionary",
             cascade = CascadeType.ALL,
