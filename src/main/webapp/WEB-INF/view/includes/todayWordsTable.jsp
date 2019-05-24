@@ -18,9 +18,9 @@
                 <td> ${dictionaryElement.translation}</td>
                 <td> ${dictionaryElement.example}</td>
                 <td> ${dictionaryElement.exampleTranslation}</td>
-                <td><input type="button" class="btn btn-danger" id="delete-button"
+                <td><input type="button" class="btn btn-danger delete-word-button" id="delete" ${dictionaryElement.word}
                            delete-dictionaryElement='${dictionaryElement.word}' value="Delete">
-                    <input type="button" class="btn btn-primary" id="edit-button"
+                    <input type="button" class="btn btn-primary edit-word-button" id="edit" ${dictionaryElement.word}
                            edit-dictionaryElement='${dictionaryElement.word}' value=" Edit ">
                 </td>
             </tr>
