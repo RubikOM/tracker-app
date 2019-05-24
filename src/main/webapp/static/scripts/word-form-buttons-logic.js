@@ -1,5 +1,6 @@
+// TODO this methods are not named, rebuild this file
 $(document).ready(function () {
-    $("#delete-button").click(function () {
+    $(".delete-word-button").click(function () {
         var deleteWord = $(this).attr("delete-dictionaryElement");
         $.ajax({
             type: "DELETE",
@@ -28,7 +29,7 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
-    $("#edit-button").click(function () {
+    $(".edit-word-button").click(function () {
         var editWord = $(this).attr("edit-dictionaryElement");
         $.ajax({
             type: "GET",
