@@ -15,8 +15,8 @@
         <server.mapping>/</server.mapping>
         <server.charset>UTF-8</server.charset>
 
-        <spring.version>4.3.13.RELEASE</spring.version>
-        <spring-security.version>4.2.3.RELEASE</spring-security.version>
+        <spring.version>5.1.5.RELEASE</spring.version>
+        <spring-security.version>5.1.3.RELEASE</spring-security.version>
         <jackson.version>2.9.4</jackson.version>
 
         <hibernate.version>5.2.17.Final</hibernate.version>
