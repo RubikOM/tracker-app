@@ -2,11 +2,13 @@ package com.rubinskyi.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.rubinskyi.dao.UserDao;
 import com.rubinskyi.entity.User;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
