@@ -23,7 +23,8 @@ public class FormFillingController {
     public DictionaryElement returnWordTranslationFromApi(@PathVariable String wordInEnglish, Principal principal) {
         DictionaryElement dictionaryElementFromApi = formFillingService.getDictionaryElementFromApi(wordInEnglish, principal);
         // TODO spellchecker here : if word isn't correct guess what user wanted to add + Some normal way to show error
-        if (dictionaryElementFromApi.getTranslation().equals("")) {
+        // TODO NPE protection here? Optional etc
+        if (dictionaryElementFromApi.getTranslation().isEmpty()) {
             // TODO returning this looks very-very bad
             return new DictionaryElement.Builder(wordInEnglish, "!!! We can't find this word in DB, please try something else").build();
         }

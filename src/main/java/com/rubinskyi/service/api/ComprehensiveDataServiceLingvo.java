@@ -2,9 +2,7 @@ package com.rubinskyi.service.api;
 
 import java.io.IOException;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.NotNull;
@@ -18,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rubinskyi.entity.DictionaryElement;
 import com.rubinskyi.entity.Interest;
 import com.rubinskyi.entity.User;
 import com.rubinskyi.pojo.api.ComprehensiveElement;
@@ -29,17 +28,17 @@ public class ComprehensiveDataServiceLingvo implements ComprehensiveDataService 
     private String API_CALL_TEMPLATE_COMPREHENSIVE;
     private static final Logger LOGGER = LoggerFactory.getLogger(PartialDataServiceLingvo.class);
 
-    public Map obtainDataFromApi(String wordInEnglish, User user) {
+    public DictionaryElement obtainDataFromApi(String wordInEnglish, User user) {
         String apiCall = String.format(API_CALL_TEMPLATE_COMPREHENSIVE, makeWordValidToUrl(wordInEnglish));
 
         List<ComprehensiveElement> comprehensiveElements = mapJsonToTutorCards(apiCall);
-        if (comprehensiveElements == null) return new HashMap();
-        List<ComprehensiveElement> comprehensiveElementFiltered = comprehensiveElements.stream().
+        if (comprehensiveElements == null) return new DictionaryElement();
+        List<ComprehensiveElement> comprehensiveElementsFiltered = comprehensiveElements.stream().
                 filter(comprehensiveElement -> isInterestedToUser(comprehensiveElement, user))
                 .sorted(new SortByDictionary())
                 .collect(Collectors.toList());
 
-        return extract(comprehensiveElementFiltered);
+        return mapToDictionaryElement(comprehensiveElementsFiltered);
     }
 
     private List<ComprehensiveElement> mapJsonToTutorCards(@NotNull String apiCall) {
@@ -59,40 +58,49 @@ public class ComprehensiveDataServiceLingvo implements ComprehensiveDataService 
         return elements;
     }
 
-    private Map<String, String> extract(@NotNull List<ComprehensiveElement> cards) {
-        Map<String, String> result = new HashMap<>();
-        for (ComprehensiveElement comprehensiveElement : cards) {
-            if (!result.containsKey("transcription")) {
-                Map<String, String> transcriptionMap = extractTranscription(comprehensiveElement);
-                addMapToMap(transcriptionMap, result);
-            }
-            if (!result.containsKey("example")) {
-                Map<String, String> exampleMap = extractExample(comprehensiveElement);
-                addMapToMap(exampleMap, result);
-            }
-            if (result.containsKey("transcription") && result.containsKey("example")) return result;
+    // TODO refactor this method
+    // TODO move this to Mapper class
+    // TODO set a word!!!!!!
+    private DictionaryElement mapToDictionaryElement(@NotNull List<ComprehensiveElement> wordCards) {
+        DictionaryElement result = new DictionaryElement();
+        for (ComprehensiveElement comprehensiveElement : wordCards) {
+            mapExampleAndExampleTranslation(comprehensiveElement, result);
+            mapTranscription(comprehensiveElement, result);
+            mapTranslation(comprehensiveElement, result);
+            if (!result.getExample().isEmpty() && !result.getTranscription().isEmpty()) return result;
         }
         return result;
     }
 
-    private Map<String, String> extractExample(@NotNull ComprehensiveElement comprehensiveElement) {
-        String examplesAsString = comprehensiveElement.getExamples();
-        Map<String, String> exampleMap = new HashMap<>();
-        String[] examples = examplesAsString.split("—|\\r?\\n");
-        if (examples.length >= 2) {
-            exampleMap.put("example", examples[0]);
-            exampleMap.put("exampleTranslation", examples[1]);
+    // TODO refactor this method
+    // TODO this method is kinda more global than I thought
+    private void mapExampleAndExampleTranslation(@NotNull ComprehensiveElement comprehensiveElement,
+                                                 DictionaryElement result) {
+        result.setWord(comprehensiveElement.getHeading());
+        if (!comprehensiveElement.getExamples().isEmpty()) {
+            String examplesAsString = comprehensiveElement.getExamples();
+            String[] examples = examplesAsString.split("—|\\r?\\n");
+            if (examples.length >= 2) {
+                result.setExample(examples[0]);
+                result.setExampleTranslation(examples[1]);
+            }
         }
-        return exampleMap;
     }
 
-    private Map<String, String> extractTranscription(@NotNull ComprehensiveElement comprehensiveElement) {
+    private void mapTranscription(@NotNull ComprehensiveElement comprehensiveElement,
+                                  DictionaryElement result) {
         String transcription = comprehensiveElement.getTranscription();
-        Map<String, String> transcriptionMap = new HashMap<>();
         if (!transcription.isEmpty()) {
-            transcriptionMap.put("transcription", transcription);
+            result.setTranscription(transcription);
         }
-        return transcriptionMap;
+    }
+
+    private void mapTranslation(@NotNull ComprehensiveElement comprehensiveElement,
+                                DictionaryElement result) {
+        String translation = comprehensiveElement.getTranslations();
+        if (!translation.isEmpty()) {
+            result.setTranslation(translation);
+        }
     }
 
     private boolean isInterestedToUser(ComprehensiveElement comprehensiveElement, @NotNull User user) {
@@ -102,21 +110,22 @@ public class ComprehensiveDataServiceLingvo implements ComprehensiveDataService 
         return false;
     }
 
-    private void addMapToMap(@NotNull Map<String, String> mapToAdd, @NotNull Map<String, String> mapToReceive) {
-        mapToAdd.forEach(mapToReceive::putIfAbsent);
-    }
-
+    // TODO this is the SHIT number 2 so far
+    // TODO this method throws to api just 1 word, need some normal logic here
     private String makeWordValidToUrl(@NotNull String word) {
         String[] wordAsArray = word.split(" ");
         return wordAsArray.length > 0 ? wordAsArray[wordAsArray.length - 1] : word;
     }
 
+    // TODO this is the biggest SHIT so far
+    // TODO LingvoComputer < LingvoUniversal  < Learning for "Mike", change order of sorting
     class SortByDictionary implements Comparator<ComprehensiveElement> {
         @Override
         public int compare(ComprehensiveElement comprehensiveElement1, ComprehensiveElement comprehensiveElement2) {
             return calculateValue(comprehensiveElement1) - calculateValue(comprehensiveElement2);
         }
 
+        // TODO check WTF is this, user has his own interests, why hardcode???!!!
         private int calculateValue(@NotNull ComprehensiveElement comprehensiveElement) {
             String dictionary = comprehensiveElement.getDictionaryName();
             if (dictionary.contains("Learning")) {

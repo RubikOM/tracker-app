@@ -1,7 +1,6 @@
 package com.rubinskyi.service.api;
 
 import java.security.Principal;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,23 +24,23 @@ public class FormFillingServiceLingvo implements FormFillingService {
         this.userService = userService;
     }
 
+    // TODO now we using only ComprehensiveService, use partial to concatenate in the response
     public DictionaryElement getDictionaryElementFromApi(String wordInEnglish, Principal principal) {
         String customizedWord = customizeString(wordInEnglish);
         User user = userService.findByLogin(principal.getName());
-        String translation = partialDataService.obtainTranslationFromApi(customizedWord);
+       /* String translation = partialDataService.obtainTranslationFromApi(customizedWord);
         Map additionalData = comprehensiveDataService.obtainDataFromApi(customizedWord, user);
 
         String transcription = (String) additionalData.getOrDefault("transcription", "");
         String example = (String) additionalData.getOrDefault("example", "");
-        String exampleTranslation = (String) additionalData.getOrDefault("exampleTranslation", "");
+        String exampleTranslation = (String) additionalData.getOrDefault("exampleTranslation", "");*/
 
-        return new DictionaryElement.Builder(customizedWord, removeExtraSymbols(translation))
-                .transcription("[" + transcription + "]")
-                .example(removeExtraSymbols(example))
-                .exampleTranslation(removeExtraSymbols(exampleTranslation))
-                .build();
+        DictionaryElement dictionaryElement = comprehensiveDataService.obtainDataFromApi(customizedWord, user);
+
+        return dictionaryElement;
     }
 
+    // TODO re-write this method
     private String removeExtraSymbols(String stringToClean) {
         return stringToClean.replace(";", "");
     }
