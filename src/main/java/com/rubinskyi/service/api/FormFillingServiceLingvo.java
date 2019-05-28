@@ -18,23 +18,24 @@ public class FormFillingServiceLingvo implements FormFillingService {
     private final ComprehensiveDataServiceLingvo comprehensiveDataService;
     private final UserService userService;
 
-    public FormFillingServiceLingvo(@Autowired PartialDataServiceLingvo partialDataService, ComprehensiveDataServiceLingvo comprehensiveDataService,
-                                    UserService userService) {
+    public FormFillingServiceLingvo(@Autowired PartialDataServiceLingvo partialDataService,
+                                    ComprehensiveDataServiceLingvo comprehensiveDataService, UserService userService) {
         this.partialDataService = partialDataService;
         this.comprehensiveDataService = comprehensiveDataService;
         this.userService = userService;
     }
 
     public DictionaryElement getDictionaryElementFromApi(String wordInEnglish, Principal principal) {
+        String customizedWord = customizeString(wordInEnglish);
         User user = userService.findByLogin(principal.getName());
-        String translation = partialDataService.obtainTranslationFromApi(wordInEnglish);
-        Map additionalData = comprehensiveDataService.obtainDataFromApi(wordInEnglish, user);
+        String translation = partialDataService.obtainTranslationFromApi(customizedWord);
+        Map additionalData = comprehensiveDataService.obtainDataFromApi(customizedWord, user);
 
         String transcription = (String) additionalData.getOrDefault("transcription", "");
         String example = (String) additionalData.getOrDefault("example", "");
         String exampleTranslation = (String) additionalData.getOrDefault("exampleTranslation", "");
 
-        return new DictionaryElement.Builder(wordInEnglish, removeExtraSymbols(translation))
+        return new DictionaryElement.Builder(customizedWord, removeExtraSymbols(translation))
                 .transcription("[" + transcription + "]")
                 .example(removeExtraSymbols(example))
                 .exampleTranslation(removeExtraSymbols(exampleTranslation))
@@ -43,5 +44,9 @@ public class FormFillingServiceLingvo implements FormFillingService {
 
     private String removeExtraSymbols(String stringToClean) {
         return stringToClean.replace(";", "");
+    }
+
+    private String customizeString(String wordToTranslate) {
+        return wordToTranslate.trim().toLowerCase();
     }
 }
