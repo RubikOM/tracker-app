@@ -35,7 +35,7 @@ public class ComprehensiveDataServiceLingvo implements ComprehensiveDataService 
         if (comprehensiveElements == null) return new DictionaryElement();
         List<ComprehensiveElement> comprehensiveElementsFiltered = comprehensiveElements.stream().
                 filter(comprehensiveElement -> isInterestedToUser(comprehensiveElement, user))
-                .sorted(new SortByDictionary())
+                .sorted(new SortByDictionary(user))
                 .collect(Collectors.toList());
 
         return mapToDictionaryElement(comprehensiveElementsFiltered);
@@ -60,47 +60,67 @@ public class ComprehensiveDataServiceLingvo implements ComprehensiveDataService 
 
     // TODO refactor this method
     // TODO move this to Mapper class
-    // TODO set a word!!!!!!
     private DictionaryElement mapToDictionaryElement(@NotNull List<ComprehensiveElement> wordCards) {
         DictionaryElement result = new DictionaryElement();
         for (ComprehensiveElement comprehensiveElement : wordCards) {
+            // TODO this need to be refactored
+            mapWord(comprehensiveElement, result);
             mapExampleAndExampleTranslation(comprehensiveElement, result);
             mapTranscription(comprehensiveElement, result);
             mapTranslation(comprehensiveElement, result);
-            if (!result.getExample().isEmpty() && !result.getTranscription().isEmpty()) return result;
+            if (!result.getExample().equals("") && !result.getTranscription().equals("")) return result;
         }
         return result;
     }
 
+    private void mapWord(@NotNull ComprehensiveElement comprehensiveElement,
+                         DictionaryElement result) {
+        // TODO optionals here
+        if (result.getWord() == null || result.getWord().isEmpty()) {
+            result.setWord(comprehensiveElement.getHeading());
+        }
+    }
+
     // TODO refactor this method
     // TODO this method is kinda more global than I thought
+    // TODO I'm retarded AF, provide normal fcin changes.
+
+    // TODO FIRSTLY WRITE FCIN TESTS FOR THIS METHOD!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     private void mapExampleAndExampleTranslation(@NotNull ComprehensiveElement comprehensiveElement,
                                                  DictionaryElement result) {
-        result.setWord(comprehensiveElement.getHeading());
-        if (!comprehensiveElement.getExamples().isEmpty()) {
+        String example = "";
+        String exampleTranslation = "";
+        // TODO change to optionals
+
+        if ((result.getExample() == null || result.getExample().isEmpty())
+                && !comprehensiveElement.getExamples().isEmpty()) {
             String examplesAsString = comprehensiveElement.getExamples();
             String[] examples = examplesAsString.split("—|\\r?\\n");
             if (examples.length >= 2) {
-                result.setExample(examples[0]);
-                result.setExampleTranslation(examples[1]);
+                example = examples[0];
+                exampleTranslation = examples[1];
             }
         }
+        result.setExample(example);
+        result.setExampleTranslation(exampleTranslation);
     }
 
     private void mapTranscription(@NotNull ComprehensiveElement comprehensiveElement,
                                   DictionaryElement result) {
         String transcription = comprehensiveElement.getTranscription();
-        if (!transcription.isEmpty()) {
+        // TODO change to optionals
+        if (result.getTranscription() == null || result.getTranscription().isEmpty()) {
             result.setTranscription(transcription);
-        }
+        } else result.setTranscription("");
     }
 
     private void mapTranslation(@NotNull ComprehensiveElement comprehensiveElement,
                                 DictionaryElement result) {
         String translation = comprehensiveElement.getTranslations();
-        if (!translation.isEmpty()) {
+        // TODO change to optionals
+        if (translation.isEmpty()) {
             result.setTranslation(translation);
-        }
+        } else result.setTranslation("");
     }
 
     private boolean isInterestedToUser(ComprehensiveElement comprehensiveElement, @NotNull User user) {
@@ -112,27 +132,30 @@ public class ComprehensiveDataServiceLingvo implements ComprehensiveDataService 
 
     // TODO this is the SHIT number 2 so far
     // TODO this method throws to api just 1 word, need some normal logic here
+    // TODO rename this method
     private String makeWordValidToUrl(@NotNull String word) {
         String[] wordAsArray = word.split(" ");
         return wordAsArray.length > 0 ? wordAsArray[wordAsArray.length - 1] : word;
     }
 
-    // TODO this is the biggest SHIT so far
-    // TODO LingvoComputer < LingvoUniversal  < Learning for "Mike", change order of sorting
     class SortByDictionary implements Comparator<ComprehensiveElement> {
+        private User user;
+
+        SortByDictionary(User user) {
+            this.user = user;
+        }
+
         @Override
         public int compare(ComprehensiveElement comprehensiveElement1, ComprehensiveElement comprehensiveElement2) {
             return calculateValue(comprehensiveElement1) - calculateValue(comprehensiveElement2);
         }
 
-        // TODO check WTF is this, user has his own interests, why hardcode???!!!
         private int calculateValue(@NotNull ComprehensiveElement comprehensiveElement) {
             String dictionary = comprehensiveElement.getDictionaryName();
-            if (dictionary.contains("Learning")) {
-                return 1;
-            } else if (dictionary.contains("Universal")) {
-                return 2;
-            } else return 3;
+            for (Interest interest : user.getInterests()) {
+                if (dictionary.equals(interest)) return interest.getPriority();
+            }
+            return -1;
         }
     }
 }

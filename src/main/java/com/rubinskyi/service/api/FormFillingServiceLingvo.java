@@ -42,7 +42,7 @@ public class FormFillingServiceLingvo implements FormFillingService {
 
     // TODO re-write this method
     private String removeExtraSymbols(String stringToClean) {
-        return stringToClean.replace(";", "");
+        return stringToClean.replace(";", ",");
     }
 
     private String customizeString(String wordToTranslate) {
