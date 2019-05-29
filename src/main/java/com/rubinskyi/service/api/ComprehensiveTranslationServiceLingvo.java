@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.ResponseEntity;
@@ -20,13 +21,21 @@ import com.rubinskyi.entity.DictionaryElement;
 import com.rubinskyi.entity.Interest;
 import com.rubinskyi.entity.User;
 import com.rubinskyi.pojo.api.ComprehensiveElementLingvo;
+import com.rubinskyi.pojo.api.ComprehensiveElementMapper;
 
 @Service
 @PropertySource("classpath:api.properties")
 public class ComprehensiveTranslationServiceLingvo implements ComprehensiveTranslationService {
+
     @Value("${comprehensiveDataCall}")
     private String API_CALL_TEMPLATE_COMPREHENSIVE;
     private static final Logger LOGGER = LoggerFactory.getLogger(PartialTranslationServiceLingvo.class);
+    private final ComprehensiveElementMapper comprehensiveElementMapper;
+
+    @Autowired
+    public ComprehensiveTranslationServiceLingvo(ComprehensiveElementMapper comprehensiveElementMapper) {
+        this.comprehensiveElementMapper = comprehensiveElementMapper;
+    }
 
     public DictionaryElement obtainDataFromApi(String wordInEnglish, User user) {
         String apiCall = String.format(API_CALL_TEMPLATE_COMPREHENSIVE, makeWordValidForApi(wordInEnglish));
@@ -38,7 +47,7 @@ public class ComprehensiveTranslationServiceLingvo implements ComprehensiveTrans
                 .sorted(new SortByDictionary(user))
                 .collect(Collectors.toList());
 
-        return mapToDictionaryElement(comprehensiveElementsFiltered, user);
+        return getResultAsDictionaryElement(comprehensiveElementsFiltered, user);
     }
 
     private List<ComprehensiveElementLingvo> mapJsonToTutorCards(@NotNull String apiCall) {
@@ -58,66 +67,14 @@ public class ComprehensiveTranslationServiceLingvo implements ComprehensiveTrans
         return elements;
     }
 
-    // TODO move this to Mapper class
-    private DictionaryElement mapToDictionaryElement(@NotNull List<ComprehensiveElementLingvo> wordCards, User author) {
+    private DictionaryElement getResultAsDictionaryElement(@NotNull List<ComprehensiveElementLingvo> wordCards, User author) {
         DictionaryElement result = new DictionaryElement();
         for (ComprehensiveElementLingvo comprehensiveElement : wordCards) {
-            // TODO this need to be refactored
+            result = comprehensiveElementMapper.comprehensiveElementToDictionaryElement(comprehensiveElement);
             result.setAuthor(author);
-            mapWord(comprehensiveElement, result);
-            mapExampleAndExampleTranslation(comprehensiveElement, result);
-            mapTranscription(comprehensiveElement, result);
-            mapTranslation(comprehensiveElement, result);
-            if (!result.getExample().equals("") && !result.getTranscription().equals("")) return result;
+            if (result.getExample() != null && result.getTranscription() != null) return result;
         }
         return result;
-    }
-
-    // TODO rename this method
-    private void mapWord(@NotNull ComprehensiveElementLingvo comprehensiveElement,
-                         DictionaryElement result) {
-        // TODO optionals here
-        if ((result.getWord() == null || result.getWord().isEmpty()) && !comprehensiveElement.getHeading().isEmpty()) {
-            result.setWord(comprehensiveElement.getHeading());
-        }
-    }
-
-    // TODO FIRSTLY WRITE FCIN TESTS FOR THIS METHOD!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    private void mapExampleAndExampleTranslation(@NotNull ComprehensiveElementLingvo comprehensiveElement,
-                                                 DictionaryElement result) {
-        String example = "";
-        String exampleTranslation = "";
-        // TODO change to optionals
-
-        if ((result.getExample() == null || result.getExample().isEmpty())
-                && !comprehensiveElement.getExamples().isEmpty()) {
-            String examplesAsString = comprehensiveElement.getExamples();
-            String[] examples = examplesAsString.split("—|\\r?\\n");
-            if (examples.length >= 2) {
-                example = examples[0].trim();
-                exampleTranslation = examples[1].trim();
-            }
-        }
-        result.setExample(example);
-        result.setExampleTranslation(exampleTranslation);
-    }
-
-    private void mapTranscription(@NotNull ComprehensiveElementLingvo comprehensiveElement,
-                                  DictionaryElement result) {
-        String transcription = comprehensiveElement.getTranscription();
-        // TODO change to optionals
-        if ((result.getTranscription() == null || result.getTranscription().isEmpty()) && !transcription.isEmpty()) {
-            result.setTranscription(transcription);
-        }
-    }
-
-    private void mapTranslation(@NotNull ComprehensiveElementLingvo comprehensiveElement,
-                                DictionaryElement result) {
-        String translation = comprehensiveElement.getTranslations();
-        // TODO change to optionals
-        if ((result.getTranslation() == null || result.getTranslation().isEmpty()) && !translation.isEmpty()) {
-            result.setTranslation(translation);
-        }
     }
 
     private boolean isInterestedToUser(ComprehensiveElementLingvo comprehensiveElement, @NotNull User user) {

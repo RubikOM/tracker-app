@@ -31,7 +31,7 @@ public class ComprehensiveDataServiceLingvoTest {
 
     @Test
     public void obtainDataFromApi_shouldReturnCorrectResponse() {
-        DictionaryElement expectedResult = new DictionaryElement.Builder("space", "пространство; область")
+        DictionaryElement expectedResult = new DictionaryElement.Builder("space", "пространство")
                 .transcription("speɪs")
                 .example("airspace")
                 .exampleTranslation("воздушное пространство")
