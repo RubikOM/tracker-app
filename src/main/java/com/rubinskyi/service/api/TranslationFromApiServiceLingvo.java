@@ -28,21 +28,12 @@ public class TranslationFromApiServiceLingvo implements TranslationFromApiServic
     public DictionaryElement getDictionaryElementFromApi(String wordInEnglish, Principal principal) {
         String customizedWord = customizeString(wordInEnglish);
         User user = userService.findByLogin(principal.getName());
-       /* String translation = partialDataService.obtainTranslationFromApi(customizedWord);
-        Map additionalData = comprehensiveDataService.obtainDataFromApi(customizedWord, user);
 
-        String transcription = (String) additionalData.getOrDefault("transcription", "");
-        String example = (String) additionalData.getOrDefault("example", "");
-        String exampleTranslation = (String) additionalData.getOrDefault("exampleTranslation", "");*/
-
+        String translation = partialDataService.obtainTranslationFromApi(customizedWord);
         DictionaryElement dictionaryElement = comprehensiveDataService.obtainDataFromApi(customizedWord, user);
+        dictionaryElement.concatenateTranslations(translation);
 
         return dictionaryElement;
-    }
-
-    // TODO re-write this method
-    private String removeExtraSymbols(String stringToClean) {
-        return stringToClean.replace(";", ",");
     }
 
     private String customizeString(String wordToTranslate) {

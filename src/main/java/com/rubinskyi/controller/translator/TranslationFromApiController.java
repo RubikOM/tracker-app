@@ -22,12 +22,9 @@ public class TranslationFromApiController {
     @GetMapping("/fillPage/{wordInEnglish}")
     public DictionaryElement returnWordTranslationFromApi(@PathVariable String wordInEnglish, Principal principal) {
         DictionaryElement dictionaryElementFromApi = translationFromApiService.getDictionaryElementFromApi(wordInEnglish, principal);
-        // TODO spellchecker here : if word isn't correct guess what user wanted to add + Some normal way to show error
-        // TODO NPE protection here? Optional etc
-        if (dictionaryElementFromApi.getTranslation().isEmpty()) {
-            // TODO returning this looks very-very bad
+        // TODO spellchecker here : if word isn't correct guess what user wanted to add + Some normal way to show error (not one currently used)
+        if (dictionaryElementFromApi == null || dictionaryElementFromApi.getTranslation().isEmpty()) {
             return new DictionaryElement.Builder(wordInEnglish, "!!! We can't find this word in DB, please try something else").build();
-        }
-        else return dictionaryElementFromApi;
+        } else return dictionaryElementFromApi;
     }
 }

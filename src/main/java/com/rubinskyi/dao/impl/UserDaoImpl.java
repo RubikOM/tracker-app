@@ -27,13 +27,13 @@ public class UserDaoImpl implements UserDao {
         this.sessionFactory = sessionFactory;
     }
 
-    // TODO check if response is null and do something in this case
     @Override
     public User findByLogin(String login) {
         Query query = sessionFactory.getCurrentSession().createQuery(SELECT_USER_BY_LOGIN);
         query.setParameter("param", login);
         try {
-            return (User) query.uniqueResult();
+            Object result = query.uniqueResult();
+            return (User) result;
         } catch (HibernateException e) {
             LOGGER.error(login + "not uniq user in system");
             List<User> result = query.list();

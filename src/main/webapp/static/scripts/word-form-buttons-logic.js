@@ -1,4 +1,3 @@
-// TODO this methods are not named, rebuild this file
 $(document).ready(function () {
     $(".delete-word-button").click(function () {
         var deleteWord = $(this).attr("delete-dictionaryElement");

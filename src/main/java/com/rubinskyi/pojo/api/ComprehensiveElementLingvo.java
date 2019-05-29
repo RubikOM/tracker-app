@@ -9,7 +9,6 @@ import lombok.Setter;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @NoArgsConstructor @Getter @Setter
 public class ComprehensiveElementLingvo {
-    // TODO JSon Ignore
     private String dictionaryName;
     private String heading;
     private String transcription;

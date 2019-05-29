@@ -53,8 +53,11 @@ public class DictionaryElement {
     @JoinColumn(name = "USER_ID", nullable = false)
     private User author;
 
+    public void concatenateTranslations(String additionalTranslation) {
+        translation = translation.concat(additionalTranslation);
+    }
+
     public String getDictionaryElementAsString() {
-        // TODO estimate why autofill method enters this one. Jackson for some reason runs it by reflection?
         if (translation == null) return "";
         makeWordValidForFile();
 
