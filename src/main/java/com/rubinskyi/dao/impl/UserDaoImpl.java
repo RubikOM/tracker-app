@@ -32,7 +32,8 @@ public class UserDaoImpl implements UserDao {
         Query query = sessionFactory.getCurrentSession().createQuery(SELECT_USER_BY_LOGIN);
         query.setParameter("param", login);
         try {
-            return (User) query.uniqueResult();
+            Object result = query.uniqueResult();
+            return (User) result;
         } catch (HibernateException e) {
             LOGGER.error(login + "not uniq user in system");
             List<User> result = query.list();

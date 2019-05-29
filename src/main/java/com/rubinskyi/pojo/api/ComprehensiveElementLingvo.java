@@ -8,12 +8,10 @@ import lombok.Setter;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @NoArgsConstructor @Getter @Setter
-public class ComprehensiveElement {
+public class ComprehensiveElementLingvo {
     private String dictionaryName;
     private String heading;
-    private String complexHeading;
     private String transcription;
     private String translations;
     private String examples;
-    private String partOfSpeech;
 }

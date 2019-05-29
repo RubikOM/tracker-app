@@ -4,7 +4,7 @@ import java.security.Principal;
 
 import com.rubinskyi.entity.DictionaryElement;
 
-public interface FormFillingService {
+public interface TranslationFromApiService {
 
     DictionaryElement getDictionaryElementFromApi(String wordInEnglish, Principal principal);
 }

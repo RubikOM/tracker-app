@@ -12,35 +12,35 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rubinskyi.pojo.api.PartialElement;
+import com.rubinskyi.pojo.api.PartialElementLingvo;
 
 @Service
 @PropertySource("classpath:api.properties")
-public class PartialDataServiceLingvo implements  PartialDataService {
+public class PartialTranslationServiceLingvo implements PartialTranslationService {
     @Value("${partialDataCall}")
     private String API_CALL_TEMPLATE_PARTIAL;
-    private static final Logger LOGGER = LoggerFactory.getLogger(PartialDataServiceLingvo.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PartialTranslationServiceLingvo.class);
 
     public String obtainTranslationFromApi(String wordInEnglish) {
         RestTemplate restTemplate = new RestTemplate();
         String apiCall = String.format(API_CALL_TEMPLATE_PARTIAL, makeWordValidToUrl(wordInEnglish));
 
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(apiCall, String.class);
-        PartialElement partialElement = mapJsonToMinicard(responseEntity);
+        PartialElementLingvo partialElement = mapJsonToMinicard(responseEntity);
         return partialElement.getTranslation() == null ? "" : partialElement.getTranslation().getTranslations();
     }
 
-    private PartialElement mapJsonToMinicard(@NotNull ResponseEntity<String> responseEntity) {
-        PartialElement element;
+    private PartialElementLingvo mapJsonToMinicard(@NotNull ResponseEntity<String> responseEntity) {
+        PartialElementLingvo element;
         ObjectMapper mapper = new ObjectMapper();
 
         String jsonInput = responseEntity.getBody();
         try {
-            element = mapper.readValue(jsonInput, PartialElement.class);
+            element = mapper.readValue(jsonInput, PartialElementLingvo.class);
             return element;
         } catch (IOException e) {
             LOGGER.error(e.toString(), e);
-            return new PartialElement();
+            return new PartialElementLingvo();
         }
     }
 
