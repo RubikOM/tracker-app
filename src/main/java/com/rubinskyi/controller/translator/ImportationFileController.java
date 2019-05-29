@@ -17,14 +17,14 @@ import com.rubinskyi.service.DictionaryService;
 import com.rubinskyi.service.UserService;
 
 @Controller
-public class TextFileController {
+public class ImportationFileController {
     private static final String TODAY_FILE_NAME = LocalDate.now().toString() + ".txt";
     private static final String ALL_TIME_WORDS_FILE_NAME = "all your words.txt";
 
     private final DictionaryService dictionaryService;
     private final UserService userService;
 
-    public TextFileController(@Autowired DictionaryService dictionaryService, @Autowired UserService userService) {
+    public ImportationFileController(@Autowired DictionaryService dictionaryService, @Autowired UserService userService) {
         this.dictionaryService = dictionaryService;
         this.userService = userService;
     }

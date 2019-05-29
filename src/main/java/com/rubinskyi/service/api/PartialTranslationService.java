@@ -1,6 +1,6 @@
 package com.rubinskyi.service.api;
 
-public interface PartialDataService {
+public interface PartialTranslationService {
 
     // TODO extending here?????
     public String obtainTranslationFromApi(String wordInEnglish);

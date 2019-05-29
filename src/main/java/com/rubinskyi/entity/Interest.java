@@ -31,11 +31,17 @@ public class Interest {
     private Interest() {
     }
 
+    public Interest(User user, Dictionary dictionary, Integer priority) {
+        this.user = user;
+        this.dictionary = dictionary;
+        this.priority = priority;
+        this.id = new InterestId(user.getId(), dictionary.getId());
+    }
+
     public Interest(User user, Dictionary dictionary) {
         this.user = user;
         this.dictionary = dictionary;
         this.id = new InterestId(user.getId(), dictionary.getId());
-
     }
 
     @Override

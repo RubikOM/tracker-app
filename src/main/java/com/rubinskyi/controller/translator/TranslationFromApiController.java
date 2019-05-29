@@ -8,20 +8,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rubinskyi.entity.DictionaryElement;
-import com.rubinskyi.service.api.FormFillingService;
+import com.rubinskyi.service.api.TranslationFromApiService;
 
 @RestController
-public class FormFillingController {
-    private final FormFillingService formFillingService;
+public class TranslationFromApiController {
+    private final TranslationFromApiService translationFromApiService;
 
     @Autowired
-    public FormFillingController(FormFillingService formFillingService) {
-        this.formFillingService = formFillingService;
+    public TranslationFromApiController(TranslationFromApiService translationFromApiService) {
+        this.translationFromApiService = translationFromApiService;
     }
 
     @GetMapping("/fillPage/{wordInEnglish}")
     public DictionaryElement returnWordTranslationFromApi(@PathVariable String wordInEnglish, Principal principal) {
-        DictionaryElement dictionaryElementFromApi = formFillingService.getDictionaryElementFromApi(wordInEnglish, principal);
+        DictionaryElement dictionaryElementFromApi = translationFromApiService.getDictionaryElementFromApi(wordInEnglish, principal);
         // TODO spellchecker here : if word isn't correct guess what user wanted to add + Some normal way to show error
         // TODO NPE protection here? Optional etc
         if (dictionaryElementFromApi.getTranslation().isEmpty()) {

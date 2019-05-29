@@ -147,13 +147,12 @@ public class DictionaryElement {
         if (o == null || getClass() != o.getClass()) return false;
         DictionaryElement that = (DictionaryElement) o;
         return word.equals(that.word) &&
-                translation.equals(that.translation) &&
-                author.equals(that.author);
+                translation.equals(that.translation);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(word, translation, author);
+        return Objects.hash(word, translation);
     }
 
     @Override

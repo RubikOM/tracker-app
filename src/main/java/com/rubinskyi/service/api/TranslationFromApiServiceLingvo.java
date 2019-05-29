@@ -12,13 +12,13 @@ import com.rubinskyi.service.UserService;
 
 @Service
 @Transactional
-public class FormFillingServiceLingvo implements FormFillingService {
-    private final PartialDataServiceLingvo partialDataService;
-    private final ComprehensiveDataServiceLingvo comprehensiveDataService;
+public class TranslationFromApiServiceLingvo implements TranslationFromApiService {
+    private final PartialTranslationServiceLingvo partialDataService;
+    private final ComprehensiveTranslationServiceLingvo comprehensiveDataService;
     private final UserService userService;
 
-    public FormFillingServiceLingvo(@Autowired PartialDataServiceLingvo partialDataService,
-                                    ComprehensiveDataServiceLingvo comprehensiveDataService, UserService userService) {
+    public TranslationFromApiServiceLingvo(@Autowired PartialTranslationServiceLingvo partialDataService,
+                                           ComprehensiveTranslationServiceLingvo comprehensiveDataService, UserService userService) {
         this.partialDataService = partialDataService;
         this.comprehensiveDataService = comprehensiveDataService;
         this.userService = userService;

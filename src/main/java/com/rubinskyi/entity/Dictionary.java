@@ -32,6 +32,10 @@ public class Dictionary {
     public Dictionary() {
     }
 
+    public Dictionary(String name) {
+        this.name = name;
+    }
+
     public Long getId() {
         return id;
     }
