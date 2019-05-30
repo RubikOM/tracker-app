@@ -8,6 +8,7 @@ import com.rubinskyi.entity.DictionaryElement;
 @Component
 public class ComprehensiveElementMapper {
 
+    // TODO test for this class and refactor this if-s
     public DictionaryElement comprehensiveElementToDictionaryElement(ComprehensiveElementLingvo comprehensiveElementLingvo) {
         DictionaryElement dictionaryElement = new DictionaryElement();
         mapConcreteWord(comprehensiveElementLingvo, dictionaryElement);
