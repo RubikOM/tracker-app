@@ -24,7 +24,6 @@ public class TranslationFromApiServiceLingvo implements TranslationFromApiServic
         this.userService = userService;
     }
 
-    // TODO now we using only ComprehensiveService, use partial to concatenate in the response
     public DictionaryElement getDictionaryElementFromApi(String wordInEnglish, Principal principal) {
         String customizedWord = customizeString(wordInEnglish);
         User user = userService.findByLogin(principal.getName());

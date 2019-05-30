@@ -3,6 +3,7 @@ package com.rubinskyi.service.api;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.NotNull;
@@ -104,12 +105,12 @@ public class ComprehensiveTranslationServiceLingvo implements ComprehensiveTrans
 
         private int calculateValue(@NotNull ComprehensiveElementLingvo comprehensiveElement) {
             String dictionary = comprehensiveElement.getDictionaryName();
-            for (Interest interest : user.getInterests()) {
-                if (dictionary.contains(interest.getDictionary().getName())) {
-                    return interest.getPriority();
-                }
-            }
-            throw new RuntimeException("Can't compare dictionaries which are not in users interests!");
+            Optional<Interest> result = user.getInterests()
+                    .stream()
+                    .filter(interest -> dictionary.contains(interest.getDictionary().getName())).findAny();
+            if (result.isPresent()) {
+                return result.get().getPriority();
+            } else throw new RuntimeException("Can't compare dictionaries which are not in users interests!");
         }
     }
 }
