@@ -15,7 +15,7 @@ import com.rubinskyi.entity.User;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {SpringTestConfig.class, HibernateConfig.class})
-public class ComprehensiveDataServiceLingvoTest {
+public class ComprehensiveTranslationServiceLingvoTest {
 
     @Autowired
     private ComprehensiveTranslationService comprehensiveTranslationService;
