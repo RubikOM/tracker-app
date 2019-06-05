@@ -3,7 +3,6 @@ package com.rubinskyi.service.api;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.NotNull;
@@ -45,7 +44,7 @@ public class ComprehensiveTranslationServiceLingvo implements ComprehensiveTrans
         if (comprehensiveElements == null) return new DictionaryElement();
         List<ComprehensiveElementLingvo> comprehensiveElementsFiltered = comprehensiveElements.stream().
                 filter(comprehensiveElement -> isInterestedToUser(comprehensiveElement, user))
-                .sorted(new SortByDictionary(user))
+                .sorted(new SortByUserInterests(user))
                 .collect(Collectors.toList());
 
         return getResultAsDictionaryElement(comprehensiveElementsFiltered, user);
@@ -85,16 +84,15 @@ public class ComprehensiveTranslationServiceLingvo implements ComprehensiveTrans
         return false;
     }
 
-    // TODO this method throws to api just 1 word, need some normal logic here
     private String makeWordValidForApi(@NotNull String word) {
         String[] wordAsArray = word.split(" ");
         return wordAsArray.length > 0 ? wordAsArray[wordAsArray.length - 1] : word;
     }
 
-    class SortByDictionary implements Comparator<ComprehensiveElementLingvo> {
+    private static class SortByUserInterests implements Comparator<ComprehensiveElementLingvo> {
         private User user;
 
-        SortByDictionary(User user) {
+        private SortByUserInterests(User user) {
             this.user = user;
         }
 
@@ -105,12 +103,14 @@ public class ComprehensiveTranslationServiceLingvo implements ComprehensiveTrans
 
         private int calculateValue(@NotNull ComprehensiveElementLingvo comprehensiveElement) {
             String dictionary = comprehensiveElement.getDictionaryName();
-            Optional<Interest> result = user.getInterests()
+            Integer result = user.getInterests()
                     .stream()
-                    .filter(interest -> dictionary.contains(interest.getDictionary().getName())).findAny();
-            if (result.isPresent()) {
-                return result.get().getPriority();
-            } else throw new RuntimeException("Can't compare dictionaries which are not in users interests!");
+                    .filter(interest -> dictionary.contains(interest.getDictionary().getName()))
+                    .findAny()
+                    .map(Interest::getPriority)
+                    .orElseThrow(() -> new RuntimeException("Can't compare dictionaries which are not in users interests!"));
+
+            return result;
         }
     }
 }
