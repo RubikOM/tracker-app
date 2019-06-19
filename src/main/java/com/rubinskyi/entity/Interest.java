@@ -38,12 +38,6 @@ public class Interest {
         this.id = new InterestId(user.getId(), dictionary.getId());
     }
 
-    public Interest(User user, Dictionary dictionary) {
-        this.user = user;
-        this.dictionary = dictionary;
-        this.id = new InterestId(user.getId(), dictionary.getId());
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

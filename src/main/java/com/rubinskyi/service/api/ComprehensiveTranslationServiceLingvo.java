@@ -21,7 +21,8 @@ import com.rubinskyi.entity.DictionaryElement;
 import com.rubinskyi.entity.Interest;
 import com.rubinskyi.entity.User;
 import com.rubinskyi.pojo.api.ComprehensiveElementLingvo;
-import com.rubinskyi.pojo.api.ComprehensiveElementMapper;
+import com.rubinskyi.pojo.api.ComprehensiveElementMapperSimple;
+import com.rubinskyi.service.DictionaryElementConsolidatorService;
 
 @Service
 @PropertySource("classpath:api.properties")
@@ -30,27 +31,23 @@ public class ComprehensiveTranslationServiceLingvo implements ComprehensiveTrans
     @Value("${comprehensiveDataCall}")
     private String API_CALL_TEMPLATE_COMPREHENSIVE;
     private static final Logger LOGGER = LoggerFactory.getLogger(PartialTranslationServiceLingvo.class);
-    private final ComprehensiveElementMapper comprehensiveElementMapper;
+    private final ComprehensiveElementMapperSimple comprehensiveElementMapper;
+    private final DictionaryElementConsolidatorService dictionaryElementConsolidatorService;
 
     @Autowired
-    public ComprehensiveTranslationServiceLingvo(ComprehensiveElementMapper comprehensiveElementMapper) {
+    public ComprehensiveTranslationServiceLingvo(ComprehensiveElementMapperSimple comprehensiveElementMapper,
+                                                 DictionaryElementConsolidatorService dictionaryElementConsolidatorService) {
         this.comprehensiveElementMapper = comprehensiveElementMapper;
+        this.dictionaryElementConsolidatorService = dictionaryElementConsolidatorService;
     }
 
     public DictionaryElement obtainDataFromApi(String wordInEnglish, User user) {
         String apiCall = String.format(API_CALL_TEMPLATE_COMPREHENSIVE, makeWordValidForApi(wordInEnglish));
-
-        List<ComprehensiveElementLingvo> comprehensiveElements = mapJsonToTutorCards(apiCall);
-        if (comprehensiveElements == null) return new DictionaryElement();
-        List<ComprehensiveElementLingvo> comprehensiveElementsFiltered = comprehensiveElements.stream().
-                filter(comprehensiveElement -> isInterestedToUser(comprehensiveElement, user))
-                .sorted(new SortByUserInterests(user))
-                .collect(Collectors.toList());
-
-        return getResultAsDictionaryElement(comprehensiveElementsFiltered, user);
+        List<DictionaryElement> dictionaryElements = collectDictionaryElements(apiCall, user);
+        return dictionaryElementConsolidatorService.consolidateDictionaryElements(dictionaryElements);
     }
 
-    private List<ComprehensiveElementLingvo> mapJsonToTutorCards(@NotNull String apiCall) {
+    private List<DictionaryElement> collectDictionaryElements(@NotNull String apiCall, User user) {
         RestTemplate restTemplate = new RestTemplate();
         ObjectMapper mapper = new ObjectMapper();
         List<ComprehensiveElementLingvo> elements;
@@ -64,33 +61,36 @@ public class ComprehensiveTranslationServiceLingvo implements ComprehensiveTrans
             LOGGER.error(e.toString(), e);
             throw new RuntimeException(e);
         }
-        return elements;
+
+        return mapToDictionaryElementList(elements, user);
     }
 
-    private DictionaryElement getResultAsDictionaryElement(@NotNull List<ComprehensiveElementLingvo> wordCards, User author) {
-        DictionaryElement result = new DictionaryElement();
-        for (ComprehensiveElementLingvo comprehensiveElement : wordCards) {
-            result = comprehensiveElementMapper.comprehensiveElementToDictionaryElement(comprehensiveElement);
-            result.setAuthor(author);
-            if (result.getExample() != null && result.getTranscription() != null) return result;
-        }
-        return result;
+    private List<DictionaryElement> mapToDictionaryElementList(List<ComprehensiveElementLingvo> lingvoList, User user) {
+        return lingvoList.parallelStream()
+                .filter(a -> isInterestedToUser(a, user))
+                .sorted(new SortByUserInterests(user))
+                .map(comprehensiveElementMapper::comprehensiveElementToDictionaryElement)
+                .collect(Collectors.toList());
     }
 
+    // TODO this method should be replaced to some other class
+    // ".contains()" looks very ugly and unreadable, change Vocabulary names in DB, must be equals() here and split method, not inline
     private boolean isInterestedToUser(ComprehensiveElementLingvo comprehensiveElement, @NotNull User user) {
         for (Interest interest : user.getInterests()) {
             if (comprehensiveElement.getDictionaryName().contains(interest.getDictionary().getName())) return true;
+
         }
         return false;
     }
 
+    // TODO this looks bad af, need logic change here
     private String makeWordValidForApi(@NotNull String word) {
         String[] wordAsArray = word.split(" ");
         return wordAsArray.length > 0 ? wordAsArray[wordAsArray.length - 1] : word;
     }
 
-    private static class SortByUserInterests implements Comparator<ComprehensiveElementLingvo> {
-        private User user;
+    private static final class SortByUserInterests implements Comparator<ComprehensiveElementLingvo> {
+        private final User user;
 
         private SortByUserInterests(User user) {
             this.user = user;
