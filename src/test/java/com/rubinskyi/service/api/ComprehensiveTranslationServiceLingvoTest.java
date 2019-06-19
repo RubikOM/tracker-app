@@ -26,7 +26,7 @@ public class ComprehensiveTranslationServiceLingvoTest {
     public void obtainDataFromApi_shouldReturnCorrectResponse() {
         String wordToTranslate = "space";
 
-        DictionaryElement expectedResult = new DictionaryElement.Builder("space", "пространство")
+        DictionaryElement expectedResult = new DictionaryElement.Builder("space", "пространство; область")
                 .transcription("speɪs")
                 .example("airspace")
                 .exampleTranslation("воздушное пространство")

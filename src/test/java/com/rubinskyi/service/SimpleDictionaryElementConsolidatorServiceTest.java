@@ -1,6 +1,9 @@
-package com.rubinskyi.pojo.api;
+package com.rubinskyi.service;
 
 import static org.junit.Assert.assertEquals;
+
+import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,19 +17,21 @@ import com.rubinskyi.entity.DictionaryElement;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {SpringTestConfig.class, HibernateConfig.class})
-public class ComprehensiveElementMapperTest {
+public class SimpleDictionaryElementConsolidatorServiceTest {
 
     @Autowired
-    private ComprehensiveElementMapper comprehensiveElementMapper;
+    private DictionaryElementConsolidatorService dictionaryElementConsolidatorService;
 
+    // TODO more tests here
     @Test
-    public void comprehensiveElementToDictionaryElement_shouldReturnCorrectValue() {
-        ComprehensiveElementLingvo elementToMap = new ComprehensiveElementLingvo();
-        elementToMap.setDictionaryName("LingvoUniversal");
-        elementToMap.setHeading("space");
+    public void consolidateOneElementList_shouldReturnThisElement() {
+        DictionaryElement elementToMap = new DictionaryElement();
+        elementToMap.setWord("space");
         elementToMap.setTranscription("speɪs");
-        elementToMap.setTranslations("пространство");
-        elementToMap.setExamples("airspace; воздушное пространство");
+        elementToMap.setTranslation("пространство");
+        elementToMap.setExample("airspace");
+        elementToMap.setExampleTranslation("воздушное пространство");
+        List<DictionaryElement> oneWordList = Arrays.asList(elementToMap);
 
         DictionaryElement expectedResult = new DictionaryElement.Builder("space", "пространство")
                 .exampleTranslation("воздушное пространство")
@@ -34,7 +39,7 @@ public class ComprehensiveElementMapperTest {
                 .transcription("speɪs")
                 .build();
 
-        DictionaryElement actualResult = comprehensiveElementMapper.comprehensiveElementToDictionaryElement(elementToMap);
+        DictionaryElement actualResult = dictionaryElementConsolidatorService.consolidateDictionaryElements(oneWordList);
 
         assertEquals(expectedResult, actualResult);
     }

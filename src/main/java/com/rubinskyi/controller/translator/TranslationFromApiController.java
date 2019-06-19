@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rubinskyi.entity.DictionaryElement;
+import com.rubinskyi.pojo.dto.DictionaryElementDto;
 import com.rubinskyi.service.api.TranslationFromApiService;
 
 @RestController
@@ -20,11 +21,11 @@ public class TranslationFromApiController {
     }
 
     @GetMapping("/fillPage/{wordInEnglish}")
-    public DictionaryElement returnWordTranslationFromApi(@PathVariable String wordInEnglish, Principal principal) {
+    public DictionaryElementDto getDictionaryElementFromApi(@PathVariable String wordInEnglish, Principal principal) {
         DictionaryElement dictionaryElementFromApi = translationFromApiService.getDictionaryElementFromApi(wordInEnglish, principal);
 
         if (dictionaryElementFromApi == null || dictionaryElementFromApi.getTranslation().isEmpty()) {
-            return new DictionaryElement.Builder(wordInEnglish, "!!! We can't find this word in DB, please try something else").build();
-        } else return dictionaryElementFromApi;
+            return new DictionaryElementDto(wordInEnglish, "");
+        } else return new DictionaryElementDto(dictionaryElementFromApi);
     }
 }
