@@ -2,12 +2,15 @@ package com.rubinskyi.pojo.api;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @NoArgsConstructor @Getter @Setter
+@ToString @EqualsAndHashCode
 public class ComprehensiveElementLingvo {
     private String dictionaryName;
     private String heading;

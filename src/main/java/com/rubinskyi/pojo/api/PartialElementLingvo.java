@@ -3,19 +3,21 @@ package com.rubinskyi.pojo.api;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Getter @Setter @NoArgsConstructor
+@ToString @EqualsAndHashCode
 public class PartialElementLingvo {
     private Translation translation;
 
-    public Translation getTranslation() {
-        return translation;
-    }
-
-    public void setTranslation(Translation translation) {
-        this.translation = translation;
-    }
-
     @JsonIgnoreProperties(ignoreUnknown = true)
+    @Setter @NoArgsConstructor
+    @ToString @EqualsAndHashCode
     public class Translation {
         private String translations;
         private String dictionary;
@@ -28,14 +30,6 @@ public class PartialElementLingvo {
         @JsonProperty("lingvoDictionaryName")
         public String getDictionary() {
             return dictionary;
-        }
-
-        public void setTranslations(String Translation) {
-            this.translations = Translation;
-        }
-
-        public void setDictionary(String DictionaryName) {
-            this.dictionary = DictionaryName;
         }
     }
 }
