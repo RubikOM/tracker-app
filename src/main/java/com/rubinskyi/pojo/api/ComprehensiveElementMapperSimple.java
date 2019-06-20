@@ -1,6 +1,9 @@
 package com.rubinskyi.pojo.api;
 
-import org.jetbrains.annotations.NotNull;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
 import org.springframework.stereotype.Component;
 
 import com.rubinskyi.entity.DictionaryElement;
@@ -8,51 +11,40 @@ import com.rubinskyi.entity.DictionaryElement;
 @Component
 public class ComprehensiveElementMapperSimple implements ComprehensiveElementMapper {
 
-    // TODO rewrite this code
+    // TODO get optional in method here
     public DictionaryElement comprehensiveElementToDictionaryElement(ComprehensiveElementLingvo comprehensiveElementLingvo) {
-        DictionaryElement dictionaryElement = new DictionaryElement();
-        mapConcreteWord(comprehensiveElementLingvo, dictionaryElement);
-        mapExampleAndExampleTranslation(comprehensiveElementLingvo, dictionaryElement);
-        mapTranscription(comprehensiveElementLingvo, dictionaryElement);
-        mapTranslation(comprehensiveElementLingvo, dictionaryElement);
-        return dictionaryElement;
+        // TODO this has to be rewritten
+        if (comprehensiveElementLingvo == null) return new DictionaryElement();
+        Optional<ComprehensiveElementLingvo> elementLingvo = Optional.of(comprehensiveElementLingvo);
+
+        Optional<String> word = elementLingvo.map(ComprehensiveElementLingvo::getHeading);
+        Optional<String> translations = elementLingvo.map(ComprehensiveElementLingvo::getTranslations);
+        Optional<String> transcription = elementLingvo.map(ComprehensiveElementLingvo::getTranscription);
+        Optional<String> mixedExamples = elementLingvo.map(ComprehensiveElementLingvo::getExamples);
+        Map<String, String> examplesMap = getExampleAndExampleTranslation(mixedExamples);
+
+        DictionaryElement result = new DictionaryElement.Builder(word.orElse(""), translations.orElse(""))
+                .transcription(transcription.orElse(""))
+                .example(examplesMap.getOrDefault("example", ""))
+                .exampleTranslation(examplesMap.getOrDefault("example", ""))
+                .build();
+
+        return result;
     }
 
-    private void mapConcreteWord(@NotNull ComprehensiveElementLingvo comprehensiveElement,
-                                 @NotNull DictionaryElement result) {
-        if (!comprehensiveElement.getHeading().isEmpty()) {
-            result.setWord(comprehensiveElement.getHeading());
-        }
-    }
+    // TODO fix Optional<String> idea error
+    private Map<String, String> getExampleAndExampleTranslation(Optional<String> mixedExamples) {
+        Map<String, String> result = new HashMap<>();
+        if (!mixedExamples.isPresent()) return result;
+        String examplesString = mixedExamples.orElse("");
 
-    private void mapExampleAndExampleTranslation(@NotNull ComprehensiveElementLingvo comprehensiveElement,
-                                                 @NotNull DictionaryElement result) {
-        if (!comprehensiveElement.getExamples().isEmpty()) {
-            String examplesAsString = comprehensiveElement.getExamples();
-            String[] examples = examplesAsString.split("—|\\r?\\n");
-            if (examples.length >= 2) {
-                String example = examples[0].trim();
-                String exampleTranslation = examples[1].trim();
-
-                result.setExample(example);
-                result.setExampleTranslation(exampleTranslation);
+        if (!examplesString.isEmpty()) {
+            String[] examplesArray = examplesString.split("—|\\r?\\n");
+            if (examplesArray.length >= 2) {
+                result.put("example", examplesArray[0].trim());
+                result.put("exampleTranslation", examplesArray[1].trim());
             }
         }
-    }
-
-    private void mapTranscription(@NotNull ComprehensiveElementLingvo comprehensiveElement,
-                                  @NotNull DictionaryElement result) {
-        String transcription = comprehensiveElement.getTranscription();
-        if (!transcription.isEmpty()) {
-            result.setTranscription(transcription);
-        }
-    }
-
-    private void mapTranslation(@NotNull ComprehensiveElementLingvo comprehensiveElement,
-                                @NotNull DictionaryElement result) {
-        String translation = comprehensiveElement.getTranslations();
-        if (!translation.isEmpty()) {
-            result.setTranslation(translation);
-        }
+        return result;
     }
 }
