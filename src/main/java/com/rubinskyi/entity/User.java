@@ -12,18 +12,26 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 @Entity
 @Table(name = "USERS")
+@Getter @Setter @ToString
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Exclude
     private Long id;
 
     @Column(name = "name")
     private String login;
 
     @Column(name = "password")
+    @EqualsAndHashCode.Exclude
     private String password;
 
     @OneToMany(
@@ -42,38 +50,6 @@ public class User {
         this.password = password;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Set<Interest> getInterests() {
-        return interests;
-    }
-
-    public void setInterests(Set<Interest> interests) {
-        this.interests = interests;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -85,12 +61,5 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(login);
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "login='" + login + '\'' +
-                '}';
     }
 }
