@@ -27,7 +27,7 @@ public class ComprehensiveTranslationServiceLingvoTest {
         String wordToTranslate = "space";
 
         DictionaryElement expectedResult = new DictionaryElement.Builder("space",
-                "пространство, область, расстояние, интервал, промежуток, пропуск, пробел, располагать [размещать] с интервалами или вразрядку, оставлять пробел")
+                "пространство, область, расстояние, интервал")
                 .transcription("[speɪs]")
                 .example("airspace")
                 .exampleTranslation("воздушное пространство")

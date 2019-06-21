@@ -27,7 +27,6 @@ public class FileImportationController {
         this.userService = userService;
     }
 
-    // TODO tests for this class
     @GetMapping(value = "/getTxtFile", produces = "text/plain;charset=UTF-8")
     @ResponseBody
     public String getTodayTxtFile(HttpServletResponse response, Principal principal) {

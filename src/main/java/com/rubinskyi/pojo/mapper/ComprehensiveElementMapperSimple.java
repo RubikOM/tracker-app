@@ -12,9 +12,8 @@ import com.rubinskyi.pojo.apiEntity.ComprehensiveElementLingvo;
 @Component
 public class ComprehensiveElementMapperSimple implements ComprehensiveElementMapper {
 
-    // TODO get optional in method here
     public DictionaryElement comprehensiveElementToDictionaryElement(ComprehensiveElementLingvo comprehensiveElementLingvo) {
-        // TODO this has to be rewritten
+        // TODO in this place I can receive Optionals
         if (comprehensiveElementLingvo == null) return new DictionaryElement();
         Optional<ComprehensiveElementLingvo> elementLingvo = Optional.of(comprehensiveElementLingvo);
 
@@ -22,7 +21,7 @@ public class ComprehensiveElementMapperSimple implements ComprehensiveElementMap
         Optional<String> translations = elementLingvo.map(ComprehensiveElementLingvo::getTranslations);
         Optional<String> transcription = elementLingvo.map(ComprehensiveElementLingvo::getTranscription);
         Optional<String> mixedExamples = elementLingvo.map(ComprehensiveElementLingvo::getExamples);
-        Map<String, String> examplesMap = getExampleAndExampleTranslation(mixedExamples);
+        Map<String, String> examplesMap = getExampleAndExampleTranslation(mixedExamples.orElse(""));
 
         DictionaryElement result = new DictionaryElement.Builder(word.orElse(""), translations.orElse(""))
                 .transcription(transcription.orElse(""))
@@ -33,18 +32,14 @@ public class ComprehensiveElementMapperSimple implements ComprehensiveElementMap
         return result;
     }
 
-    // TODO fix Optional<String> idea error
-    private Map<String, String> getExampleAndExampleTranslation(Optional<String> mixedExamples) {
+    private Map<String, String> getExampleAndExampleTranslation(String mixedExamples) {
         Map<String, String> result = new HashMap<>();
-        if (!mixedExamples.isPresent()) return result;
-        String examplesString = mixedExamples.orElse("");
+        if (mixedExamples.isEmpty()) return result;
 
-        if (!examplesString.isEmpty()) {
-            String[] examplesArray = examplesString.split("—|\\r?\\n|\\/");
-            if (examplesArray.length >= 2) {
-                result.put("example", examplesArray[0].trim());
-                result.put("exampleTranslation", examplesArray[1].trim());
-            }
+        String[] examplesArray = mixedExamples.split("—|\\r?\\n|\\/");
+        if (examplesArray.length >= 2) {
+            result.put("example", examplesArray[0].trim());
+            result.put("exampleTranslation", examplesArray[1].trim());
         }
         return result;
     }

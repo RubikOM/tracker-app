@@ -22,7 +22,6 @@ public class SimpleDictionaryElementConsolidatorServiceTest {
     @Autowired
     private DictionaryElementConsolidatorService dictionaryElementConsolidatorService;
 
-    // TODO more tests here!!!!!!!!!
     @Test
     public void consolidateOneElementList_shouldReturnThisElement() {
         DictionaryElement elementToMap = new DictionaryElement();
@@ -36,6 +35,36 @@ public class SimpleDictionaryElementConsolidatorServiceTest {
         DictionaryElement expectedResult = new DictionaryElement.Builder("space", "пространство")
                 .exampleTranslation("воздушное пространство")
                 .example("airspace")
+                .transcription("[speɪs]")
+                .build();
+
+        DictionaryElement actualResult = dictionaryElementConsolidatorService.consolidateDictionaryElements(oneWordList);
+
+        assertEquals(expectedResult, actualResult);
+    }
+
+    @Test
+    public void consolidateList_shouldReturnCorrectResponse() {
+        DictionaryElement elementToMap1 = new DictionaryElement.Builder("space", "пространство; область").build();
+        DictionaryElement elementToMap2 = new DictionaryElement.Builder("space", "расстояние; интервал; промежуток; пропуск; пробел").build();
+        DictionaryElement elementToMap3 = new DictionaryElement.Builder("space", "располагать [размещать] с интервалами или вразрядку; оставлять пробел").build();
+        DictionaryElement elementToMap4 = new DictionaryElement.Builder("space", "пауза").build();
+        DictionaryElement elementToMap5 = new DictionaryElement.Builder("space", "расстояние").transcription("speɪs").build();
+        DictionaryElement elementToMap6 = new DictionaryElement.Builder("space", "протяжённость").transcription("speɪs")
+                .example("for the space of two kilometers").exampleTranslation("на расстоянии двух километров").build();
+        DictionaryElement elementToMap7 = new DictionaryElement.Builder("space", "интервал времени; промежуток")
+                .transcription("speɪs").example("in the space of a fortnight").exampleTranslation("срок; фиксированный промежуток времени").build();
+        DictionaryElement elementToMap8 = new DictionaryElement.Builder("space", "срок; фиксированный промежуток времени")
+                .transcription("speɪs").example("This problem should be solved within a short space of time.").exampleTranslation("Данную проблему необходимо разрешить за короткий срок.").build();
+
+        List<DictionaryElement> oneWordList = Arrays.asList(elementToMap1, elementToMap2, elementToMap3, elementToMap4,
+                elementToMap5, elementToMap6, elementToMap7, elementToMap8);
+
+        // TODO for some reason there is to much responses
+        DictionaryElement expectedResult = new DictionaryElement.Builder("space",
+                "пространство, область, расстояние, интервал")
+                .exampleTranslation("на расстоянии двух километров")
+                .example("for the space of two kilometers")
                 .transcription("[speɪs]")
                 .build();
 

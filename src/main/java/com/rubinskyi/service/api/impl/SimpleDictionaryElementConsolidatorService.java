@@ -16,7 +16,7 @@ public class SimpleDictionaryElementConsolidatorService implements DictionaryEle
     private static final String TRANSLATIONS_DELIMITER = ";";
     private static final String DEFAULT_VALUE = "";
     // TODO take it from Properties file
-    private static final int TRANSLATIONS_AMOUNT = 3;
+    private static final int TRANSLATIONS_AMOUNT = 4;
     private static final int EXAMPLES_AMOUNT = 1;
 
     @Override
@@ -30,7 +30,6 @@ public class SimpleDictionaryElementConsolidatorService implements DictionaryEle
         List<String> translations = filterAndCollectToList(dictionaryElementList.stream().map(DictionaryElement::getTranslation));
         LinkedHashSet<String> translationsUnique = new LinkedHashSet<>();
         for (String translation : translations) {
-//            String delimitedTranslation = translation.concat(", ");
             String[] splitTranslations = translation.split(TRANSLATIONS_DELIMITER);
             Collections.addAll(translationsUnique, splitTranslations);
         }
@@ -38,7 +37,8 @@ public class SimpleDictionaryElementConsolidatorService implements DictionaryEle
         // TODO checks here and splittings
         String consolidatedExample = examples.stream().limit(EXAMPLES_AMOUNT).collect(Collectors.joining());
         String consolidatedExampleTranslation = exampleTranslations.stream().limit(EXAMPLES_AMOUNT).collect(Collectors.joining());
-        String consolidatedTranslation = translations.stream().limit(TRANSLATIONS_AMOUNT).collect(Collectors.joining(", "));
+        String consolidatedTranslation = translationsUnique.stream().limit(TRANSLATIONS_AMOUNT)
+                .collect(Collectors.joining(", ")).replaceAll(" +", " ");
         // TODO some check here
         String consolidatedTranslationStyled = consolidatedTranslation.replace(";", ",");
 
