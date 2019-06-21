@@ -25,19 +25,19 @@ import lombok.ToString;
 @Entity
 @Table(name = "DICTIONARY_ELEMENTS")
 @Getter @Setter
-@ToString @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString @EqualsAndHashCode
 @NoArgsConstructor
 public class DictionaryElement {
     // TODO move validation to validator
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Exclude
     private Long id;
 
     @Column(name = "word_in_english")
     @NotBlank(message = "Word {shouldNotBeEmpty}")
     @Size(max = 40, message = "Word {size.mustBeLess}")
     @Pattern(regexp = "^[A-Za-z ,']*$", message = "{shouldBeEnglish}")
-    @EqualsAndHashCode.Include
     private String word;
 
     @Column(name = "transcription")
@@ -47,7 +47,6 @@ public class DictionaryElement {
     @Column(name = "translation")
     @Size(max = 100, message = "Translation {size.mustBeLess}")
     @NotBlank(message = "Translation {shouldNotBeEmpty}")
-    @EqualsAndHashCode.Include
     private String translation;
 
     @Column(name = "example")
@@ -59,10 +58,12 @@ public class DictionaryElement {
     private String exampleTranslation;
 
     @Column(name = "creation_date")
+    @EqualsAndHashCode.Exclude
     private LocalDate creationDate;
 
     @ManyToOne
     @JoinColumn(name = "USER_ID", nullable = false)
+    @EqualsAndHashCode.Exclude
     private User author;
 
     public void concatenateTranslations(String additionalTranslation) {

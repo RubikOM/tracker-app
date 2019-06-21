@@ -1,4 +1,4 @@
-package com.rubinskyi.pojo.api;
+package com.rubinskyi.pojo.apiEntity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

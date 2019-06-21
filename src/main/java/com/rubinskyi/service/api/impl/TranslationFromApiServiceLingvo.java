@@ -1,4 +1,4 @@
-package com.rubinskyi.service.api;
+package com.rubinskyi.service.api.impl;
 
 import java.security.Principal;
 
@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.rubinskyi.entity.DictionaryElement;
 import com.rubinskyi.entity.User;
 import com.rubinskyi.service.UserService;
+import com.rubinskyi.service.api.TranslationFromApiService;
 
 @Service
 @Transactional

@@ -1,4 +1,4 @@
-package com.rubinskyi.pojo.api;
+package com.rubinskyi.pojo.apiEntity;
 
 import static org.junit.Assert.*;
 
@@ -11,6 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.rubinskyi.config.HibernateConfig;
 import com.rubinskyi.config.SpringTestConfig;
 import com.rubinskyi.entity.DictionaryElement;
+import com.rubinskyi.pojo.mapper.ComprehensiveElementMapper;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {SpringTestConfig.class, HibernateConfig.class})

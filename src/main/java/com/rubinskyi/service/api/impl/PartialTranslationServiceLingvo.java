@@ -1,4 +1,4 @@
-package com.rubinskyi.service.api;
+package com.rubinskyi.service.api.impl;
 
 import java.io.IOException;
 
@@ -12,7 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rubinskyi.pojo.api.PartialElementLingvo;
+import com.rubinskyi.pojo.apiEntity.PartialElementLingvo;
+import com.rubinskyi.service.api.PartialTranslationService;
 
 @Service
 @PropertySource("classpath:api.properties")

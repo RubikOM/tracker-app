@@ -1,4 +1,4 @@
-package com.rubinskyi.pojo.api;
+package com.rubinskyi.pojo.mapper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 import com.rubinskyi.entity.DictionaryElement;
+import com.rubinskyi.pojo.apiEntity.ComprehensiveElementLingvo;
 
 @Component
 public class ComprehensiveElementMapperSimple implements ComprehensiveElementMapper {
@@ -26,7 +27,7 @@ public class ComprehensiveElementMapperSimple implements ComprehensiveElementMap
         DictionaryElement result = new DictionaryElement.Builder(word.orElse(""), translations.orElse(""))
                 .transcription(transcription.orElse(""))
                 .example(examplesMap.getOrDefault("example", ""))
-                .exampleTranslation(examplesMap.getOrDefault("example", ""))
+                .exampleTranslation(examplesMap.getOrDefault("exampleTranslation", ""))
                 .build();
 
         return result;
@@ -39,7 +40,7 @@ public class ComprehensiveElementMapperSimple implements ComprehensiveElementMap
         String examplesString = mixedExamples.orElse("");
 
         if (!examplesString.isEmpty()) {
-            String[] examplesArray = examplesString.split("—|\\r?\\n");
+            String[] examplesArray = examplesString.split("—|\\r?\\n|\\/");
             if (examplesArray.length >= 2) {
                 result.put("example", examplesArray[0].trim());
                 result.put("exampleTranslation", examplesArray[1].trim());

@@ -1,4 +1,4 @@
-package com.rubinskyi.service;
+package com.rubinskyi.service.api;
 
 import static org.junit.Assert.assertEquals;
 
@@ -22,7 +22,7 @@ public class SimpleDictionaryElementConsolidatorServiceTest {
     @Autowired
     private DictionaryElementConsolidatorService dictionaryElementConsolidatorService;
 
-    // TODO more tests here
+    // TODO more tests here!!!!!!!!!
     @Test
     public void consolidateOneElementList_shouldReturnThisElement() {
         DictionaryElement elementToMap = new DictionaryElement();
@@ -36,7 +36,7 @@ public class SimpleDictionaryElementConsolidatorServiceTest {
         DictionaryElement expectedResult = new DictionaryElement.Builder("space", "пространство")
                 .exampleTranslation("воздушное пространство")
                 .example("airspace")
-                .transcription("speɪs")
+                .transcription("[speɪs]")
                 .build();
 
         DictionaryElement actualResult = dictionaryElementConsolidatorService.consolidateDictionaryElements(oneWordList);

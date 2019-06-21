@@ -1,4 +1,4 @@
-package com.rubinskyi.service.api;
+package com.rubinskyi.service.api.impl;
 
 import java.io.IOException;
 import java.util.Comparator;
@@ -20,9 +20,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rubinskyi.entity.DictionaryElement;
 import com.rubinskyi.entity.Interest;
 import com.rubinskyi.entity.User;
-import com.rubinskyi.pojo.api.ComprehensiveElementLingvo;
-import com.rubinskyi.pojo.api.ComprehensiveElementMapperSimple;
-import com.rubinskyi.service.DictionaryElementConsolidatorService;
+import com.rubinskyi.pojo.apiEntity.ComprehensiveElementLingvo;
+import com.rubinskyi.pojo.mapper.ComprehensiveElementMapperSimple;
+import com.rubinskyi.service.api.ComprehensiveTranslationService;
+import com.rubinskyi.service.api.DictionaryElementConsolidatorService;
 
 @Service
 @PropertySource("classpath:api.properties")

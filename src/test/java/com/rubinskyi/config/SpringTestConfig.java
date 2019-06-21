@@ -12,7 +12,7 @@ import com.rubinskyi.entity.Interest;
 import com.rubinskyi.entity.User;
 
 @Configuration
-@ComponentScan(basePackages = {"com.rubinskyi.service, com.rubinskyi.pojo.api, com.rubinskyi.dao"})
+@ComponentScan(basePackages = {"com.rubinskyi.service, com.rubinskyi.pojo, com.rubinskyi.dao"})
 public class SpringTestConfig {
     @Bean("userForTest")
     public User getTestUser() {
