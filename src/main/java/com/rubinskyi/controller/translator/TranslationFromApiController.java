@@ -24,8 +24,9 @@ public class TranslationFromApiController {
     public DictionaryElementDto getDictionaryElementFromApi(@PathVariable String wordInEnglish, Principal principal) {
         DictionaryElement dictionaryElementFromApi = translationFromApiService.getDictionaryElementFromApi(wordInEnglish, principal);
 
-        if (dictionaryElementFromApi == null || dictionaryElementFromApi.getTranslation().isEmpty()) {
-            return new DictionaryElementDto(wordInEnglish, "");
+        if (dictionaryElementFromApi.getTranslation().isEmpty()) {
+            // TODO this message from props
+            return new DictionaryElementDto(wordInEnglish, "Sorry, we didn't find anything, check your spelling");
         } else return new DictionaryElementDto(dictionaryElementFromApi);
     }
 }

@@ -9,7 +9,7 @@ public class DictionaryElementTest {
     public void getDictionaryElementAsString() {
         DictionaryElement dictionaryElement = new DictionaryElement.Builder("word", "перевод").build();
 
-        Assert.assertEquals("word;перевод;\n", dictionaryElement.getDictionaryElementAsString());
+        Assert.assertEquals("word;перевод;\n", dictionaryElement.importer().getDictionaryElementAsString());
     }
 
     @Test
@@ -17,7 +17,7 @@ public class DictionaryElementTest {
         DictionaryElement dictionaryElement = new DictionaryElement.Builder("word", "перевод")
                 .transcription("[wɜrd]").build();
 
-        Assert.assertEquals("word;[wɜrd];перевод;\n", dictionaryElement.getDictionaryElementAsString());
+        Assert.assertEquals("word;[wɜrd];перевод;\n", dictionaryElement.importer().getDictionaryElementAsString());
     }
 
     @Test
@@ -26,7 +26,7 @@ public class DictionaryElementTest {
                 .transcription("[wɜrd]").example("word word word").exampleTranslation("перевод перевод перевод").build();
 
         Assert.assertEquals("word;[wɜrd];перевод;word word word;перевод перевод перевод;\n",
-                dictionaryElement.getDictionaryElementAsString());
+                dictionaryElement.importer().getDictionaryElementAsString());
     }
 
     @Test
@@ -35,7 +35,7 @@ public class DictionaryElementTest {
                 .transcription("[wɜrd]").exampleTranslation("перевод перевод перевод").build();
 
         Assert.assertEquals("word;[wɜrd];перевод; ;перевод перевод перевод;\n",
-                dictionaryElement.getDictionaryElementAsString());
+                dictionaryElement.importer().getDictionaryElementAsString());
     }
 
     @Test
@@ -44,7 +44,7 @@ public class DictionaryElementTest {
                 .transcription("[wɜrd]").example("word word word").build();
 
         Assert.assertEquals("word;[wɜrd];перевод;word word word; ;\n",
-                dictionaryElement.getDictionaryElementAsString());
+                dictionaryElement.importer().getDictionaryElementAsString());
     }
 
 }

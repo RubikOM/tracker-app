@@ -66,31 +66,6 @@ public class DictionaryElement {
     @EqualsAndHashCode.Exclude
     private User author;
 
-    public void concatenateTranslations(String additionalTranslation) {
-        translation = translation.concat(additionalTranslation);
-    }
-
-    // TODO rewrite this methods later
-    public String getDictionaryElementAsString() {
-        if (translation == null) return "";
-        makeWordValidForFile();
-
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(word).append(";").append(transcription.equals("") ? "" : transcription + ";")
-                .append(translation).append(";").append(example.equals("") ? "" : example + ";")
-                .append(exampleTranslation.equals("") ? "" : exampleTranslation + ";").append("\n");
-        return stringBuilder.toString();
-    }
-
-    private void makeWordValidForFile() {
-        if (!example.equals("") && exampleTranslation.equals("")) {
-            exampleTranslation = " ";
-        }
-        if (!exampleTranslation.equals("") && example.equals("")) {
-            example = " ";
-        }
-    }
-
     // Builder is not necessary here, but I want it to be here c:
     public static class Builder {
         private final String word;
@@ -138,5 +113,31 @@ public class DictionaryElement {
         example = builder.example;
         exampleTranslation = builder.exampleTranslation;
         author = builder.author;
+    }
+
+    public Importer importer() {
+        return new Importer();
+    }
+
+    public class Importer {
+        public String getDictionaryElementAsString() {
+            if (translation == null) return "";
+            makeWordValidForFile();
+
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(word).append(";").append(transcription.equals("") ? "" : transcription + ";")
+                    .append(translation).append(";").append(example.equals("") ? "" : example + ";")
+                    .append(exampleTranslation.equals("") ? "" : exampleTranslation + ";").append("\n");
+            return stringBuilder.toString();
+        }
+
+        private void makeWordValidForFile() {
+            if (!example.equals("") && exampleTranslation.equals("")) {
+                exampleTranslation = " ";
+            }
+            if (!exampleTranslation.equals("") && example.equals("")) {
+                example = " ";
+            }
+        }
     }
 }

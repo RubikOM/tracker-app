@@ -37,4 +37,17 @@ public class ComprehensiveTranslationServiceLingvoTest {
 
         assertEquals(expectedResult, actualResult);
     }
+
+    @Test
+    public void obtainDataFromApi_shouldReturnEmptyResponse() {
+        String wordToTranslate = "abcad";
+
+        DictionaryElement expectedResult = new DictionaryElement.Builder("abcad",
+                "")
+                .build();
+
+        DictionaryElement actualResult = comprehensiveTranslationService.obtainDataFromApi(wordToTranslate, userForTest);
+
+        assertEquals(expectedResult, actualResult);
+    }
 }

@@ -31,7 +31,7 @@ public class TranslationFromApiServiceLingvo implements TranslationFromApiServic
 
         String translation = partialDataService.obtainTranslationFromApi(customizedWord);
         DictionaryElement dictionaryElement = comprehensiveDataService.obtainDataFromApi(customizedWord, user);
-        dictionaryElement.concatenateTranslations(translation);
+        dictionaryElement.setTranslation(dictionaryElement.getTranslation().concat(translation));
 
         return dictionaryElement;
     }

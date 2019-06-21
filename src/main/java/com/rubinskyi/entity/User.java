@@ -12,26 +12,22 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 @Entity
 @Table(name = "USERS")
-@Getter @Setter @ToString
+@Getter @Setter
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EqualsAndHashCode.Exclude
     private Long id;
 
     @Column(name = "name")
     private String login;
 
     @Column(name = "password")
-    @EqualsAndHashCode.Exclude
     private String password;
 
     @OneToMany(
@@ -61,5 +57,14 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(login);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }

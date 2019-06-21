@@ -12,20 +12,25 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "INTERESTS")
 @Getter @Setter
 @NoArgsConstructor
 @EqualsAndHashCode
+@ToString
 public class Interest {
 
     @EmbeddedId
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private InterestId id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("userId")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)

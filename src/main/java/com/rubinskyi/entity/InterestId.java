@@ -16,7 +16,7 @@ import lombok.ToString;
 @Embeddable
 @Getter @Setter
 @ToString @EqualsAndHashCode
-public class InterestId implements Serializable {
+class InterestId implements Serializable {
 
     @Column(name = "user_id")
     private Long userId;
@@ -27,7 +27,7 @@ public class InterestId implements Serializable {
     private InterestId() {
     }
 
-    public InterestId(Long userId, Long dictionaryId) {
+    InterestId(Long userId, Long dictionaryId) {
         this.userId = userId;
         this.dictionaryId = dictionaryId;
     }

@@ -1,6 +1,7 @@
 package com.rubinskyi.service.api.impl;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,6 +46,9 @@ public class ComprehensiveTranslationServiceLingvo implements ComprehensiveTrans
     public DictionaryElement obtainDataFromApi(String wordInEnglish, User user) {
         String apiCall = String.format(API_CALL_TEMPLATE_COMPREHENSIVE, makeWordValidForApi(wordInEnglish));
         List<DictionaryElement> dictionaryElements = collectDictionaryElements(apiCall, user);
+        if (dictionaryElements.isEmpty()){
+            return new DictionaryElement.Builder(wordInEnglish, "").build();
+        }
         return dictionaryElementConsolidatorService.consolidateDictionaryElements(dictionaryElements);
     }
 
@@ -56,6 +60,7 @@ public class ComprehensiveTranslationServiceLingvo implements ComprehensiveTrans
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(apiCall, String.class);
         String jsonInput = responseEntity.getBody();
         try {
+            if (responseEntity.getBody().equals("null")) return new ArrayList<>();
             elements = mapper.readValue(jsonInput, new TypeReference<List<ComprehensiveElementLingvo>>() {
             });
         } catch (IOException e) {

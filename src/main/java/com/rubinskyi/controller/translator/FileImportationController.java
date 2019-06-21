@@ -17,24 +17,24 @@ import com.rubinskyi.service.DictionaryService;
 import com.rubinskyi.service.UserService;
 
 @Controller
-public class ImportationFileController {
-    private static final String TODAY_FILE_NAME = LocalDate.now().toString() + ".txt";
-    private static final String ALL_TIME_WORDS_FILE_NAME = "all your words.txt";
+public class FileImportationController {
 
     private final DictionaryService dictionaryService;
     private final UserService userService;
 
-    public ImportationFileController(@Autowired DictionaryService dictionaryService, @Autowired UserService userService) {
+    public FileImportationController(@Autowired DictionaryService dictionaryService, @Autowired UserService userService) {
         this.dictionaryService = dictionaryService;
         this.userService = userService;
     }
 
+    // TODO tests for this class
     @GetMapping(value = "/getTxtFile", produces = "text/plain;charset=UTF-8")
     @ResponseBody
     public String getTodayTxtFile(HttpServletResponse response, Principal principal) {
         User authenticatedUser = userService.findByLogin(principal.getName());
+        String fileName = authenticatedUser.getLogin() + LocalDate.now().toString() + ".txt";
 
-        response.setHeader("Content-Disposition", "attachment; filename=" + TODAY_FILE_NAME);
+        response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
         List<DictionaryElement> dictionaryElements = dictionaryService.getTodaysDictionaryElements(authenticatedUser);
 
         return makeSingleStringWithFiles(dictionaryElements);
@@ -44,16 +44,18 @@ public class ImportationFileController {
     @ResponseBody
     public String getAllTimeTxtFile(HttpServletResponse response, Principal principal) {
         User authenticatedUser = userService.findByLogin(principal.getName());
+        String fileName = authenticatedUser.getLogin() + "'s all words.txt";
 
-        response.setHeader("Content-Disposition", "attachment; filename=" + ALL_TIME_WORDS_FILE_NAME);
+        response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
         List<DictionaryElement> allTimeDictionaryElements = dictionaryService.getAllDictionaryElements(authenticatedUser);
 
         return makeSingleStringWithFiles(allTimeDictionaryElements);
     }
 
+    // TODO check later if /n is needed and rename method
     private String makeSingleStringWithFiles(List<DictionaryElement> dictionaryElements) {
         StringBuilder content = new StringBuilder();
-        dictionaryElements.forEach(dictionaryElement -> content.append(dictionaryElement.getDictionaryElementAsString()));
+        dictionaryElements.forEach(dictionaryElement -> content.append(dictionaryElement.importer().getDictionaryElementAsString()).append("/n"));
 
         return content.toString();
     }

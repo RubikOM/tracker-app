@@ -16,8 +16,7 @@ import com.rubinskyi.pojo.mapper.ComprehensiveElementMapper;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {SpringTestConfig.class, HibernateConfig.class})
 public class ComprehensiveElementMapperSimpleTest {
-
-    // TODO test for empty and null Comprehensive elements
+    
     @Autowired
     private ComprehensiveElementMapper comprehensiveElementMapper;
 

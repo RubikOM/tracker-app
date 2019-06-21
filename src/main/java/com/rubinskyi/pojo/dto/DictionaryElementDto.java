@@ -2,6 +2,9 @@ package com.rubinskyi.pojo.dto;
 
 import com.rubinskyi.entity.DictionaryElement;
 
+import lombok.Getter;
+
+@Getter
 public class DictionaryElementDto {
 
     private final String word;
@@ -27,29 +30,5 @@ public class DictionaryElementDto {
         this.example = "";
         this.exampleTranslation = "";
         this.errorMessage = errorMessage;
-    }
-
-    public String getWord() {
-        return word;
-    }
-
-    public String getTranscription() {
-        return transcription;
-    }
-
-    public String getTranslation() {
-        return translation;
-    }
-
-    public String getExample() {
-        return example;
-    }
-
-    public String getExampleTranslation() {
-        return exampleTranslation;
-    }
-
-    public String getErrorMessage() {
-        return errorMessage;
     }
 }
