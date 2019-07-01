@@ -10,8 +10,6 @@ import com.rubinskyi.entity.User;
 
 @Service
 public class FileImportationServiceImpl implements FileImportationService {
-    // TODO tests for this class
-
     private final DictionaryService dictionaryService;
 
     @Autowired
@@ -35,8 +33,7 @@ public class FileImportationServiceImpl implements FileImportationService {
         StringBuilder content = new StringBuilder();
         dictionaryElements.forEach(dictionaryElement -> content.append(dictionaryElement
                 .importer()
-                .getDictionaryElementAsString())
-                .append("/n"));
+                .getDictionaryElementAsString()));
 
         return content.toString();
     }
