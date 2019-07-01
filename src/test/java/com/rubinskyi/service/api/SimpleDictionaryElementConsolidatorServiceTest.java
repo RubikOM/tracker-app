@@ -60,7 +60,6 @@ public class SimpleDictionaryElementConsolidatorServiceTest {
         List<DictionaryElement> oneWordList = Arrays.asList(elementToMap1, elementToMap2, elementToMap3, elementToMap4,
                 elementToMap5, elementToMap6, elementToMap7, elementToMap8);
 
-        // TODO for some reason there is to much responses
         DictionaryElement expectedResult = new DictionaryElement.Builder("space",
                 "пространство, область, расстояние, интервал")
                 .exampleTranslation("на расстоянии двух километров")
