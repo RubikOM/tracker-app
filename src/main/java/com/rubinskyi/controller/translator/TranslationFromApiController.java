@@ -29,7 +29,7 @@ public class TranslationFromApiController {
     public DictionaryElementDto getDictionaryElementFromApi(@PathVariable String wordInEnglish, Principal principal) {
         DictionaryElement dictionaryElementFromApi = translationFromApiService.getDictionaryElementFromApi(wordInEnglish, principal);
 
-        if (dictionaryElementFromApi.getTranslation().isEmpty()) {
+        if (dictionaryElementFromApi.getTranslation() == null || dictionaryElementFromApi.getTranslation().isEmpty()) {
             return new DictionaryElementDto(wordInEnglish, noResultFoundMessage);
         } else return new DictionaryElementDto(dictionaryElementFromApi);
     }

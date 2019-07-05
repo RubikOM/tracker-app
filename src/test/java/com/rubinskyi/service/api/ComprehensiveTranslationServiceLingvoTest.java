@@ -42,9 +42,8 @@ public class ComprehensiveTranslationServiceLingvoTest {
     public void obtainDataFromApi_shouldReturnEmptyResponse() {
         String wordToTranslate = "abcad";
 
-        DictionaryElement expectedResult = new DictionaryElement.Builder("abcad",
-                "")
-                .build();
+        DictionaryElement expectedResult = new DictionaryElement();
+        expectedResult.setWord(wordToTranslate);
 
         DictionaryElement actualResult = comprehensiveTranslationService.obtainDataFromApi(wordToTranslate, userForTest);
 

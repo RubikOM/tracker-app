@@ -60,6 +60,7 @@ public class DictionaryController {
         return Pages.EDIT_WORD_PAGE.getPage();
     }
 
+    // TODO move to validator?
     @PostMapping("/createWord")
     public String createDictionaryElement(@Valid DictionaryElement dictionaryElement, BindingResult bindingResult,
                                           Model model, Principal principal) {

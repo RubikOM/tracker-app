@@ -6,25 +6,33 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import com.rubinskyi.entity.DictionaryElement;
 import com.rubinskyi.service.api.DictionaryElementConsolidatorService;
 
 @Service
+@PropertySource("classpath:consolidation.properties")
 public class SimpleDictionaryElementConsolidatorService implements DictionaryElementConsolidatorService {
-    private static final String TRANSLATIONS_DELIMITER = ";";
-    private static final String DEFAULT_VALUE = "";
-    // TODO take it from Properties file
-    private static final int TRANSLATIONS_AMOUNT = 4;
-    private static final int EXAMPLES_AMOUNT = 1;
+    @Value("${delimiter}")
+    private String TRANSLATIONS_DELIMITER;
+    @Value("${defaultTranscription}")
+    private String defaultTranscription;
+    @Value("${totalTranslations}")
+    private int TRANSLATIONS_AMOUNT;
+    @Value("${totalExamples}")
+    private int EXAMPLES_AMOUNT;
 
     @Override
     public DictionaryElement consolidateDictionaryElements(List<DictionaryElement> dictionaryElementList) {
         // TODO here checks if List is empty
 
-        String word = dictionaryElementList.stream().map(DictionaryElement::getWord).filter(s -> !s.isEmpty()).findAny().orElse(DEFAULT_VALUE);
-        String transcription = dictionaryElementList.stream().map(DictionaryElement::getTranscription).filter(s -> !s.isEmpty()).findAny().orElse(DEFAULT_VALUE);
+        String word = dictionaryElementList.stream().map(DictionaryElement::getWord).filter(s -> !s.isEmpty()).findAny()
+                .orElseThrow(() -> new IllegalStateException("Response should contain word"));
+        String transcription = dictionaryElementList.stream().map(DictionaryElement::getTranscription).filter(s -> !s.isEmpty()).findAny()
+                .orElse(defaultTranscription);
         List<String> examples = filterAndCollectToList(dictionaryElementList.stream().map(DictionaryElement::getExample));
         List<String> exampleTranslations = filterAndCollectToList(dictionaryElementList.stream().map(DictionaryElement::getExampleTranslation));
         List<String> translations = filterAndCollectToList(dictionaryElementList.stream().map(DictionaryElement::getTranslation));

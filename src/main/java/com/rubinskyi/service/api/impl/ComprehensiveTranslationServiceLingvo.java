@@ -46,8 +46,10 @@ public class ComprehensiveTranslationServiceLingvo implements ComprehensiveTrans
     public DictionaryElement obtainDataFromApi(String wordInEnglish, User user) {
         String apiCall = String.format(API_CALL_TEMPLATE_COMPREHENSIVE, makeWordValidForApi(wordInEnglish));
         List<DictionaryElement> dictionaryElements = collectDictionaryElements(apiCall, user);
-        if (dictionaryElements.isEmpty()){
-            return new DictionaryElement.Builder(wordInEnglish, "").build();
+        if (dictionaryElements.isEmpty()) {
+            DictionaryElement emptyResponse = new DictionaryElement();
+            emptyResponse.setWord(wordInEnglish);
+            return emptyResponse;
         }
         return dictionaryElementConsolidatorService.consolidateDictionaryElements(dictionaryElements);
     }
@@ -95,6 +97,7 @@ public class ComprehensiveTranslationServiceLingvo implements ComprehensiveTrans
         return wordAsArray.length > 0 ? wordAsArray[wordAsArray.length - 1] : word;
     }
 
+    // TODO try to refactor this one to use lambdas, not Comparator
     private static final class SortByUserInterests implements Comparator<ComprehensiveElementLingvo> {
         private final User user;
 
