@@ -33,17 +33,13 @@ public class SimpleDictionaryElementConsolidatorService implements DictionaryEle
                 .orElse(defaultTranscription);
         List<String> examples = filterAndCollectToList(dictionaryElementList.stream().map(DictionaryElement::getExample));
         List<String> exampleTranslations = filterAndCollectToList(dictionaryElementList.stream().map(DictionaryElement::getExampleTranslation));
-        List<String> translations = filterAndCollectToList(dictionaryElementList.stream().map(DictionaryElement::getTranslation));
-        LinkedHashSet<String> translationsUnique = new LinkedHashSet<>();
-        for (String translation : translations) {
-            String[] splitTranslations = translation.split(TRANSLATIONS_DELIMITER);
-            Collections.addAll(translationsUnique, splitTranslations);
-        }
+        LinkedHashSet<String> translations = getUniqueTranslations(filterAndCollectToList(dictionaryElementList
+                .stream().map(DictionaryElement::getTranslation)));
 
         // TODO tests if examples and translations are empty
         String consolidatedExample = examples.stream().limit(EXAMPLES_AMOUNT).collect(Collectors.joining());
         String consolidatedExampleTranslation = exampleTranslations.stream().limit(EXAMPLES_AMOUNT).collect(Collectors.joining());
-        String consolidatedTranslation = translationsUnique.stream().limit(TRANSLATIONS_AMOUNT)
+        String consolidatedTranslation = translations.stream().limit(TRANSLATIONS_AMOUNT)
                 .collect(Collectors.joining(", ")).replaceAll(" +", " ");
         String consolidatedTranslationStyled = consolidatedTranslation.replace(";", ",");
 
@@ -59,5 +55,14 @@ public class SimpleDictionaryElementConsolidatorService implements DictionaryEle
     private List<String> filterAndCollectToList(Stream<String> stream) {
         return stream.filter(s -> !s.isEmpty())
                 .collect(Collectors.toList());
+    }
+
+    private LinkedHashSet<String> getUniqueTranslations(List<String> translations) {
+        LinkedHashSet<String> translationsUnique = new LinkedHashSet<>();
+        for (String translation : translations) {
+            String[] splitTranslations = translation.split(TRANSLATIONS_DELIMITER);
+            Collections.addAll(translationsUnique, splitTranslations);
+        }
+        return translationsUnique;
     }
 }
