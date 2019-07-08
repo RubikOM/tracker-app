@@ -13,7 +13,6 @@ import com.rubinskyi.pojo.apiEntity.ComprehensiveElementLingvo;
 public class ComprehensiveElementMapperSimple implements ComprehensiveElementMapper {
 
     public DictionaryElement comprehensiveElementToDictionaryElement(ComprehensiveElementLingvo comprehensiveElementLingvo) {
-        // TODO in this place I can receive Optionals
         if (comprehensiveElementLingvo == null) return new DictionaryElement();
         Optional<ComprehensiveElementLingvo> elementLingvo = Optional.of(comprehensiveElementLingvo);
 
