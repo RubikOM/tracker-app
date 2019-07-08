@@ -57,7 +57,7 @@ public class SimpleDictionaryElementConsolidatorServiceTest {
         DictionaryElement elementToMap8 = new DictionaryElement.Builder("space", "срок; фиксированный промежуток времени")
                 .transcription("speɪs").example("This problem should be solved within a short space of time.").exampleTranslation("Данную проблему необходимо разрешить за короткий срок.").build();
 
-        List<DictionaryElement> oneWordList = Arrays.asList(elementToMap1, elementToMap2, elementToMap3, elementToMap4,
+        List<DictionaryElement> wordsList = Arrays.asList(elementToMap1, elementToMap2, elementToMap3, elementToMap4,
                 elementToMap5, elementToMap6, elementToMap7, elementToMap8);
 
         DictionaryElement expectedResult = new DictionaryElement.Builder("space",
@@ -67,8 +67,34 @@ public class SimpleDictionaryElementConsolidatorServiceTest {
                 .transcription("[speɪs]")
                 .build();
 
-        DictionaryElement actualResult = dictionaryElementConsolidatorService.consolidateDictionaryElements(oneWordList);
+        DictionaryElement actualResult = dictionaryElementConsolidatorService.consolidateDictionaryElements(wordsList);
+        assertEquals(expectedResult, actualResult);
+    }
 
+    @Test
+    public void consolidateDictionaryElements_shouldReturnEmptyExample_whenTheyAreEmpty() {
+        DictionaryElement elementToMap1 = new DictionaryElement.Builder("space", "пространство; область").build();
+        DictionaryElement elementToMap2 = new DictionaryElement.Builder("space", "расстояние; интервал; промежуток; пропуск; пробел").build();
+        DictionaryElement elementToMap3 = new DictionaryElement.Builder("space", "располагать [размещать] с интервалами или вразрядку; оставлять пробел").build();
+        DictionaryElement elementToMap4 = new DictionaryElement.Builder("space", "пауза").build();
+        DictionaryElement elementToMap5 = new DictionaryElement.Builder("space", "расстояние").transcription("speɪs").build();
+        DictionaryElement elementToMap6 = new DictionaryElement.Builder("space", "протяжённость").transcription("speɪs").build();
+        DictionaryElement elementToMap7 = new DictionaryElement.Builder("space", "интервал времени; промежуток")
+                .transcription("speɪs").build();
+        DictionaryElement elementToMap8 = new DictionaryElement.Builder("space", "срок; фиксированный промежуток времени")
+                .transcription("speɪs").build();
+
+        List<DictionaryElement> wordsList = Arrays.asList(elementToMap1, elementToMap2, elementToMap3, elementToMap4,
+                elementToMap5, elementToMap6, elementToMap7, elementToMap8);
+
+        DictionaryElement expectedResult = new DictionaryElement.Builder("space",
+                "пространство, область, расстояние, интервал")
+                .exampleTranslation("")
+                .example("")
+                .transcription("[speɪs]")
+                .build();
+
+        DictionaryElement actualResult = dictionaryElementConsolidatorService.consolidateDictionaryElements(wordsList);
         assertEquals(expectedResult, actualResult);
     }
 }

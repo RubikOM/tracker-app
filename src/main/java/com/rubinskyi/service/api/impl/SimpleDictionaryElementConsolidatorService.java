@@ -36,7 +36,6 @@ public class SimpleDictionaryElementConsolidatorService implements DictionaryEle
         LinkedHashSet<String> translations = getUniqueTranslations(filterAndCollectToList(dictionaryElementList
                 .stream().map(DictionaryElement::getTranslation)));
 
-        // TODO tests if examples and translations are empty
         String consolidatedExample = examples.stream().limit(EXAMPLES_AMOUNT).collect(Collectors.joining());
         String consolidatedExampleTranslation = exampleTranslations.stream().limit(EXAMPLES_AMOUNT).collect(Collectors.joining());
         String consolidatedTranslation = translations.stream().limit(TRANSLATIONS_AMOUNT)
