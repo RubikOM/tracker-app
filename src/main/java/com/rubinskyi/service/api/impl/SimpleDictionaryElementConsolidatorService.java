@@ -27,8 +27,6 @@ public class SimpleDictionaryElementConsolidatorService implements DictionaryEle
 
     @Override
     public DictionaryElement consolidateDictionaryElements(List<DictionaryElement> dictionaryElementList) {
-        // TODO here checks if List is empty
-
         String word = dictionaryElementList.stream().map(DictionaryElement::getWord).filter(s -> !s.isEmpty()).findAny()
                 .orElseThrow(() -> new IllegalStateException("Response should contain word"));
         String transcription = dictionaryElementList.stream().map(DictionaryElement::getTranscription).filter(s -> !s.isEmpty()).findAny()
@@ -42,12 +40,11 @@ public class SimpleDictionaryElementConsolidatorService implements DictionaryEle
             Collections.addAll(translationsUnique, splitTranslations);
         }
 
-        // TODO checks here and splittings
+        // TODO tests if examples and translations are empty
         String consolidatedExample = examples.stream().limit(EXAMPLES_AMOUNT).collect(Collectors.joining());
         String consolidatedExampleTranslation = exampleTranslations.stream().limit(EXAMPLES_AMOUNT).collect(Collectors.joining());
         String consolidatedTranslation = translationsUnique.stream().limit(TRANSLATIONS_AMOUNT)
                 .collect(Collectors.joining(", ")).replaceAll(" +", " ");
-        // TODO some check here
         String consolidatedTranslationStyled = consolidatedTranslation.replace(";", ",");
 
         DictionaryElement element = new DictionaryElement.Builder(word, consolidatedTranslationStyled)

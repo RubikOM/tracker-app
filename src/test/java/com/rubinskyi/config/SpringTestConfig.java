@@ -19,9 +19,9 @@ public class SpringTestConfig {
         Set<Interest> interests = new HashSet<>();
         User userForTest = new User(1L, "mike", "mockPassword");
 
-        interests.add(new Interest(userForTest, new Dictionary("LingvoComputer"), 1));
-        interests.add(new Interest(userForTest, new Dictionary("LingvoUniversal"), 2));
-        interests.add(new Interest(userForTest, new Dictionary("Learning"), 3));
+        interests.add(new Interest(userForTest, new Dictionary("LingvoComputer (En-Ru)"), 1));
+        interests.add(new Interest(userForTest, new Dictionary("LingvoUniversal (En-Ru)"), 2));
+        interests.add(new Interest(userForTest, new Dictionary("Learning (En-Ru)"), 3));
         userForTest.setInterests(interests);
 
         return userForTest;

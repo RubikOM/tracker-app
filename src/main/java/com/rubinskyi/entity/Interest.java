@@ -1,5 +1,7 @@
 package com.rubinskyi.entity;
 
+import java.util.Objects;
+
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -18,22 +20,16 @@ import lombok.ToString;
 @Table(name = "INTERESTS")
 @Getter @Setter
 @NoArgsConstructor
-@EqualsAndHashCode
-@ToString
 public class Interest {
 
     @EmbeddedId
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
     private InterestId id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("userId")
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @MapsId("dictionaryId")
     private Dictionary dictionary;
 
@@ -45,5 +41,18 @@ public class Interest {
         this.dictionary = dictionary;
         this.priority = priority;
         this.id = new InterestId(user.getId(), dictionary.getId());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Interest interest = (Interest) o;
+        return priority.equals(interest.priority);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(priority);
     }
 }

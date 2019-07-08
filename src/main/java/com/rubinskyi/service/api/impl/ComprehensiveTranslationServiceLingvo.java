@@ -44,7 +44,7 @@ public class ComprehensiveTranslationServiceLingvo implements ComprehensiveTrans
     }
 
     public DictionaryElement obtainDataFromApi(String wordInEnglish, User user) {
-        String apiCall = String.format(API_CALL_TEMPLATE_COMPREHENSIVE, makeWordValidForApi(wordInEnglish));
+        String apiCall = String.format(API_CALL_TEMPLATE_COMPREHENSIVE, wordInEnglish);
         List<DictionaryElement> dictionaryElements = collectDictionaryElements(apiCall, user);
         if (dictionaryElements.isEmpty()) {
             DictionaryElement emptyResponse = new DictionaryElement();
@@ -75,26 +75,10 @@ public class ComprehensiveTranslationServiceLingvo implements ComprehensiveTrans
 
     private List<DictionaryElement> mapToDictionaryElementList(List<ComprehensiveElementLingvo> lingvoList, User user) {
         return lingvoList.parallelStream()
-                .filter(a -> isInterestedToUser(a, user))
+                .filter(elementLingvo -> user.interestedInDictionary(elementLingvo.getDictionaryName()))
                 .sorted(new SortByUserInterests(user))
                 .map(comprehensiveElementMapper::comprehensiveElementToDictionaryElement)
                 .collect(Collectors.toList());
-    }
-
-    // TODO this method should be replaced to some other class
-    // ".contains()" looks very ugly and unreadable, change Vocabulary names in DB, must be equals() here and split method, not inline
-    private boolean isInterestedToUser(ComprehensiveElementLingvo comprehensiveElement, @NotNull User user) {
-        for (Interest interest : user.getInterests()) {
-            if (comprehensiveElement.getDictionaryName().contains(interest.getDictionary().getName())) return true;
-
-        }
-        return false;
-    }
-
-    // TODO this looks bad af, need logic change here
-    private String makeWordValidForApi(@NotNull String word) {
-        String[] wordAsArray = word.split(" ");
-        return wordAsArray.length > 0 ? wordAsArray[wordAsArray.length - 1] : word;
     }
 
     // TODO try to refactor this one to use lambdas, not Comparator
@@ -110,7 +94,7 @@ public class ComprehensiveTranslationServiceLingvo implements ComprehensiveTrans
             return calculateValue(comprehensiveElement1) - calculateValue(comprehensiveElement2);
         }
 
-        private int calculateValue(@NotNull ComprehensiveElementLingvo comprehensiveElement) {
+        private int calculateValue(ComprehensiveElementLingvo comprehensiveElement) {
             String dictionary = comprehensiveElement.getDictionaryName();
             Integer result = user.getInterests()
                     .stream()

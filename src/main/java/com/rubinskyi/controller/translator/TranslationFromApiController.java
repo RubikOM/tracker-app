@@ -27,10 +27,16 @@ public class TranslationFromApiController {
 
     @GetMapping("/fillPage/{wordInEnglish}")
     public DictionaryElementDto getDictionaryElementFromApi(@PathVariable String wordInEnglish, Principal principal) {
-        DictionaryElement dictionaryElementFromApi = translationFromApiService.getDictionaryElementFromApi(wordInEnglish, principal);
+        String validWord = makeWordValidForApi(wordInEnglish);
+        DictionaryElement dictionaryElementFromApi = translationFromApiService.getDictionaryElementFromApi(validWord, principal);
 
         if (dictionaryElementFromApi.getTranslation() == null || dictionaryElementFromApi.getTranslation().isEmpty()) {
             return new DictionaryElementDto(wordInEnglish, noResultFoundMessage);
         } else return new DictionaryElementDto(dictionaryElementFromApi);
+    }
+
+    private String makeWordValidForApi(String word) {
+        String[] wordAsArray = word.split(" ");
+        return wordAsArray.length > 0 ? wordAsArray[wordAsArray.length - 1] : word;
     }
 }
