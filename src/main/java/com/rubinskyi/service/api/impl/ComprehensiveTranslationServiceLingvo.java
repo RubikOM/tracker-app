@@ -34,7 +34,7 @@ public class ComprehensiveTranslationServiceLingvo implements ComprehensiveTrans
     private static final Logger LOGGER = LoggerFactory.getLogger(PartialTranslationServiceLingvo.class);
     private final ComprehensiveElementMapperSimple comprehensiveElementMapper;
     private final DictionaryElementConsolidatorService dictionaryElementConsolidatorService;
-    // TODO created session - scoped user bean
+    // TODO created session - scoped user bean??
     private User currentUser;
 
     @Autowired
@@ -92,7 +92,7 @@ public class ComprehensiveTranslationServiceLingvo implements ComprehensiveTrans
         String dictionary = comprehensiveElement.getDictionaryName();
         Integer result = currentUser.getInterests()
                 .stream()
-                .filter(interest -> dictionary.contains(interest.getDictionary().getName()))
+                .filter(interest -> dictionary.equals(interest.getDictionary().getName()))
                 .findAny()
                 .map(Interest::getPriority)
                 .orElseThrow(() -> new RuntimeException("Can't compare dictionaries which are not in users interests!"));
