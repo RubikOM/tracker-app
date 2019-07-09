@@ -30,7 +30,7 @@ public class TranslationFromApiServiceLingvo implements TranslationFromApiServic
         User user = userService.findByLogin(principal.getName());
 
         String translation = partialDataService.obtainTranslationFromApi(customizedWord);
-        DictionaryElement dictionaryElement = comprehensiveDataService.obtainDataFromApi(customizedWord, user);
+        DictionaryElement dictionaryElement = comprehensiveDataService.getDictionaryElementFromApi(customizedWord, user);
         dictionaryElement.setTranslation(dictionaryElement.getTranslation().concat(translation));
 
         return dictionaryElement;

@@ -33,7 +33,7 @@ public class ComprehensiveTranslationServiceLingvoTest {
                 .exampleTranslation("воздушное пространство")
                 .build();
 
-        DictionaryElement actualResult = comprehensiveTranslationService.obtainDataFromApi(wordToTranslate, userForTest);
+        DictionaryElement actualResult = comprehensiveTranslationService.getDictionaryElementFromApi(wordToTranslate, userForTest);
 
         assertEquals(expectedResult, actualResult);
     }
@@ -45,7 +45,7 @@ public class ComprehensiveTranslationServiceLingvoTest {
         DictionaryElement expectedResult = new DictionaryElement();
         expectedResult.setWord(wordToTranslate);
 
-        DictionaryElement actualResult = comprehensiveTranslationService.obtainDataFromApi(wordToTranslate, userForTest);
+        DictionaryElement actualResult = comprehensiveTranslationService.getDictionaryElementFromApi(wordToTranslate, userForTest);
 
         assertEquals(expectedResult, actualResult);
     }

@@ -2,7 +2,6 @@ package com.rubinskyi.service.api.impl;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,6 +34,8 @@ public class ComprehensiveTranslationServiceLingvo implements ComprehensiveTrans
     private static final Logger LOGGER = LoggerFactory.getLogger(PartialTranslationServiceLingvo.class);
     private final ComprehensiveElementMapperSimple comprehensiveElementMapper;
     private final DictionaryElementConsolidatorService dictionaryElementConsolidatorService;
+    // TODO created session - scoped user bean
+    private User currentUser;
 
     @Autowired
     public ComprehensiveTranslationServiceLingvo(ComprehensiveElementMapperSimple comprehensiveElementMapper,
@@ -43,7 +44,8 @@ public class ComprehensiveTranslationServiceLingvo implements ComprehensiveTrans
         this.dictionaryElementConsolidatorService = dictionaryElementConsolidatorService;
     }
 
-    public DictionaryElement obtainDataFromApi(String wordInEnglish, User user) {
+    public DictionaryElement getDictionaryElementFromApi(String wordInEnglish, User user) {
+        currentUser = user;
         String apiCall = String.format(API_CALL_TEMPLATE_COMPREHENSIVE, wordInEnglish);
         List<DictionaryElement> dictionaryElements = collectDictionaryElements(apiCall, user);
         if (dictionaryElements.isEmpty()) {
@@ -74,36 +76,27 @@ public class ComprehensiveTranslationServiceLingvo implements ComprehensiveTrans
     }
 
     private List<DictionaryElement> mapToDictionaryElementList(List<ComprehensiveElementLingvo> lingvoList, User user) {
-        return lingvoList.parallelStream()
+        List<DictionaryElement> dictionaryElements = lingvoList.parallelStream()
                 .filter(elementLingvo -> user.interestedInDictionary(elementLingvo.getDictionaryName()))
-                .sorted(new SortByUserInterests(user))
+                .sorted(this::compare)
                 .map(comprehensiveElementMapper::comprehensiveElementToDictionaryElement)
                 .collect(Collectors.toList());
+        return dictionaryElements;
     }
 
-    // TODO try to refactor this one to use lambdas, not Comparator
-    private static final class SortByUserInterests implements Comparator<ComprehensiveElementLingvo> {
-        private final User user;
+    private int compare(ComprehensiveElementLingvo comprehensiveElement1, ComprehensiveElementLingvo comprehensiveElement2) {
+        return calculateValue(comprehensiveElement1) - calculateValue(comprehensiveElement2);
+    }
 
-        private SortByUserInterests(User user) {
-            this.user = user;
-        }
+    private int calculateValue(ComprehensiveElementLingvo comprehensiveElement) {
+        String dictionary = comprehensiveElement.getDictionaryName();
+        Integer result = currentUser.getInterests()
+                .stream()
+                .filter(interest -> dictionary.contains(interest.getDictionary().getName()))
+                .findAny()
+                .map(Interest::getPriority)
+                .orElseThrow(() -> new RuntimeException("Can't compare dictionaries which are not in users interests!"));
 
-        @Override
-        public int compare(ComprehensiveElementLingvo comprehensiveElement1, ComprehensiveElementLingvo comprehensiveElement2) {
-            return calculateValue(comprehensiveElement1) - calculateValue(comprehensiveElement2);
-        }
-
-        private int calculateValue(ComprehensiveElementLingvo comprehensiveElement) {
-            String dictionary = comprehensiveElement.getDictionaryName();
-            Integer result = user.getInterests()
-                    .stream()
-                    .filter(interest -> dictionary.contains(interest.getDictionary().getName()))
-                    .findAny()
-                    .map(Interest::getPriority)
-                    .orElseThrow(() -> new RuntimeException("Can't compare dictionaries which are not in users interests!"));
-
-            return result;
-        }
+        return result;
     }
 }

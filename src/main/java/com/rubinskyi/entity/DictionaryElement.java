@@ -28,7 +28,6 @@ import lombok.ToString;
 @ToString @EqualsAndHashCode
 @NoArgsConstructor
 public class DictionaryElement {
-    // TODO move validation to validator
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Exclude
