@@ -12,8 +12,12 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity
 @Table(name = "USERS")
+@Getter @Setter
 public class User {
 
     @Id
@@ -33,6 +37,10 @@ public class User {
     )
     private Set<Interest> interests;
 
+    public boolean interestedInDictionary(String dictionaryName) {
+        return interests.stream().anyMatch(interest -> Objects.equals(interest.getDictionary().getName(), dictionaryName));
+    }
+
     public User() {
     }
 
@@ -40,38 +48,6 @@ public class User {
         this.id = id;
         this.login = login;
         this.password = password;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Set<Interest> getInterests() {
-        return interests;
-    }
-
-    public void setInterests(Set<Interest> interests) {
-        this.interests = interests;
     }
 
     @Override
@@ -90,7 +66,9 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "login='" + login + '\'' +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
                 '}';
     }
 }

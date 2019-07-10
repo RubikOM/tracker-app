@@ -1,7 +1,7 @@
-package com.rubinskyi.service.api;
+package com.rubinskyi.service.api.impl;
 
 import java.io.IOException;
-import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,9 +20,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rubinskyi.entity.DictionaryElement;
 import com.rubinskyi.entity.Interest;
 import com.rubinskyi.entity.User;
-import com.rubinskyi.pojo.api.ComprehensiveElementLingvo;
-import com.rubinskyi.pojo.api.ComprehensiveElementMapperSimple;
-import com.rubinskyi.service.DictionaryElementConsolidatorService;
+import com.rubinskyi.pojo.apiEntity.ComprehensiveElementLingvo;
+import com.rubinskyi.pojo.mapper.ComprehensiveElementMapperSimple;
+import com.rubinskyi.service.api.ComprehensiveTranslationService;
+import com.rubinskyi.service.api.DictionaryElementConsolidatorService;
 
 @Service
 @PropertySource("classpath:api.properties")
@@ -33,6 +34,8 @@ public class ComprehensiveTranslationServiceLingvo implements ComprehensiveTrans
     private static final Logger LOGGER = LoggerFactory.getLogger(PartialTranslationServiceLingvo.class);
     private final ComprehensiveElementMapperSimple comprehensiveElementMapper;
     private final DictionaryElementConsolidatorService dictionaryElementConsolidatorService;
+    // TODO created session - scoped user bean??
+    private User currentUser;
 
     @Autowired
     public ComprehensiveTranslationServiceLingvo(ComprehensiveElementMapperSimple comprehensiveElementMapper,
@@ -41,9 +44,15 @@ public class ComprehensiveTranslationServiceLingvo implements ComprehensiveTrans
         this.dictionaryElementConsolidatorService = dictionaryElementConsolidatorService;
     }
 
-    public DictionaryElement obtainDataFromApi(String wordInEnglish, User user) {
-        String apiCall = String.format(API_CALL_TEMPLATE_COMPREHENSIVE, makeWordValidForApi(wordInEnglish));
+    public DictionaryElement getDictionaryElementFromApi(String wordInEnglish, User user) {
+        currentUser = user;
+        String apiCall = String.format(API_CALL_TEMPLATE_COMPREHENSIVE, wordInEnglish);
         List<DictionaryElement> dictionaryElements = collectDictionaryElements(apiCall, user);
+        if (dictionaryElements.isEmpty()) {
+            DictionaryElement emptyResponse = new DictionaryElement();
+            emptyResponse.setWord(wordInEnglish);
+            return emptyResponse;
+        }
         return dictionaryElementConsolidatorService.consolidateDictionaryElements(dictionaryElements);
     }
 
@@ -55,6 +64,7 @@ public class ComprehensiveTranslationServiceLingvo implements ComprehensiveTrans
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(apiCall, String.class);
         String jsonInput = responseEntity.getBody();
         try {
+            if (responseEntity.getBody().equals("null")) return new ArrayList<>();
             elements = mapper.readValue(jsonInput, new TypeReference<List<ComprehensiveElementLingvo>>() {
             });
         } catch (IOException e) {
@@ -66,51 +76,27 @@ public class ComprehensiveTranslationServiceLingvo implements ComprehensiveTrans
     }
 
     private List<DictionaryElement> mapToDictionaryElementList(List<ComprehensiveElementLingvo> lingvoList, User user) {
-        return lingvoList.parallelStream()
-                .filter(a -> isInterestedToUser(a, user))
-                .sorted(new SortByUserInterests(user))
+        List<DictionaryElement> dictionaryElements = lingvoList.stream()
+                .filter(elementLingvo -> user.interestedInDictionary(elementLingvo.getDictionaryName()))
+                .sorted(this::compare)
                 .map(comprehensiveElementMapper::comprehensiveElementToDictionaryElement)
                 .collect(Collectors.toList());
+        return dictionaryElements;
     }
 
-    // TODO this method should be replaced to some other class
-    // ".contains()" looks very ugly and unreadable, change Vocabulary names in DB, must be equals() here and split method, not inline
-    private boolean isInterestedToUser(ComprehensiveElementLingvo comprehensiveElement, @NotNull User user) {
-        for (Interest interest : user.getInterests()) {
-            if (comprehensiveElement.getDictionaryName().contains(interest.getDictionary().getName())) return true;
-
-        }
-        return false;
+    private int compare(ComprehensiveElementLingvo comprehensiveElement1, ComprehensiveElementLingvo comprehensiveElement2) {
+        return calculateValue(comprehensiveElement1) - calculateValue(comprehensiveElement2);
     }
 
-    // TODO this looks bad af, need logic change here
-    private String makeWordValidForApi(@NotNull String word) {
-        String[] wordAsArray = word.split(" ");
-        return wordAsArray.length > 0 ? wordAsArray[wordAsArray.length - 1] : word;
-    }
+    private int calculateValue(ComprehensiveElementLingvo comprehensiveElement) {
+        String dictionary = comprehensiveElement.getDictionaryName();
+        Integer result = currentUser.getInterests()
+                .stream()
+                .filter(interest -> dictionary.equals(interest.getDictionary().getName()))
+                .findAny()
+                .map(Interest::getPriority)
+                .orElseThrow(() -> new RuntimeException("Can't compare dictionaries which are not in users interests!"));
 
-    private static final class SortByUserInterests implements Comparator<ComprehensiveElementLingvo> {
-        private final User user;
-
-        private SortByUserInterests(User user) {
-            this.user = user;
-        }
-
-        @Override
-        public int compare(ComprehensiveElementLingvo comprehensiveElement1, ComprehensiveElementLingvo comprehensiveElement2) {
-            return calculateValue(comprehensiveElement1) - calculateValue(comprehensiveElement2);
-        }
-
-        private int calculateValue(@NotNull ComprehensiveElementLingvo comprehensiveElement) {
-            String dictionary = comprehensiveElement.getDictionaryName();
-            Integer result = user.getInterests()
-                    .stream()
-                    .filter(interest -> dictionary.contains(interest.getDictionary().getName()))
-                    .findAny()
-                    .map(Interest::getPriority)
-                    .orElseThrow(() -> new RuntimeException("Can't compare dictionaries which are not in users interests!"));
-
-            return result;
-        }
+        return result;
     }
 }

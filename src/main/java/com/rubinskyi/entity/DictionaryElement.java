@@ -16,11 +16,21 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 @Entity
 @Table(name = "DICTIONARY_ELEMENTS")
+@Getter @Setter
+@ToString @EqualsAndHashCode
+@NoArgsConstructor
 public class DictionaryElement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Exclude
     private Long id;
 
     @Column(name = "word_in_english")
@@ -47,134 +57,15 @@ public class DictionaryElement {
     private String exampleTranslation;
 
     @Column(name = "creation_date")
+    @EqualsAndHashCode.Exclude
     private LocalDate creationDate;
 
     @ManyToOne
     @JoinColumn(name = "USER_ID", nullable = false)
+    @EqualsAndHashCode.Exclude
     private User author;
 
-    public void concatenateTranslations(String additionalTranslation) {
-        translation = translation.concat(additionalTranslation);
-    }
-
-    public String getDictionaryElementAsString() {
-        if (translation == null) return "";
-        makeWordValidForFile();
-
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(word).append(";").append(transcription.equals("") ? "" : transcription + ";")
-                .append(translation).append(";").append(example.equals("") ? "" : example + ";")
-                .append(exampleTranslation.equals("") ? "" : exampleTranslation + ";").append("\n");
-        return stringBuilder.toString();
-    }
-
-    private void makeWordValidForFile() {
-        if (!example.equals("") && exampleTranslation.equals("")) {
-            exampleTranslation = " ";
-        }
-        if (!exampleTranslation.equals("") && example.equals("")) {
-            example = " ";
-        }
-    }
-
-    public DictionaryElement() {
-    }
-
-    public LocalDate getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(LocalDate creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getWord() {
-        return word;
-    }
-
-    public String getTranscription() {
-        return transcription;
-    }
-
-    public String getTranslation() {
-        return translation;
-    }
-
-    public String getExample() {
-        return example;
-    }
-
-    public String getExampleTranslation() {
-        return exampleTranslation;
-    }
-
-    public void setWord(String word) {
-        this.word = word;
-    }
-
-    public void setTranscription(String transcription) {
-        this.transcription = transcription;
-    }
-
-    public void setTranslation(String translation) {
-        this.translation = translation;
-    }
-
-    public void setExample(String example) {
-        this.example = example;
-    }
-
-    public void setExampleTranslation(String exampleTranslation) {
-        this.exampleTranslation = exampleTranslation;
-    }
-
-    public User getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(User author) {
-        this.author = author;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        DictionaryElement that = (DictionaryElement) o;
-        return word.equals(that.word) &&
-                translation.equals(that.translation);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(word, translation);
-    }
-
-    @Override
-    public String toString() {
-        return "DictionaryElement{" +
-                "word='" + word + '\'' +
-                ", transcription='" + transcription + '\'' +
-                ", translation='" + translation + '\'' +
-                ", example='" + example + '\'' +
-                ", exampleTranslation='" + exampleTranslation + '\'' +
-                ", created=" + creationDate +
-                ", author=" + author +
-                '}';
-    }
-
-    // Builder is not necessary here, I can't afford validation to be in builder (Spring MVC requires empty public constructor
-    // and public setters to initiate an instance of class, and validation takes its place by annotations on field -
-    // not build() method in builder). But, this class is a good place to practice using creation patterns (e.g. Builder)
-    // because of variations in optional fields
+    // Builder is not necessary here, but I want it to be here c:
     public static class Builder {
         private final String word;
         private final String translation;
@@ -221,5 +112,31 @@ public class DictionaryElement {
         example = builder.example;
         exampleTranslation = builder.exampleTranslation;
         author = builder.author;
+    }
+
+    public Importer importer() {
+        return new Importer();
+    }
+
+    public class Importer {
+        public String getDictionaryElementAsString() {
+            if (translation == null) return "";
+            makeWordValidForFile();
+
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(word).append(";").append(transcription.equals("") ? "" : transcription + ";")
+                    .append(translation).append(";").append(example.equals("") ? "" : example + ";")
+                    .append(exampleTranslation.equals("") ? "" : exampleTranslation + ";").append("\n");
+            return stringBuilder.toString();
+        }
+
+        private void makeWordValidForFile() {
+            if (!example.equals("") && exampleTranslation.equals("")) {
+                exampleTranslation = " ";
+            }
+            if (!exampleTranslation.equals("") && example.equals("")) {
+                example = " ";
+            }
+        }
     }
 }

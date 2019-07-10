@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan({"com.rubinskyi.service, com.rubinskyi.controller, com.rubinskyi.validation," +
-        " com.rubinskyi.config.security, com.rubinskyi.pojo.api"})
+@ComponentScan({"com.rubinskyi.service, com.rubinskyi.controller" +
+        " com.rubinskyi.config.security, com.rubinskyi.pojo"})
 public class SpringConfiguration {
 }

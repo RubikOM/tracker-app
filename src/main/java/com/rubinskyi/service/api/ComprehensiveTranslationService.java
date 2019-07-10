@@ -5,5 +5,5 @@ import com.rubinskyi.entity.User;
 
 public interface ComprehensiveTranslationService {
 
-    DictionaryElement obtainDataFromApi(String wordInEnglish, User user);
+    DictionaryElement getDictionaryElementFromApi(String wordInEnglish, User user);
 }

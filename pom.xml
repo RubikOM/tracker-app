@@ -35,7 +35,7 @@
         <jstl.version>1.2</jstl.version>
 
         <slf4j.version>1.7.25</slf4j.version>
-        <lombok.version>1.16.20</lombok.version>
+        <lombok.version>1.18.4</lombok.version>
         <cobertura.version>2.7</cobertura.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -214,7 +214,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.16.20</version>
+            <version>${lombok.version}</version>
             <scope>provided</scope>
         </dependency>
 

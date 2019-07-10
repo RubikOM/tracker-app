@@ -1,4 +1,4 @@
-package com.rubinskyi.service.api;
+package com.rubinskyi.service.api.impl;
 
 import java.security.Principal;
 
@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.rubinskyi.entity.DictionaryElement;
 import com.rubinskyi.entity.User;
 import com.rubinskyi.service.UserService;
+import com.rubinskyi.service.api.TranslationFromApiService;
 
 @Service
 @Transactional
@@ -29,8 +30,8 @@ public class TranslationFromApiServiceLingvo implements TranslationFromApiServic
         User user = userService.findByLogin(principal.getName());
 
         String translation = partialDataService.obtainTranslationFromApi(customizedWord);
-        DictionaryElement dictionaryElement = comprehensiveDataService.obtainDataFromApi(customizedWord, user);
-        dictionaryElement.concatenateTranslations(translation);
+        DictionaryElement dictionaryElement = comprehensiveDataService.getDictionaryElementFromApi(customizedWord, user);
+        dictionaryElement.setTranslation(dictionaryElement.getTranslation().concat(translation));
 
         return dictionaryElement;
     }

@@ -1,6 +1,7 @@
 package com.rubinskyi.dao.impl;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -94,7 +95,7 @@ public class DictionaryDaoImplTest {
 
         DictionaryElement result = dictionaryDao.findByWord("NoSuchWordHere", author);
 
-        assertEquals(null, result);
+        assertNull(result);
     }
 
     @Test

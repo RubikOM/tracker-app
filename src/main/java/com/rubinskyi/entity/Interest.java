@@ -10,8 +10,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 @Entity
 @Table(name = "INTERESTS")
+@Getter @Setter
+@NoArgsConstructor
 public class Interest {
 
     @EmbeddedId
@@ -21,15 +29,12 @@ public class Interest {
     @MapsId("userId")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @MapsId("dictionaryId")
     private Dictionary dictionary;
 
     @Column(name = "priority")
     private Integer priority;
-
-    private Interest() {
-    }
 
     public Interest(User user, Dictionary dictionary, Integer priority) {
         this.user = user;
@@ -43,45 +48,11 @@ public class Interest {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Interest interest = (Interest) o;
-        return user.equals(interest.user) &&
-                dictionary.equals(interest.dictionary) &&
-                priority.equals(interest.priority);
+        return priority.equals(interest.priority);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(user, dictionary, priority);
-    }
-
-    public InterestId getId() {
-        return id;
-    }
-
-    public void setId(InterestId id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Dictionary getDictionary() {
-        return dictionary;
-    }
-
-    public void setDictionary(Dictionary dictionary) {
-        this.dictionary = dictionary;
-    }
-
-    public Integer getPriority() {
-        return priority;
-    }
-
-    public void setPriority(Integer priority) {
-        this.priority = priority;
+        return Objects.hash(priority);
     }
 }

@@ -26,13 +26,26 @@ public class ComprehensiveTranslationServiceLingvoTest {
     public void obtainDataFromApi_shouldReturnCorrectResponse() {
         String wordToTranslate = "space";
 
-        DictionaryElement expectedResult = new DictionaryElement.Builder("space", "пространство; область")
-                .transcription("speɪs")
+        DictionaryElement expectedResult = new DictionaryElement.Builder("space",
+                "пространство, область, расстояние, интервал")
+                .transcription("[speɪs]")
                 .example("airspace")
                 .exampleTranslation("воздушное пространство")
                 .build();
 
-        DictionaryElement actualResult = comprehensiveTranslationService.obtainDataFromApi(wordToTranslate, userForTest);
+        DictionaryElement actualResult = comprehensiveTranslationService.getDictionaryElementFromApi(wordToTranslate, userForTest);
+
+        assertEquals(expectedResult, actualResult);
+    }
+
+    @Test
+    public void obtainDataFromApi_shouldReturnEmptyResponse() {
+        String wordToTranslate = "abcad";
+
+        DictionaryElement expectedResult = new DictionaryElement();
+        expectedResult.setWord(wordToTranslate);
+
+        DictionaryElement actualResult = comprehensiveTranslationService.getDictionaryElementFromApi(wordToTranslate, userForTest);
 
         assertEquals(expectedResult, actualResult);
     }
