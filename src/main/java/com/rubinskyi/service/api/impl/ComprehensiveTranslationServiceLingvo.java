@@ -76,7 +76,7 @@ public class ComprehensiveTranslationServiceLingvo implements ComprehensiveTrans
     }
 
     private List<DictionaryElement> mapToDictionaryElementList(List<ComprehensiveElementLingvo> lingvoList, User user) {
-        List<DictionaryElement> dictionaryElements = lingvoList.parallelStream()
+        List<DictionaryElement> dictionaryElements = lingvoList.stream()
                 .filter(elementLingvo -> user.interestedInDictionary(elementLingvo.getDictionaryName()))
                 .sorted(this::compare)
                 .map(comprehensiveElementMapper::comprehensiveElementToDictionaryElement)
