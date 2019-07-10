@@ -1,4 +1,4 @@
-package com.rubinskyi.controller.translator;
+package com.rubinskyi.controller;
 
 import java.security.Principal;
 import java.util.Collections;
