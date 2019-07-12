@@ -38,7 +38,8 @@ public class User {
     private Set<Interest> interests;
 
     public boolean interestedInDictionary(String dictionaryName) {
-        return interests.stream().anyMatch(interest -> Objects.equals(interest.getDictionary().getName(), dictionaryName));
+        return interests.stream()
+                .anyMatch(interest -> Objects.equals(interest.getDictionary().getName(), dictionaryName));
     }
 
     public User() {

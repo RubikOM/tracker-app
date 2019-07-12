@@ -36,4 +36,21 @@ public class ComprehensiveElementMapperSimpleTest {
 
         assertEquals(expectedResult, comprehensiveElementMapper.comprehensiveElementToDictionaryElement(comprehensiveElementLingvo));
     }
+
+    @Test
+    public void comprehensiveElementToDictionaryElement_slashedExample() {
+        ComprehensiveElementLingvo comprehensiveElementLingvo = new ComprehensiveElementLingvo();
+        comprehensiveElementLingvo.setHeading("test");
+        comprehensiveElementLingvo.setTranslations("испытание, испытания, проверка, контроль, испытывать");
+        comprehensiveElementLingvo.setTranscription("test");
+        comprehensiveElementLingvo.setExamples("difficult / demanding test — трудное испытание \n");
+
+        DictionaryElement expectedResult = new DictionaryElement.Builder("test", "испытание, испытания, проверка, контроль, испытывать")
+                .transcription("test")
+                .example("difficult | demanding test")
+                .exampleTranslation("трудное испытание")
+                .build();
+
+        assertEquals(expectedResult, comprehensiveElementMapper.comprehensiveElementToDictionaryElement(comprehensiveElementLingvo));
+    }
 }

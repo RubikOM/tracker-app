@@ -14,13 +14,11 @@ import com.rubinskyi.service.api.TranslationFromApiService;
 @Service
 @Transactional
 public class TranslationFromApiServiceLingvo implements TranslationFromApiService {
-    private final PartialTranslationServiceLingvo partialDataService;
     private final ComprehensiveTranslationServiceLingvo comprehensiveDataService;
     private final UserService userService;
 
-    public TranslationFromApiServiceLingvo(@Autowired PartialTranslationServiceLingvo partialDataService,
-                                           ComprehensiveTranslationServiceLingvo comprehensiveDataService, UserService userService) {
-        this.partialDataService = partialDataService;
+    @Autowired
+    public TranslationFromApiServiceLingvo(ComprehensiveTranslationServiceLingvo comprehensiveDataService, UserService userService) {
         this.comprehensiveDataService = comprehensiveDataService;
         this.userService = userService;
     }
@@ -29,10 +27,7 @@ public class TranslationFromApiServiceLingvo implements TranslationFromApiServic
         String customizedWord = customizeString(wordInEnglish);
         User user = userService.findByLogin(principal.getName());
 
-        String translation = partialDataService.obtainTranslationFromApi(customizedWord);
         DictionaryElement dictionaryElement = comprehensiveDataService.getDictionaryElementFromApi(customizedWord, user);
-        dictionaryElement.setTranslation(dictionaryElement.getTranslation().concat(translation));
-
         return dictionaryElement;
     }
 

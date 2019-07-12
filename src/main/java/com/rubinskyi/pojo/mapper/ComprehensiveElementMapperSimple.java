@@ -35,7 +35,8 @@ public class ComprehensiveElementMapperSimple implements ComprehensiveElementMap
         Map<String, String> result = new HashMap<>();
         if (mixedExamples.isEmpty()) return result;
 
-        String[] examplesArray = mixedExamples.split("—|\\r?\\n|\\/");
+        String fixedExamples = mixedExamples.replace(" / ", " | ");
+        String[] examplesArray = fixedExamples.split("—|\\r?\\n|\\/");
         if (examplesArray.length >= 2) {
             result.put("example", examplesArray[0].trim());
             result.put("exampleTranslation", examplesArray[1].trim());
