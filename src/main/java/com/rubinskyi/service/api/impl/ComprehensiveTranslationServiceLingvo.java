@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +28,11 @@ import com.rubinskyi.service.api.DictionaryElementConsolidatorService;
 @PropertySource("classpath:api.properties")
 public class ComprehensiveTranslationServiceLingvo implements ComprehensiveTranslationService {
 
-    @Value("${comprehensiveDataCall}")
-    private String API_CALL_TEMPLATE_COMPREHENSIVE;
     private static final Logger LOGGER = LoggerFactory.getLogger(PartialTranslationServiceLingvo.class);
     private final ComprehensiveElementMapperSimple comprehensiveElementMapper;
     private final DictionaryElementConsolidatorService dictionaryElementConsolidatorService;
+    @Value("${comprehensiveDataCall}")
+    private String API_CALL_TEMPLATE_COMPREHENSIVE;
     // TODO created session - scoped user bean??
     private User currentUser;
 
@@ -56,7 +55,7 @@ public class ComprehensiveTranslationServiceLingvo implements ComprehensiveTrans
         return dictionaryElementConsolidatorService.consolidateDictionaryElements(dictionaryElements);
     }
 
-    private List<DictionaryElement> collectDictionaryElements(@NotNull String apiCall, User user) {
+    private List<DictionaryElement> collectDictionaryElements(String apiCall, User user) {
         RestTemplate restTemplate = new RestTemplate();
         ObjectMapper mapper = new ObjectMapper();
         List<ComprehensiveElementLingvo> elements;

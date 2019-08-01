@@ -2,7 +2,6 @@ package com.rubinskyi.service.api.impl;
 
 import java.io.IOException;
 
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,7 +30,7 @@ public class PartialTranslationServiceLingvo implements PartialTranslationServic
         return partialElement.getTranslation() == null ? "" : partialElement.getTranslation().getTranslations();
     }
 
-    private PartialElementLingvo mapJsonToMinicard(@NotNull ResponseEntity<String> responseEntity) {
+    private PartialElementLingvo mapJsonToMinicard(ResponseEntity<String> responseEntity) {
         PartialElementLingvo element;
         ObjectMapper mapper = new ObjectMapper();
 
@@ -45,7 +44,7 @@ public class PartialTranslationServiceLingvo implements PartialTranslationServic
         }
     }
 
-    private String makeWordValidToUrl(@NotNull String word) {
+    private String makeWordValidToUrl(String word) {
         String[] wordAsArray = word.split(" ");
         return wordAsArray.length > 0 ? wordAsArray[wordAsArray.length - 1] : word;
     }

@@ -40,7 +40,9 @@ public class SimpleDictionaryElementConsolidatorService implements DictionaryEle
         String consolidatedExampleTranslation = exampleTranslations.stream().limit(EXAMPLES_AMOUNT).collect(Collectors.joining());
         String consolidatedTranslation = translations.stream().limit(TRANSLATIONS_AMOUNT)
                 .collect(Collectors.joining(", ")).replaceAll(" +", " ");
-        String consolidatedTranslationStyled = consolidatedTranslation.replace(";", ",");
+        String consolidatedTranslationStyled = consolidatedTranslation
+                .replace(";", ",").replace(" ||", ",");
+        // TODO replaceAll() with regexp
 
         DictionaryElement element = new DictionaryElement.Builder(word, consolidatedTranslationStyled)
                 .transcription(transcription.isEmpty() ? transcription : "[" + transcription + "]")
