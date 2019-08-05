@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.Arrays;
 import java.util.List;
 
+import com.rubinskyi.service.impl.TextFileImportationService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -23,7 +24,7 @@ public class FileImportationServiceImplTest {
     @Mock
     User user;
     @InjectMocks
-    FileImportationServiceImpl fileImportationServiceImpl;
+    TextFileImportationService textFileImportationService;
 
     @Test
     public void getTodayTxtFile() {
@@ -34,7 +35,7 @@ public class FileImportationServiceImplTest {
         List<DictionaryElement> dictionaryElements = Arrays.asList(element0, element1, element2);
 
         Mockito.when(dictionaryService.getTodaysDictionaryElements(user)).thenReturn(dictionaryElements);
-        String todayTxtFile = fileImportationServiceImpl.getTodayTxtFile(user);
+        String todayTxtFile = textFileImportationService.getTodayTxtFile(user);
         String expectedResult = "space;пауза;\n" +
                 "space;speɪs;расстояние;\n" +
                 "space;speɪs;протяжённость;for the space of two kilometers;на расстоянии двух километров;\n";
@@ -51,7 +52,7 @@ public class FileImportationServiceImplTest {
         List<DictionaryElement> dictionaryElements = Arrays.asList(element0, element1, element2);
 
         Mockito.when(dictionaryService.getAllDictionaryElements(user)).thenReturn(dictionaryElements);
-        String todayTxtFile = fileImportationServiceImpl.getAllTimeTxtFile(user);
+        String todayTxtFile = textFileImportationService.getAllTimeTxtFile(user);
         String expectedResult = "space;пауза;\n" +
                 "space;speɪs;расстояние;\n" +
                 "space;speɪs;протяжённость;for the space of two kilometers;на расстоянии двух километров;\n";

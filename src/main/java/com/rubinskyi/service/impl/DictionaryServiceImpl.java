@@ -1,8 +1,9 @@
-package com.rubinskyi.service;
+package com.rubinskyi.service.impl;
 
 import java.time.LocalDate;
 import java.util.List;
 
+import com.rubinskyi.service.DictionaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;

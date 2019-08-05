@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class RedirectController {
 
     @GetMapping({"", "/createWord"})
-    public String redirectToDictionaryController(){
+    public String redirectToDictionaryPage(){
         return "redirect:/dictionary";
     }
 }

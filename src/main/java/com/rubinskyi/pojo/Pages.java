@@ -4,6 +4,7 @@ public enum Pages {
     ERROR_PAGE("showErrorPage"),
     DICTIONARY_PAGE("dictionaryPage"),
     LOGIN_PAGE("login"),
+    UPLOAD_FILE_PAGE("uploadFilePage"),
     EDIT_WORD_PAGE("editDictionaryElementPage");
 
     private final String page;

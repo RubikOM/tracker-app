@@ -1,7 +1,9 @@
-package com.rubinskyi.service;
+package com.rubinskyi.service.impl;
 
 import java.util.List;
 
+import com.rubinskyi.service.DictionaryService;
+import com.rubinskyi.service.FileImportationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,11 +11,11 @@ import com.rubinskyi.entity.DictionaryElement;
 import com.rubinskyi.entity.User;
 
 @Service
-public class FileImportationServiceImpl implements FileImportationService {
+public class TextFileImportationService implements FileImportationService {
     private final DictionaryService dictionaryService;
 
     @Autowired
-    public FileImportationServiceImpl(DictionaryService dictionaryService) {
+    public TextFileImportationService(DictionaryService dictionaryService) {
         this.dictionaryService = dictionaryService;
     }
 
