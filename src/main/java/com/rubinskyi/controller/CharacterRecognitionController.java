@@ -5,6 +5,8 @@ import com.rubinskyi.service.ImageCharacterRecognitionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,13 +18,18 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 
 @Controller
 @RequestMapping("/dictionary")
+@PropertySource("classpath:characterRecognition.properties")
 public class CharacterRecognitionController {
     private final ImageCharacterRecognitionService recognitionService;
-    private static final String FILE_FOLDER = "src/main/resources/tessimage";
+    @Value("classpath:tessimage")
+    private File userUploadedImagesFolder;
+    @Value("${emptyResponse}")
+    private String emptyResponseMessage;
+    @Value("${wrongFileType}")
+    private String wrongFileFormatMessage;
     private static final Logger LOGGER = LoggerFactory.getLogger(CharacterRecognitionController.class);
 
     @Autowired
@@ -37,20 +44,20 @@ public class CharacterRecognitionController {
 
     @PostMapping("/uploadFile")
     public String submitFile(@RequestParam("file") MultipartFile multipartFile, Model model) {
-        String pathToFile = FILE_FOLDER + multipartFile.getOriginalFilename();
+        String pathToFile = userUploadedImagesFolder.getAbsolutePath() + multipartFile.getOriginalFilename();
+        File file = new File(pathToFile);
         try {
-            multipartFile.transferTo(Paths.get(pathToFile));
+            multipartFile.transferTo(file);
         } catch (IOException e) {
             LOGGER.error("Error while transferring org.springframework.web.multipart.MultipartFile to java.io.File ", e);
-            model.addAttribute("error", "Cannot read given file, check if it has required format");
+            model.addAttribute("error", wrongFileFormatMessage);
             return Pages.UPLOAD_FILE_PAGE.getPage();
         }
-        File file = new File(pathToFile);
 
         String textFromRecognitionService = recognitionService.resolveImage(file);
-        if (textFromRecognitionService.equals("emptyMessage")) {
-            model.addAttribute("recognisedText", textFromRecognitionService);
-        } else model.addAttribute("error", "Cannot read given file, check if it has required format");
+        if (textFromRecognitionService.equals(emptyResponseMessage)) {
+            model.addAttribute("error", wrongFileFormatMessage);
+        } else model.addAttribute("recognisedText", textFromRecognitionService);
 
         try {
             Files.delete(file.toPath());

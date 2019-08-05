@@ -10,4 +10,9 @@ public class RedirectController {
     public String redirectToDictionaryPage(){
         return "redirect:/dictionary";
     }
+
+    @GetMapping({"/dictionary/uploadFile"})
+    public String redirectToCharacterRecognitionPage(){
+        return "redirect:/dictionary/file";
+    }
 }
