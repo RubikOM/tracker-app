@@ -21,9 +21,8 @@ public class TesseractImageCharacterRecognitionService implements ImageCharacter
             tesseract.setDatapath("src/main/resources/tessdata");
             text = tesseract.doOCR(file);
         } catch (TesseractException e) {
-            // TODO this should be in controller layer
             LOGGER.error("Error during image recognition", e);
-            // TODO to properties
+            // TODO move this message to properties
             return "emptyMessage";
         }
         return text;

@@ -21,7 +21,7 @@ public class TesseractImageCharacterRecognitionServiceTest {
 
     @Test
     public void resolveImage_shouldReturnRightText() {
-        File file = new File("images/image5.png");
+        File file = new File("src/test/resources/tessimage/image5.png");
 
         String result = tesseractImageCharacterRecognitionService.resolveImage(file);
         assertEquals("PREREQUISITES\n" +
