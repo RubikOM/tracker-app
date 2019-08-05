@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.security.Principal;
 
 @Controller
 @RequestMapping("/dictionary")
@@ -30,6 +31,8 @@ public class CharacterRecognitionController {
     private String emptyResponseMessage;
     @Value("${wrongFileType}")
     private String wrongFileFormatMessage;
+    @Value("${cannotRecogniseCharacters}")
+    private String cannotRecogniseCharactersMessage;
     private static final Logger LOGGER = LoggerFactory.getLogger(CharacterRecognitionController.class);
 
     @Autowired
@@ -43,8 +46,8 @@ public class CharacterRecognitionController {
     }
 
     @PostMapping("/uploadFile")
-    public String submitFile(@RequestParam("file") MultipartFile multipartFile, Model model) {
-        String pathToFile = userUploadedImagesFolder.getAbsolutePath() + multipartFile.getOriginalFilename();
+    public String submitFile(@RequestParam("file") MultipartFile multipartFile, Model model, Principal principal) {
+        String pathToFile = userUploadedImagesFolder.getAbsolutePath() + "_" + principal.getName() + "_" + multipartFile.getOriginalFilename();
         File file = new File(pathToFile);
         try {
             multipartFile.transferTo(file);
@@ -53,10 +56,9 @@ public class CharacterRecognitionController {
             model.addAttribute("error", wrongFileFormatMessage);
             return Pages.UPLOAD_FILE_PAGE.getPage();
         }
-
         String textFromRecognitionService = recognitionService.resolveImage(file);
         if (textFromRecognitionService.equals(emptyResponseMessage)) {
-            model.addAttribute("error", wrongFileFormatMessage);
+            model.addAttribute("error", cannotRecogniseCharactersMessage);
         } else model.addAttribute("recognisedText", textFromRecognitionService);
 
         try {

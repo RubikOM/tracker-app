@@ -1,4 +1,5 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -16,5 +17,13 @@
         </tr>
     </table>
 </form:form>
+
+<c:if test="${recognisedText != null}">
+    ${recognisedText}
+</c:if>
+
+<c:if test="${error != null}">
+    ${error}
+</c:if>
 </body>
 </html>
