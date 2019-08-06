@@ -35,12 +35,17 @@ public class ComprehensiveTranslationServiceLingvo implements ComprehensiveTrans
     private String API_CALL_TEMPLATE_COMPREHENSIVE;
     // TODO created session - scoped user bean??
     private User currentUser;
+    private final RestTemplate restTemplate;
+    private final ObjectMapper objectMapper;
 
     @Autowired
     public ComprehensiveTranslationServiceLingvo(ComprehensiveElementMapperSimple comprehensiveElementMapper,
-                                                 DictionaryElementConsolidatorService dictionaryElementConsolidatorService) {
+                                                 DictionaryElementConsolidatorService dictionaryElementConsolidatorService,
+                                                 RestTemplate restTemplate, ObjectMapper objectMapper) {
         this.comprehensiveElementMapper = comprehensiveElementMapper;
         this.dictionaryElementConsolidatorService = dictionaryElementConsolidatorService;
+        this.restTemplate = restTemplate;
+        this.objectMapper = objectMapper;
     }
 
     public DictionaryElement getDictionaryElementFromApi(String wordInEnglish, User user) {
@@ -56,18 +61,16 @@ public class ComprehensiveTranslationServiceLingvo implements ComprehensiveTrans
     }
 
     private List<DictionaryElement> collectDictionaryElements(String apiCall, User user) {
-        RestTemplate restTemplate = new RestTemplate();
-        ObjectMapper mapper = new ObjectMapper();
         List<ComprehensiveElementLingvo> elements;
 
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(apiCall, String.class);
         String jsonInput = responseEntity.getBody();
         try {
-            if (responseEntity.getBody().equals("null")) return new ArrayList<>();
-            elements = mapper.readValue(jsonInput, new TypeReference<List<ComprehensiveElementLingvo>>() {
+            if (jsonInput.equals("null")) return new ArrayList<>();
+            elements = objectMapper.readValue(jsonInput, new TypeReference<List<ComprehensiveElementLingvo>>() {
             });
         } catch (IOException e) {
-            LOGGER.error(e.toString(), e);
+            LOGGER.error("Can't map JSON to ComprehensiveElementLingvo list ", e);
             throw new RuntimeException(e);
         }
 

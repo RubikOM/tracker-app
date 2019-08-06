@@ -2,6 +2,7 @@ package com.rubinskyi.service.impl;
 
 import com.rubinskyi.config.HibernateConfig;
 import com.rubinskyi.config.SpringTestConfig;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +21,11 @@ public class TesseractImageCharacterRecognitionServiceTest {
     private TesseractImageCharacterRecognitionService tesseractImageCharacterRecognitionService;
 
     @Test
-    public void resolveImage_shouldReturnRightText() {
-        File file = new File("src/test/resources/tessimage/image5.png");
+    public void resolveImage_shouldReturnRightLargeText() {
+        File file = new File("src/test/resources/tessimage/large_image.png");
 
         String result = tesseractImageCharacterRecognitionService.resolveImage(file);
-        assertEquals("PREREQUISITES\n" +
+        String expectedResult = "PREREQUISITES\n" +
                 "\n" +
                 "In order to make the most of this, you will need to have\n" +
                 "a little bit of programming experience. All examples in this\n" +
@@ -36,6 +37,44 @@ public class TesseractImageCharacterRecognitionServiceTest {
                 "book is hands-on and example driven: lots of examples and\n" +
                 "lots of code, so even if your math skills are not up to par,\n" +
                 "do not worry! The examples are very detailed and heavily\n" +
-                "documented to help you follow along.\n", result);
+                "documented to help you follow along.\n";
+
+        assertEquals(expectedResult, result);
+    }
+
+    @Test
+    public void resolveImage_shouldReturnRightSmallText() {
+        File file = new File("src/test/resources/tessimage/small_image.png");
+
+        String result = tesseractImageCharacterRecognitionService.resolveImage(file);
+        String expectedResult = "Noisy image\n" +
+                "to test\n" +
+                "Tesseract OCR\n";
+
+        assertEquals(expectedResult, result);
+    }
+
+    @Test
+    // TODO clean unused data from response (i.e. ~ -)
+    public void resolveImage_shouldReturnRightNoisyText() {
+        File file = new File("src/test/resources/tessimage/image_noisy.png");
+
+        String result = tesseractImageCharacterRecognitionService.resolveImage(file);
+        String expectedResult = "~ Tesseract Will\n" +
+                "Fail With Noisy\n" +
+                "- Backgrounds\n";
+
+        assertEquals(expectedResult, result);
+    }
+
+    @Test
+    @Ignore
+    public void resolveImage_shouldResolveHandWrittenText() {
+        File file = new File("src/test/resources/tessimage/hand_written_text.png");
+
+        String result = tesseractImageCharacterRecognitionService.resolveImage(file);
+        String expectedResult = "05221859";
+
+        assertEquals(expectedResult, result);
     }
 }

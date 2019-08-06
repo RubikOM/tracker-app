@@ -2,6 +2,7 @@ package com.rubinskyi.controller;
 
 import com.rubinskyi.pojo.Pages;
 import com.rubinskyi.service.ImageCharacterRecognitionService;
+import com.rubinskyi.service.api.MultiWordTranslationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,6 @@ import java.security.Principal;
 @RequestMapping("/dictionary")
 @PropertySource("classpath:characterRecognition.properties")
 public class CharacterRecognitionController {
-    private final ImageCharacterRecognitionService recognitionService;
     @Value("classpath:tessimage")
     private File userUploadedImagesFolder;
     @Value("${emptyResponse}")
@@ -35,9 +35,13 @@ public class CharacterRecognitionController {
     private String cannotRecogniseCharactersMessage;
     private static final Logger LOGGER = LoggerFactory.getLogger(CharacterRecognitionController.class);
 
+    private final ImageCharacterRecognitionService recognitionService;
+    private final MultiWordTranslationService multiWordTranslationService;
+
     @Autowired
-    public CharacterRecognitionController(ImageCharacterRecognitionService recognitionService) {
+    public CharacterRecognitionController(ImageCharacterRecognitionService recognitionService, MultiWordTranslationService multiWordTranslationService) {
         this.recognitionService = recognitionService;
+        this.multiWordTranslationService = multiWordTranslationService;
     }
 
     @GetMapping("/file")
@@ -59,7 +63,11 @@ public class CharacterRecognitionController {
         String textFromRecognitionService = recognitionService.resolveImage(file);
         if (textFromRecognitionService.equals(emptyResponseMessage)) {
             model.addAttribute("error", cannotRecogniseCharactersMessage);
-        } else model.addAttribute("recognisedText", textFromRecognitionService);
+        } else {
+            String russianTranslation = multiWordTranslationService.translateSentenceToRussian(textFromRecognitionService);
+            model.addAttribute("recognisedText", textFromRecognitionService);
+            model.addAttribute("russianTranslation", russianTranslation);
+        }
 
         try {
             Files.delete(file.toPath());

@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +21,16 @@ public class PartialTranslationServiceLingvo implements PartialTranslationServic
     @Value("${partialDataCall}")
     private String API_CALL_TEMPLATE_PARTIAL;
     private static final Logger LOGGER = LoggerFactory.getLogger(PartialTranslationServiceLingvo.class);
+    private final RestTemplate restTemplate;
+    private final ObjectMapper objectMapper;
+
+    @Autowired
+    public PartialTranslationServiceLingvo(RestTemplate restTemplate, ObjectMapper objectMapper) {
+        this.restTemplate = restTemplate;
+        this.objectMapper = objectMapper;
+    }
 
     public String obtainTranslationFromApi(String wordInEnglish) {
-        RestTemplate restTemplate = new RestTemplate();
         String apiCall = String.format(API_CALL_TEMPLATE_PARTIAL, makeWordValidToUrl(wordInEnglish));
 
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(apiCall, String.class);
@@ -32,11 +40,10 @@ public class PartialTranslationServiceLingvo implements PartialTranslationServic
 
     private PartialElementLingvo mapJsonToMinicard(ResponseEntity<String> responseEntity) {
         PartialElementLingvo element;
-        ObjectMapper mapper = new ObjectMapper();
 
         String jsonInput = responseEntity.getBody();
         try {
-            element = mapper.readValue(jsonInput, PartialElementLingvo.class);
+            element = objectMapper.readValue(jsonInput, PartialElementLingvo.class);
             return element;
         } catch (IOException e) {
             LOGGER.error(e.toString(), e);

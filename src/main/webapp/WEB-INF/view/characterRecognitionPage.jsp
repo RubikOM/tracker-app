@@ -20,6 +20,7 @@
 
 <c:if test="${recognisedText != null}">
     ${recognisedText}
+    ${russianTranslation}
 </c:if>
 
 <c:if test="${error != null}">
