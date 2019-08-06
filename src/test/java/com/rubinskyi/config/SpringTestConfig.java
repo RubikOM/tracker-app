@@ -1,18 +1,17 @@
 package com.rubinskyi.config;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import com.rubinskyi.entity.Dictionary;
+import com.rubinskyi.entity.Interest;
+import com.rubinskyi.entity.User;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-import com.rubinskyi.entity.Dictionary;
-import com.rubinskyi.entity.Interest;
-import com.rubinskyi.entity.User;
+import java.util.HashSet;
+import java.util.Set;
 
 @Configuration
-@ComponentScan(basePackages = {"com.rubinskyi.service, com.rubinskyi.pojo, com.rubinskyi.dao"})
+@ComponentScan(basePackages = {"com.rubinskyi.service, com.rubinskyi.pojo, com.rubinskyi.dao, com.rubinskyi.config.bean"})
 public class SpringTestConfig {
     @Bean("userForTest")
     public User getTestUser() {
