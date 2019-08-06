@@ -7,6 +7,7 @@ import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
 
+import com.rubinskyi.config.bean.ObjectMapperBeans;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.WebApplicationInitializer;
@@ -31,6 +32,7 @@ public class ApplicationInitializer implements WebApplicationInitializer {
         ctx.register(SecurityConfig.class);
         ctx.register(WebAppConfig.class);
         ctx.register(HibernateConfig.class);
+        ctx.register(ObjectMapperBeans.class);
         ctx.setServletContext(container);
 
         ServletRegistration.Dynamic dispatcherServlet = container.addServlet(
