@@ -66,7 +66,7 @@ public class ComprehensiveTranslationServiceLingvo implements ComprehensiveTrans
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(apiCall, String.class);
         String jsonInput = responseEntity.getBody();
         try {
-            if (responseEntity.getBody().equals("null")) return new ArrayList<>();
+            if (jsonInput.equals("null")) return new ArrayList<>();
             elements = objectMapper.readValue(jsonInput, new TypeReference<List<ComprehensiveElementLingvo>>() {
             });
         } catch (IOException e) {
