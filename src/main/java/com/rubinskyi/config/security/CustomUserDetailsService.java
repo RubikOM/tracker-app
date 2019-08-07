@@ -22,7 +22,7 @@ import com.rubinskyi.service.UserService;
 public class CustomUserDetailsService implements UserDetailsService {
     private UserService userService;
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(CustomUserDetailsService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CustomUserDetailsService.class);
 
     @Autowired
     public CustomUserDetailsService(UserService userService) {
