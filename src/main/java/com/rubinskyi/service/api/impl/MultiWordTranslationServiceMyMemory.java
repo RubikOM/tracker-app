@@ -14,8 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 @PropertySource("classpath:api.properties")
@@ -33,17 +35,18 @@ public class MultiWordTranslationServiceMyMemory implements MultiWordTranslation
         this.objectMapper = objectMapper;
     }
 
-    // TODO 500 max length logic and parallel
     @Override
     public String translateSentenceToRussian(String englishText) {
-        String apiCall = String.format(API_CALL_TEMPLATE_SENTENCE, englishText);
+        // TODO I have list of sentences to send, but actually sending only one of them, need architecture for send them all, maybe in multi thread way
+        List<String> sentences = cropStringBySentences(englishText);
+        String apiCall = String.format(API_CALL_TEMPLATE_SENTENCE, sentences.get(0));
         SentenceElementMyMemory element;
 
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(apiCall, String.class);
         String jsonInput = responseEntity.getBody();
 
         try {
-            if (jsonInput.equals("null")) return "";
+            if (jsonInput == null || jsonInput.equals("null")) return "";
             element = objectMapper.readValue(jsonInput, SentenceElementMyMemory.class);
         } catch (IOException e) {
             LOGGER.error("Can't map JSON to ComprehensiveElementLingvo list ", e);
@@ -54,9 +57,32 @@ public class MultiWordTranslationServiceMyMemory implements MultiWordTranslation
         return responseData.getTranslatedText();
     }
 
-    // TODO here another split : not by 1 sentence, but by nearest to 500 characters sentences
-    private List<String> cropIntoPieces(String uncroppedString) {
-        String[] split = uncroppedString.split("/(\\.)/");
-        return Arrays.asList(split);
+    private List<String> cropStringBySentences(String initialText) {
+        Pattern pattern = Pattern.compile("[^.!?\\s][^.!?]*(?:[.!?](?!['\"]?\\s|$)[^.!?]*)*[.!?]?['\"]?(?=\\s|$)",
+                Pattern.MULTILINE | Pattern.COMMENTS);
+        Matcher matcher = pattern.matcher(initialText);
+        List<String> result = new ArrayList<>();
+        while (matcher.find()) {
+            String group = matcher.group();
+            result.add(group);
+        }
+        return mergeStrings(result);
+    }
+
+    // TODO replace with streams to increase readability
+    private List<String> mergeStrings(List<String> sentences) {
+        ArrayList<String> result = new ArrayList<>(sentences);
+        String delimiter = " ";
+        for (int i = 0; i < result.size() - 1; i++) {
+            String currentElement = result.get(i);
+            String nextElement = result.get(i + 1);
+
+            if (currentElement.length() + nextElement.length() < MAX_STRING_LENGTH - delimiter.length()) {
+                result.set(i, currentElement.concat(delimiter).concat(nextElement));
+                result.remove(i + 1);
+                i--;
+            }
+        }
+        return result;
     }
 }
