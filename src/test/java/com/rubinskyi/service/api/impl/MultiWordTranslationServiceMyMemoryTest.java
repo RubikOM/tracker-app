@@ -1,6 +1,5 @@
 package com.rubinskyi.service.api.impl;
 
-import com.rubinskyi.config.HibernateConfig;
 import com.rubinskyi.config.SpringTestConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,7 +10,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {SpringTestConfig.class, HibernateConfig.class})
+@ContextConfiguration(classes = SpringTestConfig.class)
 public class MultiWordTranslationServiceMyMemoryTest {
 
     @Autowired

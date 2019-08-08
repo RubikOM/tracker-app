@@ -1,12 +1,9 @@
 package com.rubinskyi.config;
 
-import java.util.Properties;
-
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -14,10 +11,11 @@ import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBuilder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import java.util.Properties;
+
 @Configuration
 @EnableTransactionManagement
 @PropertySource(value = {"classpath:db.properties"})
-@ComponentScan({"com.rubinskyi.dao"})
 public class HibernateConfig {
     private final Environment environment;
 

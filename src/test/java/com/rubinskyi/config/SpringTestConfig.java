@@ -1,5 +1,7 @@
 package com.rubinskyi.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rubinskyi.config.bean.ObjectMapperBeans;
 import com.rubinskyi.entity.Dictionary;
 import com.rubinskyi.entity.Interest;
 import com.rubinskyi.entity.User;
@@ -10,8 +12,15 @@ import org.springframework.context.annotation.Configuration;
 import java.util.HashSet;
 import java.util.Set;
 
+import static org.springframework.context.annotation.FilterType.ASSIGNABLE_TYPE;
+
 @Configuration
-@ComponentScan(basePackages = {"com.rubinskyi.service, com.rubinskyi.pojo, com.rubinskyi.dao, com.rubinskyi.config.bean"})
+@ComponentScan(basePackages = {"com.rubinskyi.service, com.rubinskyi.pojo, com.rubinskyi.dao," +
+        " com.rubinskyi.config.bean"})
+@ComponentScan(
+        basePackageClasses = HibernateConfig.class,
+        useDefaultFilters = false,
+        includeFilters = {@ComponentScan.Filter(type = ASSIGNABLE_TYPE, value = HibernateConfig.class)})
 public class SpringTestConfig {
     @Bean("userForTest")
     public User getTestUser() {
