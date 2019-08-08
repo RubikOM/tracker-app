@@ -1,8 +1,10 @@
 package com.rubinskyi.dao.impl;
 
-import static org.junit.Assert.assertEquals;
-
+import com.github.springtestdbunit.DbUnitTestExecutionListener;
+import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.rubinskyi.config.SpringTestConfig;
+import com.rubinskyi.dao.UserDao;
+import com.rubinskyi.entity.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,15 +13,10 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-import com.github.springtestdbunit.DbUnitTestExecutionListener;
-import com.github.springtestdbunit.annotation.DatabaseSetup;
-import com.rubinskyi.config.HibernateConfig;
-import com.rubinskyi.config.SpringConfiguration;
-import com.rubinskyi.dao.UserDao;
-import com.rubinskyi.entity.User;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {HibernateConfig.class, SpringTestConfig.class})
+@ContextConfiguration(classes = SpringTestConfig.class)
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class,
         DbUnitTestExecutionListener.class})
 public class UserDaoImplTest {

@@ -68,6 +68,27 @@ public class TesseractImageCharacterRecognitionServiceTest {
     }
 
     @Test
+    public void resolveImage_shouldResolveAllCharacters() {
+        File file = new File("src/test/resources/tessimage/eurotext.png");
+
+        String expectedResult = "The (quick) [brown] {fox} jumps!\n" +
+                "Over the $43,456.78 <lazy> #90 dog\n" +
+                "& duck/goose, as 12.5% of E-mail\n" +
+                "from aspammer@website.com is spam.\n" +
+                "Der ,schnelle” braune Fuchs springt\n" +
+                "iiber den faulen Hund. Le renard brun\n" +
+                "«rapide» saute par-dessus le chien\n" +
+                "paresseux. La volpe marrone rapida\n" +
+                "salta sopra il cane pigro. El zorro\n" +
+                "marron ripido salta sobre el perro\n" +
+                "perezoso. A raposa marrom ripida\n" +
+                "salta sobre o cdo preguigoso.\n";
+
+        String result = tesseractImageCharacterRecognitionService.resolveImage(file);
+        assertEquals(expectedResult, result);
+    }
+
+    @Test
     @Ignore
     public void resolveImage_shouldResolveHandWrittenText() {
         File file = new File("src/test/resources/tessimage/hand_written_text.png");
