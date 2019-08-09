@@ -28,7 +28,7 @@ public class MultiWordTranslationServiceMyMemoryTest {
     // API has amount of words a day to translate that's why @Ignore takes a place here
     @Test
     @Ignore
-    public void translateSentenceToRussian_TranslatesUpTo500Characters() {
+    public void translateSentenceToRussian_TranslatesTextBiggerThan500Characters() {
         String initialString = "PREREQUISITES\n" +
                 "\n" +
                 "In order to make the most of this, you will need to have\n" +
@@ -43,7 +43,7 @@ public class MultiWordTranslationServiceMyMemoryTest {
                 "do not worry! The examples are very detailed and heavily\n" +
                 "documented to help you follow along.\nAnd one more question? To test.";
 
-        String expectedResult = "ПРЕДПОСЫЛКИ Для того, чтобы максимально использовать это, вам нужно иметь немного опыта программирования. Все примеры в этой книге на языке программирования Python. Знакомство с Python или другими языками сценариев предлагается, но не обязательно. Вам также нужно знать основы математики. Эта книга написана на практике и основана на примерах: много примеров и много кода, поэтому, даже если ваши математические навыки не на высоте, не беспокойтесь!";
-        assertEquals(expectedResult, multiWordTranslation.translateSentenceToRussian(initialString));
+        String expectedResult = "ПРЕДПОСЫЛКИ Для того, чтобы максимально использовать это, вам нужно иметь немного опыта программирования. Все примеры в этой книге на языке программирования Python. Знакомство с Python или другими языками сценариев предлагается, но не обязательно. Вам также нужно знать основы математики. Эта книга написана на практике и основана на примерах: много примеров и много кода, поэтому, даже если ваши математические навыки не на высоте, не беспокойтесь! Примеры очень подробны и тщательно документированы, чтобы помочь вам следовать. И еще один вопрос? Тестировать.";
+        assertEquals(expectedResult, multiWordTranslation.translateTextToRussian(initialString));
     }
 }

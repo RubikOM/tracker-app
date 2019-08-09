@@ -2,5 +2,7 @@ package com.rubinskyi.service.api;
 
 public interface MultiWordTranslationService {
 
-    public String translateSentenceToRussian(String englishText);
+    String translateSentenceToRussian(String englishSentence);
+
+    String translateTextToRussian(String englishText);
 }

@@ -64,7 +64,7 @@ public class CharacterRecognitionController {
         if (textFromRecognitionService.equals(emptyResponseMessage)) {
             model.addAttribute("error", cannotRecogniseCharactersMessage);
         } else {
-            String russianTranslation = multiWordTranslationService.translateSentenceToRussian(textFromRecognitionService);
+            String russianTranslation = multiWordTranslationService.translateTextToRussian(textFromRecognitionService);
             model.addAttribute("recognisedText", textFromRecognitionService);
             model.addAttribute("russianTranslation", russianTranslation);
         }

@@ -18,12 +18,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 @PropertySource("classpath:api.properties")
 public class MultiWordTranslationServiceMyMemory implements MultiWordTranslationService {
     private static final Logger LOGGER = LoggerFactory.getLogger(MultiWordTranslationServiceMyMemory.class);
     private static final int MAX_STRING_LENGTH = 500;
+    private static final String EMPTY_RESPONSE = "";
     @Value("${sentenceApiCall}")
     private String API_CALL_TEMPLATE_SENTENCE;
     private final RestTemplate restTemplate;
@@ -36,25 +38,50 @@ public class MultiWordTranslationServiceMyMemory implements MultiWordTranslation
     }
 
     @Override
-    public String translateSentenceToRussian(String englishText) {
-        // TODO I have list of sentences to send, but actually sending only one of them, need architecture for send them all, maybe in multi thread way
-        List<String> sentences = cropStringBySentences(englishText);
-        String apiCall = String.format(API_CALL_TEMPLATE_SENTENCE, sentences.get(0));
-        SentenceElementMyMemory element;
+    public String translateSentenceToRussian(String englishSentence) {
+        if (englishSentence == null || englishSentence.isEmpty()) return EMPTY_RESPONSE;
+        List<String> sentences = cropStringBySentences(englishSentence);
+        if (sentences.isEmpty()) return EMPTY_RESPONSE;
+        String sentence = sentences.get(0);
 
+        SentenceElementMyMemory multiWordTranslationFromApi = getMultiWordTranslationFromApi(sentence);
+        return multiWordTranslationFromApi.getResponseData().getTranslatedText();
+    }
+
+    @Override
+    public String translateTextToRussian(String englishText) {
+        if (englishText == null || englishText.isEmpty()) return EMPTY_RESPONSE;
+        List<String> sentences = cropStringBySentences(englishText);
+        if (sentences.isEmpty()) return EMPTY_RESPONSE;
+        List<SentenceElementMyMemory> sentenceElements = new ArrayList<>();
+
+        // TODO multi thread here
+        for (String sentence : sentences) {
+            SentenceElementMyMemory element = getMultiWordTranslationFromApi(sentence);
+            sentenceElements.add(element);
+        }
+
+        String result = sentenceElements.stream()
+                .filter(sentenceElement -> sentenceElement.getResponseData() != null)
+                .map(SentenceElementMyMemory::getResponseData)
+                .map(RussianSentenceResponse::getTranslatedText)
+                .collect(Collectors.joining(" "));
+        return result;
+    }
+
+    private SentenceElementMyMemory getMultiWordTranslationFromApi(String englishText) {
+        SentenceElementMyMemory element;
+        String apiCall = String.format(API_CALL_TEMPLATE_SENTENCE, englishText);
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(apiCall, String.class);
         String jsonInput = responseEntity.getBody();
-
         try {
-            if (jsonInput == null || jsonInput.equals("null")) return "";
+            if (jsonInput == null || jsonInput.equals("null")) return new SentenceElementMyMemory();
             element = objectMapper.readValue(jsonInput, SentenceElementMyMemory.class);
         } catch (IOException e) {
             LOGGER.error("Can't map JSON to ComprehensiveElementLingvo list ", e);
             throw new RuntimeException(e);
         }
-        RussianSentenceResponse responseData = element.getResponseData();
-
-        return responseData.getTranslatedText();
+        return element;
     }
 
     private List<String> cropStringBySentences(String initialText) {
