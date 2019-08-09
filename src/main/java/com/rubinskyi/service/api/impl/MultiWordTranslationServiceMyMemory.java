@@ -30,7 +30,7 @@ public class MultiWordTranslationServiceMyMemory implements MultiWordTranslation
     private static final Logger LOGGER = LoggerFactory.getLogger(MultiWordTranslationServiceMyMemory.class);
     private static final int MAX_STRING_LENGTH = 500;
     private static final String EMPTY_RESPONSE = "";
-    private static final String DELIMITER = " ";
+    private static final String WHITESPACE = " ";
     @Value("${sentenceApiCall}")
     private String API_CALL_TEMPLATE_SENTENCE;
     @Value("${multiWordThreadPoolSize}")
@@ -72,7 +72,7 @@ public class MultiWordTranslationServiceMyMemory implements MultiWordTranslation
                 .map(this::extractFromFuture)
                 .map(SentenceElementMyMemory::getResponseData)
                 .map(RussianSentenceResponse::getTranslatedText)
-                .collect(Collectors.joining(DELIMITER));
+                .collect(Collectors.joining(WHITESPACE));
         return result;
     }
 
@@ -110,8 +110,8 @@ public class MultiWordTranslationServiceMyMemory implements MultiWordTranslation
             String currentElement = result.get(i);
             String nextElement = result.get(i + 1);
 
-            if (currentElement.length() + nextElement.length() < MAX_STRING_LENGTH - DELIMITER.length()) {
-                result.set(i, currentElement.concat(DELIMITER).concat(nextElement));
+            if (currentElement.length() + nextElement.length() < MAX_STRING_LENGTH - WHITESPACE.length()) {
+                result.set(i, currentElement.concat(WHITESPACE).concat(nextElement));
                 result.remove(i + 1);
                 i--;
             }
