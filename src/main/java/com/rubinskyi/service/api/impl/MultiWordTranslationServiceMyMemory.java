@@ -68,14 +68,7 @@ public class MultiWordTranslationServiceMyMemory implements MultiWordTranslation
         }
 
         String result = futures.stream()
-                .map(future -> {
-                    try {
-                        return (SentenceElementMyMemory) future.get();
-                    } catch (InterruptedException | ExecutionException e) {
-                        LOGGER.error("Error while retrieving future value ", e);
-                        return new SentenceElementMyMemory();
-                    }
-                })
+                .map(this::extractFromFuture)
                 .filter(sentenceElement -> sentenceElement.getResponseData() != null)
                 .map(SentenceElementMyMemory::getResponseData)
                 .map(RussianSentenceResponse::getTranslatedText)
@@ -125,5 +118,14 @@ public class MultiWordTranslationServiceMyMemory implements MultiWordTranslation
             }
         }
         return result;
+    }
+
+    private SentenceElementMyMemory extractFromFuture(Future future) {
+        try {
+            return (SentenceElementMyMemory) future.get();
+        } catch (ExecutionException | InterruptedException e) {
+            LOGGER.error("Error while retrieving future value ", e);
+            return new SentenceElementMyMemory();
+        }
     }
 }
