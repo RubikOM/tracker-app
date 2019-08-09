@@ -1,4 +1,4 @@
-package com.rubinskyi.pojo.apiEntity;
+package com.rubinskyi.pojo.sentences;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.EqualsAndHashCode;
@@ -10,8 +10,12 @@ import lombok.ToString;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @NoArgsConstructor @Getter @Setter
 @ToString @EqualsAndHashCode
-public
-class RussianSentenceResponse {
-    String translatedText;
-    Double match;
+public class SentenceElementMyMemory {
+    RussianSentenceResponse responseData;
+    Boolean quotaFinished;
+    String responseDetails;
+    Integer exception_code;
+
+    // TODO add here list of suggested translations
+
 }

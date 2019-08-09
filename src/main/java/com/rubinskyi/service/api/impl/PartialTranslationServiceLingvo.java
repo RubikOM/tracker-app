@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rubinskyi.pojo.apiEntity.PartialElementLingvo;
+import com.rubinskyi.pojo.lingvo.PartialElementLingvo;
 import com.rubinskyi.service.api.PartialTranslationService;
 
 @Service
