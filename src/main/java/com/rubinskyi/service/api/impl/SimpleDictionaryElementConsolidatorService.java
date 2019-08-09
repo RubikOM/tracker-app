@@ -42,7 +42,6 @@ public class SimpleDictionaryElementConsolidatorService implements DictionaryEle
                 .collect(Collectors.joining(", ")).replaceAll(" +", " ");
         String consolidatedTranslationStyled = consolidatedTranslation
                 .replace(";", ",").replace(" ||", ",");
-        // TODO replaceAll() with regexp
 
         DictionaryElement element = new DictionaryElement.Builder(word, consolidatedTranslationStyled)
                 .transcription(transcription.isEmpty() ? transcription : "[" + transcription + "]")

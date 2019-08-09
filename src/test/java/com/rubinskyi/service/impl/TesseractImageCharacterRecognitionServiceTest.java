@@ -55,7 +55,6 @@ public class TesseractImageCharacterRecognitionServiceTest {
     }
 
     @Test
-    // TODO clean unused data from response (i.e. ~ -)
     public void resolveImage_shouldReturnRightNoisyText() {
         File file = new File("src/test/resources/tessimage/image_noisy.png");
 
