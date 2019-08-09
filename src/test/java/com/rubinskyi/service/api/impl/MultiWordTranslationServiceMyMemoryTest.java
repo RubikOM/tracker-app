@@ -27,7 +27,7 @@ public class MultiWordTranslationServiceMyMemoryTest {
 
     // API has amount of words a day to translate that's why @Ignore takes a place here
     @Test
-    @Ignore
+//    @Ignore
     public void translateSentenceToRussian_TranslatesTextBiggerThan500Characters() {
         String initialString = "PREREQUISITES\n" +
                 "\n" +
