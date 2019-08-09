@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 @NoArgsConstructor @Getter @Setter
 @ToString @EqualsAndHashCode
@@ -15,7 +17,5 @@ public class SentenceElementMyMemory {
     Boolean quotaFinished;
     String responseDetails;
     Integer exception_code;
-
-    // TODO add here list of suggested translations
-
+    List<TranslationVariant> matches;
 }
