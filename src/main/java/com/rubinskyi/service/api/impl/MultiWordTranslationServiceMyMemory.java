@@ -16,6 +16,10 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -28,6 +32,8 @@ public class MultiWordTranslationServiceMyMemory implements MultiWordTranslation
     private static final String EMPTY_RESPONSE = "";
     @Value("${sentenceApiCall}")
     private String API_CALL_TEMPLATE_SENTENCE;
+    @Value("${multiWordThreadPoolSize}")
+    private int MULTI_WORD_THREAD_POOL_SIZE;
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
 
@@ -53,15 +59,23 @@ public class MultiWordTranslationServiceMyMemory implements MultiWordTranslation
         if (englishText == null || englishText.isEmpty()) return EMPTY_RESPONSE;
         List<String> sentences = cropStringBySentences(englishText);
         if (sentences.isEmpty()) return EMPTY_RESPONSE;
-        List<SentenceElementMyMemory> sentenceElements = new ArrayList<>();
+        List<Future> futures = new ArrayList<>();
 
-        // TODO multi thread here
         for (String sentence : sentences) {
-            SentenceElementMyMemory element = getMultiWordTranslationFromApi(sentence);
-            sentenceElements.add(element);
+            ExecutorService executorService = Executors.newFixedThreadPool(MULTI_WORD_THREAD_POOL_SIZE);
+            Future<SentenceElementMyMemory> elementFuture = executorService.submit(() -> getMultiWordTranslationFromApi(sentence));
+            futures.add(elementFuture);
         }
 
-        String result = sentenceElements.stream()
+        String result = futures.stream()
+                .map(future -> {
+                    try {
+                        return (SentenceElementMyMemory) future.get();
+                    } catch (InterruptedException | ExecutionException e) {
+                        LOGGER.error("Error while retrieving future value ", e);
+                        return new SentenceElementMyMemory();
+                    }
+                })
                 .filter(sentenceElement -> sentenceElement.getResponseData() != null)
                 .map(SentenceElementMyMemory::getResponseData)
                 .map(RussianSentenceResponse::getTranslatedText)
