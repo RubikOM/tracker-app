@@ -23,8 +23,6 @@
     <p> ${recognisedText}</p>
     <p>Translated text</p>
     <p>${russianTranslation}</p>
-
-
 </c:if>
 
 <c:if test="${error != null}">

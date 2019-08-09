@@ -7,7 +7,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 import com.rubinskyi.entity.DictionaryElement;
-import com.rubinskyi.pojo.apiEntity.ComprehensiveElementLingvo;
+import com.rubinskyi.pojo.lingvo.ComprehensiveElementLingvo;
 
 @Component
 public class ComprehensiveElementMapperSimple implements ComprehensiveElementMapper {

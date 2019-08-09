@@ -1,8 +1,8 @@
 package com.rubinskyi.service.api.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rubinskyi.pojo.apiEntity.RussianSentenceResponse;
-import com.rubinskyi.pojo.apiEntity.SentenceElementMyMemory;
+import com.rubinskyi.pojo.sentences.RussianSentenceResponse;
+import com.rubinskyi.pojo.sentences.SentenceElementMyMemory;
 import com.rubinskyi.service.api.MultiWordTranslationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

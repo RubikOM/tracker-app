@@ -1,4 +1,4 @@
-package com.rubinskyi.pojo.apiEntity;
+package com.rubinskyi.pojo.sentences;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.EqualsAndHashCode;
