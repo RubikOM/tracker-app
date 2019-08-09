@@ -69,7 +69,6 @@ public class MultiWordTranslationServiceMyMemory implements MultiWordTranslation
 
         String result = futures.stream()
                 .map(this::extractFromFuture)
-                .filter(sentenceElement -> sentenceElement.getResponseData() != null)
                 .map(SentenceElementMyMemory::getResponseData)
                 .map(RussianSentenceResponse::getTranslatedText)
                 .collect(Collectors.joining(" "));
