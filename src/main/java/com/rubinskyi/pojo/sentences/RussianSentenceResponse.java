@@ -10,8 +10,7 @@ import lombok.ToString;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @NoArgsConstructor @Getter @Setter
 @ToString @EqualsAndHashCode
-public
-class RussianSentenceResponse {
+public class RussianSentenceResponse {
     String translatedText;
     Double match;
 }

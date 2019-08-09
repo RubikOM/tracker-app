@@ -30,6 +30,7 @@ public class MultiWordTranslationServiceMyMemory implements MultiWordTranslation
     private static final Logger LOGGER = LoggerFactory.getLogger(MultiWordTranslationServiceMyMemory.class);
     private static final int MAX_STRING_LENGTH = 500;
     private static final String EMPTY_RESPONSE = "";
+    private static final String DELIMITER = " ";
     @Value("${sentenceApiCall}")
     private String API_CALL_TEMPLATE_SENTENCE;
     @Value("${multiWordThreadPoolSize}")
@@ -71,7 +72,7 @@ public class MultiWordTranslationServiceMyMemory implements MultiWordTranslation
                 .map(this::extractFromFuture)
                 .map(SentenceElementMyMemory::getResponseData)
                 .map(RussianSentenceResponse::getTranslatedText)
-                .collect(Collectors.joining(" "));
+                .collect(Collectors.joining(DELIMITER));
         return result;
     }
 
@@ -105,13 +106,12 @@ public class MultiWordTranslationServiceMyMemory implements MultiWordTranslation
     // TODO replace with streams to increase readability
     private List<String> mergeStrings(List<String> sentences) {
         ArrayList<String> result = new ArrayList<>(sentences);
-        String delimiter = " ";
         for (int i = 0; i < result.size() - 1; i++) {
             String currentElement = result.get(i);
             String nextElement = result.get(i + 1);
 
-            if (currentElement.length() + nextElement.length() < MAX_STRING_LENGTH - delimiter.length()) {
-                result.set(i, currentElement.concat(delimiter).concat(nextElement));
+            if (currentElement.length() + nextElement.length() < MAX_STRING_LENGTH - DELIMITER.length()) {
+                result.set(i, currentElement.concat(DELIMITER).concat(nextElement));
                 result.remove(i + 1);
                 i--;
             }
