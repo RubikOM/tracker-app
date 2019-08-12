@@ -18,7 +18,7 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = SpringTestConfig.class)
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class, DbUnitTestExecutionListener.class})
-public class UserRepositoryImplTest {
+public class UserRepositoryTest {
 
     @Autowired
     private UserRepository userRepository;

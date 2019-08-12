@@ -28,7 +28,7 @@ import static org.junit.Assert.assertNull;
 @ContextConfiguration(classes = SpringTestConfig.class)
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class, DbUnitTestExecutionListener.class})
 @Transactional
-public class DictionaryRepositoryImplTest {
+public class DictionaryRepositoryTest {
 
     @Autowired
     private DictionaryRepository dictionaryRepository;
