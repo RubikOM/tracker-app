@@ -25,25 +25,18 @@ import java.util.Properties;
 @PropertySource(value = {"classpath:db.properties"})
 public class JpaConfiguration {
     private final Environment environment;
-    private static final String ENTITY_PACKAGE = "com.rubinskyi.entity";
+    private static final String PACKAGE_WITH_ENTITY_CLASSES = "com.rubinskyi.entity";
 
     @Autowired
     public JpaConfiguration(Environment environment) {
         this.environment = environment;
     }
 
-    /*@Bean
-    public SessionFactory sessionFactory() {
-        LocalSessionFactoryBuilder builder = new LocalSessionFactoryBuilder(dataSource());
-        builder.scanPackages("com.rubinskyi.entity").addProperties(hibernateProperties());
-        return builder.buildSessionFactory();
-    }*/
-
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean entityManager = new LocalContainerEntityManagerFactoryBean();
         entityManager.setDataSource(dataSource());
-        entityManager.setPackagesToScan(ENTITY_PACKAGE);
+        entityManager.setPackagesToScan(PACKAGE_WITH_ENTITY_CLASSES);
 
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         entityManager.setJpaVendorAdapter(vendorAdapter);
@@ -84,20 +77,4 @@ public class JpaConfiguration {
 
         return properties;
     }
-
-    /*private Properties hibernateProperties() {
-        return new Properties() {
-            {
-                setProperty("hibernate.hbm2ddl.auto", environment.getRequiredProperty("hibernate.hbm2ddl.auto"));
-                setProperty("hibernate.dialect", environment.getRequiredProperty("hibernate.dialect"));
-                setProperty("hibernate.show_sql", environment.getRequiredProperty("hibernate.show_sql"));
-                setProperty("hibernate.format_sql", environment.getRequiredProperty("hibernate.format_sql"));
-            }
-        };
-    }
-
-    @Bean
-    public HibernateTransactionManager transactionManager() {
-        return new HibernateTransactionManager(sessionFactory());
-    }*/
 }
