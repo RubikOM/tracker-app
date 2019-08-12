@@ -2,15 +2,14 @@ package com.rubinskyi.dao;
 
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
-import com.github.springtestdbunit.annotation.ExpectedDatabase;
-import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 import com.rubinskyi.config.SpringTestConfig;
-import com.rubinskyi.dao.DictionaryRepository;
 import com.rubinskyi.entity.DictionaryElement;
 import com.rubinskyi.entity.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -64,7 +63,8 @@ public class DictionaryRepositoryTest {
     @DatabaseSetup("/dataSet/DictionaryElementsLarge.xml")
     public void findFirst10ByAuthor() {
         User author = new User(2L, "user2", "user2Pass");
-        List<DictionaryElement> result = dictionaryRepository.findFirst10ByAuthor(author);
+        Pageable pageable = PageRequest.of(0, 10);
+        List<DictionaryElement> result = dictionaryRepository.findAllByAuthor(author, pageable);
 
         assertEquals(10, result.size());
     }

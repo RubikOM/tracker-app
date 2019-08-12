@@ -6,6 +6,8 @@ import com.rubinskyi.entity.User;
 import com.rubinskyi.service.DictionaryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -21,7 +23,8 @@ public class DictionaryServiceImpl implements DictionaryService {
     }
 
     public List<DictionaryElement> getLastDictionaryElements(User user) {
-        return dictionaryRepository.findFirst10ByAuthor(user);
+        Pageable pageable = PageRequest.of(0, 10);
+        return dictionaryRepository.findAllByAuthor(user, pageable);
     }
 
     public List<DictionaryElement> getTodaysDictionaryElements(User user) {
