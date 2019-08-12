@@ -14,8 +14,12 @@ import java.util.List;
 @Service
 @Transactional
 public class DictionaryServiceImpl implements DictionaryService {
+    private final DictionaryRepository dictionaryRepository;
+
     @Autowired
-    private DictionaryRepository dictionaryRepository;
+    public DictionaryServiceImpl(DictionaryRepository dictionaryRepository) {
+        this.dictionaryRepository = dictionaryRepository;
+    }
 
     public List<DictionaryElement> getAllDictionaryElements(User user) {
         return dictionaryRepository.findAllByAuthor(user);

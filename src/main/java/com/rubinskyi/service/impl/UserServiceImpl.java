@@ -12,13 +12,12 @@ import com.rubinskyi.entity.User;
 @Transactional
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    /*@Autowired
+    @Autowired
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-    }*/
+    }
 
     public User findByLogin(String login) {
         return userRepository.findByLogin(login);
