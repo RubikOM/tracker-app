@@ -9,10 +9,12 @@ repositories {
 }
 
 dependencies {
-    compile 'org.springframework:spring-core:5.1.5.RELEASE'
-    compile 'org.springframework:spring-webmvc:5.1.5.RELEASE'
-    compile 'org.springframework:spring-orm:5.1.5.RELEASE'
-    compile 'org.springframework.security:spring-security-core:5.1.5.RELEASE'
+//    compile 'org.springframework:spring-core:5.1.5.RELEASE'
+    compile('org.springframework:spring-webmvc:5.1.5.RELEASE') {
+        exclude group: 'commons-logging', module: 'commons-logging'
+    }
+//    compile 'org.springframework:spring-orm:5.1.5.RELEASE'
+//    compile 'org.springframework.security:spring-security-core:5.1.5.RELEASE'
     compile 'org.springframework.security:spring-security-web:5.1.5.RELEASE'
     compile 'org.springframework.security:spring-security-config:5.1.5.RELEASE'
     compile 'javax.servlet:jstl:1.2'
@@ -27,10 +29,11 @@ dependencies {
         exclude group: 'org.jboss.logging', module: 'jboss-logging'
         exclude group: 'commons-logging', module: 'commons-logging'
     }
-    compile 'org.hibernate:hibernate-core:5.2.17.Final'
+//     compile 'org.hibernate:hibernate-core:5.2.17.Final'
     compile 'org.hibernate:hibernate-entitymanager:5.2.17.Final'
-    compile 'javax.validation:validation-api:1.1.0.Final'
+//     compile 'javax.validation:validation-api:1.1.0.Final'
     compile 'org.hibernate:hibernate-validator:5.4.1.Final'
+    compile group: 'org.springframework.data', name: 'spring-data-jpa', version: '2.1.9.RELEASE'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.9.9'
     compile 'org.mockito:mockito-core:2.21.0'
     testCompile 'com.h2database:h2:1.4.197'

@@ -15,7 +15,7 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 
-import com.rubinskyi.config.HibernateConfig;
+import com.rubinskyi.config.JpaConfiguration;
 import com.rubinskyi.config.SpringConfiguration;
 import com.rubinskyi.config.WebAppConfig;
 import com.rubinskyi.config.security.SecurityConfig;
@@ -31,7 +31,7 @@ public class ApplicationInitializer implements WebApplicationInitializer {
         ctx.register(SpringConfiguration.class);
         ctx.register(SecurityConfig.class);
         ctx.register(WebAppConfig.class);
-        ctx.register(HibernateConfig.class);
+        ctx.register(JpaConfiguration.class);
         ctx.register(ObjectMapperBeans.class);
         ctx.setServletContext(container);
 

@@ -3,7 +3,7 @@ package com.rubinskyi.dao.impl;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.rubinskyi.config.SpringTestConfig;
-import com.rubinskyi.dao.UserDao;
+import com.rubinskyi.dao.UserRepository;
 import com.rubinskyi.entity.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,12 +17,11 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = SpringTestConfig.class)
-@TestExecutionListeners({DependencyInjectionTestExecutionListener.class,
-        DbUnitTestExecutionListener.class})
-public class UserDaoImplTest {
+@TestExecutionListeners({DependencyInjectionTestExecutionListener.class, DbUnitTestExecutionListener.class})
+public class UserRepositoryImplTest {
 
     @Autowired
-    private UserDao userDao;
+    private UserRepository userRepository;
 
     @Test
     @DatabaseSetup("/dataSet/DictionaryElements.xml")
@@ -32,6 +31,6 @@ public class UserDaoImplTest {
         expectedUser.setLogin("user1");
         expectedUser.setPassword("user1Pass");
 
-        assertEquals(expectedUser, userDao.findByLogin("user1"));
+        assertEquals(expectedUser, userRepository.findByLogin("user1"));
     }
 }
