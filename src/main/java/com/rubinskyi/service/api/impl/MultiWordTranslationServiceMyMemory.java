@@ -5,6 +5,8 @@ import com.rubinskyi.config.properties.ApiProperties;
 import com.rubinskyi.pojo.sentences.RussianSentenceResponse;
 import com.rubinskyi.pojo.sentences.SentenceElementMyMemory;
 import com.rubinskyi.service.api.MultiWordTranslationService;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,20 +28,13 @@ import static org.apache.commons.lang3.StringUtils.SPACE;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class MultiWordTranslationServiceMyMemory implements MultiWordTranslationService {
     private static final int MAX_STRING_LENGTH = 500;
-    private final RestTemplate restTemplate;
-    private final ObjectMapper objectMapper;
-    private final ExecutorService multiWordExecutorService;
-    private ApiProperties apiProperties;
-
-    @Autowired
-    public MultiWordTranslationServiceMyMemory(RestTemplate restTemplate, ObjectMapper objectMapper, ExecutorService multiWordExecutorService, ApiProperties apiProperties) {
-        this.restTemplate = restTemplate;
-        this.objectMapper = objectMapper;
-        this.multiWordExecutorService = multiWordExecutorService;
-        this.apiProperties = apiProperties;
-    }
+    @NonNull private final RestTemplate restTemplate;
+    @NonNull private final ObjectMapper objectMapper;
+    @NonNull private final ExecutorService multiWordExecutorService;
+    @NonNull private ApiProperties apiProperties;
 
     @Override
     public String translateSentenceToRussian(String englishSentence) {

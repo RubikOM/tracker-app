@@ -10,7 +10,6 @@ import java.util.concurrent.Executors;
 
 @Configuration
 public class ThreadPoolBeans {
-
     private ApiProperties apiProperties;
 
     @Autowired
@@ -27,5 +26,4 @@ public class ThreadPoolBeans {
     public ExecutorService lingvoExecutorService() {
         return Executors.newFixedThreadPool(apiProperties.getLingvoThreadPoolSize());
     }
-
 }

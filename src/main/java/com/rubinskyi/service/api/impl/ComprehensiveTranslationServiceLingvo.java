@@ -10,6 +10,8 @@ import com.rubinskyi.pojo.lingvo.ComprehensiveElementLingvo;
 import com.rubinskyi.pojo.mapper.ComprehensiveElementMapperSimple;
 import com.rubinskyi.service.api.ComprehensiveTranslationService;
 import com.rubinskyi.service.api.DictionaryElementConsolidatorService;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,25 +25,15 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ComprehensiveTranslationServiceLingvo implements ComprehensiveTranslationService {
-    private final ComprehensiveElementMapperSimple comprehensiveElementMapper;
-    private final DictionaryElementConsolidatorService dictionaryElementConsolidatorService;
+    @NonNull private final ComprehensiveElementMapperSimple comprehensiveElementMapper;
+    @NonNull private final DictionaryElementConsolidatorService dictionaryElementConsolidatorService;
+    @NonNull private final RestTemplate restTemplate;
+    @NonNull private final ObjectMapper objectMapper;
+    @NonNull private ApiProperties apiProperties;
     // TODO created session - scoped user bean??
     private User currentUser;
-    private final RestTemplate restTemplate;
-    private final ObjectMapper objectMapper;
-    private ApiProperties apiProperties;
-
-    @Autowired
-    public ComprehensiveTranslationServiceLingvo(ComprehensiveElementMapperSimple comprehensiveElementMapper,
-                                                 DictionaryElementConsolidatorService dictionaryElementConsolidatorService,
-                                                 RestTemplate restTemplate, ObjectMapper objectMapper, ApiProperties apiProperties) {
-        this.comprehensiveElementMapper = comprehensiveElementMapper;
-        this.dictionaryElementConsolidatorService = dictionaryElementConsolidatorService;
-        this.restTemplate = restTemplate;
-        this.objectMapper = objectMapper;
-        this.apiProperties = apiProperties;
-    }
 
     public DictionaryElement getDictionaryElementFromApi(String wordInEnglish, User user) {
         currentUser = user;

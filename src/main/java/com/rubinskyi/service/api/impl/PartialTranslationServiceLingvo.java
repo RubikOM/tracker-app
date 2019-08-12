@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rubinskyi.config.properties.ApiProperties;
 import com.rubinskyi.pojo.lingvo.PartialElementLingvo;
 import com.rubinskyi.service.api.PartialTranslationService;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,17 +16,11 @@ import java.io.IOException;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class PartialTranslationServiceLingvo implements PartialTranslationService {
-    private final RestTemplate restTemplate;
-    private final ObjectMapper objectMapper;
-    private ApiProperties apiProperties;
-
-    @Autowired
-    public PartialTranslationServiceLingvo(RestTemplate restTemplate, ObjectMapper objectMapper, ApiProperties apiProperties) {
-        this.restTemplate = restTemplate;
-        this.objectMapper = objectMapper;
-        this.apiProperties = apiProperties;
-    }
+    @NonNull private final RestTemplate restTemplate;
+    @NonNull private final ObjectMapper objectMapper;
+    @NonNull private ApiProperties apiProperties;
 
     public String obtainTranslationFromApi(String wordInEnglish) {
         String apiCall = String.format(apiProperties.getApiCallTemplatePartial(), makeWordValidToUrl(wordInEnglish));

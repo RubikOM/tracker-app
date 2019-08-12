@@ -4,6 +4,7 @@ import com.rubinskyi.dao.DictionaryRepository;
 import com.rubinskyi.entity.DictionaryElement;
 import com.rubinskyi.entity.User;
 import com.rubinskyi.service.DictionaryService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,13 +12,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class DictionaryServiceImpl implements DictionaryService {
     private final DictionaryRepository dictionaryRepository;
-
-    @Autowired
-    public DictionaryServiceImpl(DictionaryRepository dictionaryRepository) {
-        this.dictionaryRepository = dictionaryRepository;
-    }
 
     public List<DictionaryElement> getAllDictionaryElements(User user) {
         return dictionaryRepository.findAllByAuthor(user);

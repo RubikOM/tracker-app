@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,14 +26,10 @@ import com.rubinskyi.service.UserService;
 
 @Controller
 @RequestMapping("/dictionary")
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class DictionaryController {
     private final DictionaryService dictionaryService;
     private final UserService userService;
-
-    public DictionaryController(@Autowired DictionaryService dictionaryService, @Autowired UserService userService) {
-        this.dictionaryService = dictionaryService;
-        this.userService = userService;
-    }
 
     @GetMapping
     public String getPage(Model model, Principal principal) {
