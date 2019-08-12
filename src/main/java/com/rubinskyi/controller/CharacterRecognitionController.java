@@ -3,8 +3,7 @@ package com.rubinskyi.controller;
 import com.rubinskyi.pojo.Pages;
 import com.rubinskyi.service.ImageCharacterRecognitionService;
 import com.rubinskyi.service.api.MultiWordTranslationService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -24,6 +23,7 @@ import java.security.Principal;
 @Controller
 @RequestMapping("/dictionary")
 @PropertySource("classpath:characterRecognition.properties")
+@Slf4j
 public class CharacterRecognitionController {
     @Value("classpath:tessimage")
     private File userUploadedImagesFolder;
@@ -33,13 +33,13 @@ public class CharacterRecognitionController {
     private String wrongFileFormatMessage;
     @Value("${cannotRecogniseCharacters}")
     private String cannotRecogniseCharactersMessage;
-    private static final Logger LOGGER = LoggerFactory.getLogger(CharacterRecognitionController.class);
 
     private final ImageCharacterRecognitionService recognitionService;
     private final MultiWordTranslationService multiWordTranslationService;
 
     @Autowired
-    public CharacterRecognitionController(ImageCharacterRecognitionService recognitionService, MultiWordTranslationService multiWordTranslationService) {
+    public CharacterRecognitionController(ImageCharacterRecognitionService recognitionService,
+                                          MultiWordTranslationService multiWordTranslationService) {
         this.recognitionService = recognitionService;
         this.multiWordTranslationService = multiWordTranslationService;
     }
@@ -56,7 +56,7 @@ public class CharacterRecognitionController {
         try {
             multipartFile.transferTo(file);
         } catch (IOException e) {
-            LOGGER.error("Error while transferring org.springframework.web.multipart.MultipartFile to java.io.File ", e);
+            log.error("Error while transferring org.springframework.web.multipart.MultipartFile to java.io.File ", e);
             model.addAttribute("error", wrongFileFormatMessage);
             return Pages.UPLOAD_FILE_PAGE.getPage();
         }
@@ -72,7 +72,7 @@ public class CharacterRecognitionController {
         try {
             Files.delete(file.toPath());
         } catch (IOException e) {
-            LOGGER.error("Cannot delete file " + file.getPath(), e);
+            log.error("Cannot delete file " + file.getPath(), e);
         }
         return Pages.UPLOAD_FILE_PAGE.getPage();
     }
