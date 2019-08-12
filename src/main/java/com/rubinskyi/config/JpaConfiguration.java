@@ -24,8 +24,8 @@ import java.util.Properties;
 @EnableTransactionManagement
 @PropertySource(value = {"classpath:db.properties"})
 public class JpaConfiguration {
-    private final Environment environment;
     private static final String PACKAGE_WITH_ENTITY_CLASSES = "com.rubinskyi.entity";
+    private final Environment environment;
 
     @Autowired
     public JpaConfiguration(Environment environment) {
