@@ -12,9 +12,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Configuration
-@ComponentScan(basePackages = {"com.rubinskyi.service, com.rubinskyi.pojo, com.rubinskyi.dao," +
-        " com.rubinskyi.config.bean"})
-@Import(HibernateConfig.class)
+@ComponentScan(basePackages = {"com.rubinskyi.service", "com.rubinskyi.pojo", "com.rubinskyi.dao",
+        "com.rubinskyi.config.bean", "com.rubinskyi.config.properties"})
+@Import(JpaConfiguration.class)
 public class SpringTestConfig {
     @Bean("userForTest")
     public User getTestUser() {

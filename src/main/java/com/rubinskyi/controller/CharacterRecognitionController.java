@@ -3,6 +3,7 @@ package com.rubinskyi.controller;
 import com.rubinskyi.pojo.Pages;
 import com.rubinskyi.service.ImageCharacterRecognitionService;
 import com.rubinskyi.service.api.MultiWordTranslationService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +25,7 @@ import java.security.Principal;
 @RequestMapping("/dictionary")
 @PropertySource("classpath:characterRecognition.properties")
 @Slf4j
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class CharacterRecognitionController {
     @Value("classpath:tessimage")
     private File userUploadedImagesFolder;
@@ -36,13 +38,6 @@ public class CharacterRecognitionController {
 
     private final ImageCharacterRecognitionService recognitionService;
     private final MultiWordTranslationService multiWordTranslationService;
-
-    @Autowired
-    public CharacterRecognitionController(ImageCharacterRecognitionService recognitionService,
-                                          MultiWordTranslationService multiWordTranslationService) {
-        this.recognitionService = recognitionService;
-        this.multiWordTranslationService = multiWordTranslationService;
-    }
 
     @GetMapping("/file")
     public String getFileImportationPage() {

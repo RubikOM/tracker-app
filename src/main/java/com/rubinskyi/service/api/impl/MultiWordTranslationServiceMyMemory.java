@@ -1,17 +1,14 @@
 package com.rubinskyi.service.api.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rubinskyi.config.properties.ApiProperties;
 import com.rubinskyi.pojo.sentences.RussianSentenceResponse;
 import com.rubinskyi.pojo.sentences.SentenceElementMyMemory;
 import com.rubinskyi.service.api.MultiWordTranslationService;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import static org.apache.commons.lang3.StringUtils.SPACE;
-import static org.apache.commons.lang3.StringUtils.EMPTY;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -21,29 +18,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.SPACE;
+
 @Service
-@PropertySource("classpath:api.properties")
 @Slf4j
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class MultiWordTranslationServiceMyMemory implements MultiWordTranslationService {
     private static final int MAX_STRING_LENGTH = 500;
-    @Value("${sentenceApiCall}")
-    private String API_CALL_TEMPLATE_SENTENCE;
-    @Value("${multiWordThreadPoolSize}")
-    private int MULTI_WORD_THREAD_POOL_SIZE;
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
-
-    @Autowired
-    public MultiWordTranslationServiceMyMemory(RestTemplate restTemplate, ObjectMapper objectMapper) {
-        this.restTemplate = restTemplate;
-        this.objectMapper = objectMapper;
-    }
+    private final ExecutorService multiWordExecutorService;
+    private final ApiProperties apiProperties;
 
     @Override
     public String translateSentenceToRussian(String englishSentence) {
@@ -64,8 +55,7 @@ public class MultiWordTranslationServiceMyMemory implements MultiWordTranslation
         List<Future> futures = new ArrayList<>();
 
         for (String sentence : sentences) {
-            ExecutorService executorService = Executors.newFixedThreadPool(MULTI_WORD_THREAD_POOL_SIZE);
-            Future<SentenceElementMyMemory> elementFuture = executorService.submit(() -> getMultiWordTranslationFromApi(sentence));
+            Future<SentenceElementMyMemory> elementFuture = multiWordExecutorService.submit(() -> getMultiWordTranslationFromApi(sentence));
             futures.add(elementFuture);
         }
 
@@ -79,7 +69,7 @@ public class MultiWordTranslationServiceMyMemory implements MultiWordTranslation
 
     private SentenceElementMyMemory getMultiWordTranslationFromApi(String englishText) {
         SentenceElementMyMemory element;
-        String apiCall = String.format(API_CALL_TEMPLATE_SENTENCE, englishText);
+        String apiCall = String.format(apiProperties.getApiCallTemplateSentence(), englishText);
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(apiCall, String.class);
         String jsonInput = responseEntity.getBody();
         try {

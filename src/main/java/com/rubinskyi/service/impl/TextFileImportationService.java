@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.rubinskyi.service.DictionaryService;
 import com.rubinskyi.service.FileImportationService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,13 +12,9 @@ import com.rubinskyi.entity.DictionaryElement;
 import com.rubinskyi.entity.User;
 
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class TextFileImportationService implements FileImportationService {
     private final DictionaryService dictionaryService;
-
-    @Autowired
-    public TextFileImportationService(DictionaryService dictionaryService) {
-        this.dictionaryService = dictionaryService;
-    }
 
     public String getTodayTxtFile(User user) {
         List<DictionaryElement> dictionaryElements = dictionaryService.getTodaysDictionaryElements(user);

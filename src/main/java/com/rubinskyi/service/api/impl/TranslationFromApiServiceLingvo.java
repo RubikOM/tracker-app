@@ -1,27 +1,22 @@
 package com.rubinskyi.service.api.impl;
 
-import java.security.Principal;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.rubinskyi.entity.DictionaryElement;
 import com.rubinskyi.entity.User;
 import com.rubinskyi.service.UserService;
 import com.rubinskyi.service.api.TranslationFromApiService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.security.Principal;
 
 @Service
 @Transactional
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class TranslationFromApiServiceLingvo implements TranslationFromApiService {
     private final ComprehensiveTranslationServiceLingvo comprehensiveDataService;
     private final UserService userService;
-
-    @Autowired
-    public TranslationFromApiServiceLingvo(ComprehensiveTranslationServiceLingvo comprehensiveDataService, UserService userService) {
-        this.comprehensiveDataService = comprehensiveDataService;
-        this.userService = userService;
-    }
 
     public DictionaryElement getDictionaryElementFromApi(String wordInEnglish, Principal principal) {
         String customizedWord = customizeString(wordInEnglish);

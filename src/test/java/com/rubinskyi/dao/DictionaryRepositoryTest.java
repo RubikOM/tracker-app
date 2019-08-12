@@ -1,21 +1,21 @@
-package com.rubinskyi.dao.impl;
+package com.rubinskyi.dao;
 
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
-import com.github.springtestdbunit.annotation.ExpectedDatabase;
-import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 import com.rubinskyi.config.SpringTestConfig;
-import com.rubinskyi.dao.DictionaryDao;
 import com.rubinskyi.entity.DictionaryElement;
 import com.rubinskyi.entity.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,14 +26,15 @@ import static org.junit.Assert.assertNull;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = SpringTestConfig.class)
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class, DbUnitTestExecutionListener.class})
-public class DictionaryDaoImplTest {
+@Transactional
+public class DictionaryRepositoryTest {
 
     @Autowired
-    private DictionaryDao dictionaryDao;
+    private DictionaryRepository dictionaryRepository;
 
     @Test
     @DatabaseSetup("/dataSet/DictionaryElements.xml")
-    public void getAllDictionaryElements() {
+    public void findAllByAuthor() {
         User author = new User(2L, "user2", "user2Pass");
         LocalDate creationDate = LocalDate.parse("2019-01-02");
 
@@ -53,25 +54,35 @@ public class DictionaryDaoImplTest {
         expectedResult.add(expectedValue1);
         expectedResult.add(expectedValue2);
 
-        List<DictionaryElement> result = dictionaryDao.getAllDictionaryElements(author);
+        List<DictionaryElement> result = dictionaryRepository.findAllByAuthor(author);
 
         assertEquals(expectedResult, result);
     }
 
     @Test
+    @DatabaseSetup("/dataSet/DictionaryElementsLarge.xml")
+    public void findFirst10ByAuthor() {
+        User author = new User(2L, "user2", "user2Pass");
+        Pageable pageable = PageRequest.of(0, 10);
+        List<DictionaryElement> result = dictionaryRepository.findAllByAuthor(author, pageable);
+
+        assertEquals(10, result.size());
+    }
+
+    @Test
     @DatabaseSetup("/dataSet/DictionaryElements.xml")
-    public void getAllDictionaryElements_emptyList() {
+    public void findAllByAuthor_emptyList() {
         User author = new User(100500L, "NoSuchUserHere", "NoSuchUserHere");
 
         List expectedResult = new ArrayList();
-        List<DictionaryElement> result = dictionaryDao.getAllDictionaryElements(author);
+        List<DictionaryElement> result = dictionaryRepository.findAllByAuthor(author);
 
         assertEquals(expectedResult, result);
     }
 
     @Test
     @DatabaseSetup("/dataSet/DictionaryElements.xml")
-    public void findByWord() {
+    public void findByWordAndAuthor() {
         User author = new User(2L, "user2", "user2Pass");
         LocalDate creationDate = LocalDate.parse("2019-01-02");
 
@@ -81,46 +92,18 @@ public class DictionaryDaoImplTest {
         expectedResult.setAuthor(author);
         expectedResult.setCreationDate(creationDate);
 
-        DictionaryElement result = dictionaryDao.findByWord("testUser2_1", author);
+        DictionaryElement result = dictionaryRepository.findByWordAndAuthor("testUser2_1", author);
 
         assertEquals(expectedResult, result);
     }
 
     @Test
     @DatabaseSetup("/dataSet/DictionaryElements.xml")
-    public void findByWord_emptyResult() {
+    public void findByWordAndAuthor_emptyResult() {
         User author = new User(2L, "user2", "user2Pass");
 
-        DictionaryElement result = dictionaryDao.findByWord("NoSuchWordHere", author);
+        DictionaryElement result = dictionaryRepository.findByWordAndAuthor("NoSuchWordHere", author);
 
         assertNull(result);
     }
-
-    @Test
-    @DatabaseSetup("/dataSet/DictionaryElements.xml")
-    @ExpectedDatabase(assertionMode = DatabaseAssertionMode.NON_STRICT, value = "/dataSet/afterChange/addElement.xml")
-    public void createWord() {
-        User author = new User(2L, "user2", "user2Pass");
-        LocalDate creationDate = LocalDate.parse("2019-01-01");
-
-        DictionaryElement element = new DictionaryElement();
-        element.setWord("testUser2_3");
-        element.setTranslation("тест2_3");
-        element.setAuthor(author);
-        element.setCreationDate(creationDate);
-
-        dictionaryDao.addDictionaryElement(element);
-    }
-
-    @Test
-    @DatabaseSetup("/dataSet/DictionaryElements.xml")
-    @ExpectedDatabase(assertionMode = DatabaseAssertionMode.NON_STRICT, value = "/dataSet/afterChange/removeElement.xml")
-    public void deleteWord() {
-        User author = new User(2L, "user2", "user2Pass");
-
-        String wordToDelete = "testUser2_2";
-
-        dictionaryDao.removeDictionaryElement(wordToDelete, author);
-    }
-
 }

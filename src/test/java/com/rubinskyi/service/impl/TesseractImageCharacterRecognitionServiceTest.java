@@ -1,6 +1,5 @@
 package com.rubinskyi.service.impl;
 
-import com.rubinskyi.config.HibernateConfig;
 import com.rubinskyi.config.SpringTestConfig;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -14,7 +13,7 @@ import java.io.File;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {SpringTestConfig.class, HibernateConfig.class})
+@ContextConfiguration(classes = {SpringTestConfig.class})
 public class TesseractImageCharacterRecognitionServiceTest {
 
     @Autowired

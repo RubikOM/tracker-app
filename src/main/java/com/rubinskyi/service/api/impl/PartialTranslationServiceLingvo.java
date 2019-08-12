@@ -1,12 +1,13 @@
 package com.rubinskyi.service.api.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rubinskyi.config.properties.ApiProperties;
 import com.rubinskyi.pojo.lingvo.PartialElementLingvo;
 import com.rubinskyi.service.api.PartialTranslationService;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -14,22 +15,15 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 
 @Service
-@PropertySource("classpath:api.properties")
 @Slf4j
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class PartialTranslationServiceLingvo implements PartialTranslationService {
-    @Value("${partialDataCall}")
-    private String API_CALL_TEMPLATE_PARTIAL;
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
-
-    @Autowired
-    public PartialTranslationServiceLingvo(RestTemplate restTemplate, ObjectMapper objectMapper) {
-        this.restTemplate = restTemplate;
-        this.objectMapper = objectMapper;
-    }
+    private final ApiProperties apiProperties;
 
     public String obtainTranslationFromApi(String wordInEnglish) {
-        String apiCall = String.format(API_CALL_TEMPLATE_PARTIAL, makeWordValidToUrl(wordInEnglish));
+        String apiCall = String.format(apiProperties.getApiCallTemplatePartial(), makeWordValidToUrl(wordInEnglish));
 
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(apiCall, String.class);
         PartialElementLingvo partialElement = mapJsonToMinicard(responseEntity);

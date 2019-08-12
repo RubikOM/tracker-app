@@ -1,25 +1,18 @@
 package com.rubinskyi.service.impl;
 
+import com.rubinskyi.dao.UserRepository;
+import com.rubinskyi.entity.User;
 import com.rubinskyi.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.rubinskyi.dao.UserDao;
-import com.rubinskyi.entity.User;
 
 @Service
-@Transactional
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UserServiceImpl implements UserService {
-
-    private final UserDao userDao;
-
-    @Autowired
-    public UserServiceImpl(UserDao userDao) {
-        this.userDao = userDao;
-    }
+    private final UserRepository userRepository;
 
     public User findByLogin(String login) {
-        return userDao.findByLogin(login);
+        return userRepository.findByLogin(login);
     }
 }

@@ -2,6 +2,7 @@ package com.rubinskyi.service.api.impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rubinskyi.config.properties.ApiProperties;
 import com.rubinskyi.entity.DictionaryElement;
 import com.rubinskyi.entity.Interest;
 import com.rubinskyi.entity.User;
@@ -9,10 +10,9 @@ import com.rubinskyi.pojo.lingvo.ComprehensiveElementLingvo;
 import com.rubinskyi.pojo.mapper.ComprehensiveElementMapperSimple;
 import com.rubinskyi.service.api.ComprehensiveTranslationService;
 import com.rubinskyi.service.api.DictionaryElementConsolidatorService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -23,31 +23,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@PropertySource("classpath:api.properties")
 @Slf4j
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ComprehensiveTranslationServiceLingvo implements ComprehensiveTranslationService {
     private final ComprehensiveElementMapperSimple comprehensiveElementMapper;
     private final DictionaryElementConsolidatorService dictionaryElementConsolidatorService;
-    @Value("${comprehensiveDataCall}")
-    private String API_CALL_TEMPLATE_COMPREHENSIVE;
-    // TODO created session - scoped user bean??
-    private User currentUser;
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
-
-    @Autowired
-    public ComprehensiveTranslationServiceLingvo(ComprehensiveElementMapperSimple comprehensiveElementMapper,
-                                                 DictionaryElementConsolidatorService dictionaryElementConsolidatorService,
-                                                 RestTemplate restTemplate, ObjectMapper objectMapper) {
-        this.comprehensiveElementMapper = comprehensiveElementMapper;
-        this.dictionaryElementConsolidatorService = dictionaryElementConsolidatorService;
-        this.restTemplate = restTemplate;
-        this.objectMapper = objectMapper;
-    }
+    private final ApiProperties apiProperties;
+    // TODO created session - scoped user bean??
+    private User currentUser;
 
     public DictionaryElement getDictionaryElementFromApi(String wordInEnglish, User user) {
         currentUser = user;
-        String apiCall = String.format(API_CALL_TEMPLATE_COMPREHENSIVE, wordInEnglish);
+        String apiCall = String.format(apiProperties.getApiCallTemplateComprehensive(), wordInEnglish);
         List<DictionaryElement> dictionaryElements = collectDictionaryElements(apiCall, user);
         if (dictionaryElements.isEmpty()) {
             DictionaryElement emptyResponse = new DictionaryElement();
