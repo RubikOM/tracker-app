@@ -8,6 +8,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
 
 import com.rubinskyi.config.bean.ObjectMapperBeans;
+import com.rubinskyi.config.bean.ThreadPoolBeans;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.WebApplicationInitializer;
@@ -33,6 +34,7 @@ public class ApplicationInitializer implements WebApplicationInitializer {
         ctx.register(WebAppConfig.class);
         ctx.register(JpaConfiguration.class);
         ctx.register(ObjectMapperBeans.class);
+        ctx.register(ThreadPoolBeans.class);
         ctx.setServletContext(container);
 
         ServletRegistration.Dynamic dispatcherServlet = container.addServlet(

@@ -34,15 +34,15 @@ public class MultiWordTranslationServiceMyMemory implements MultiWordTranslation
     private static final int MAX_STRING_LENGTH = 500;
     @Value("${sentenceApiCall}")
     private String API_CALL_TEMPLATE_SENTENCE;
-    @Value("${multiWordThreadPoolSize}")
-    private int MULTI_WORD_THREAD_POOL_SIZE;
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
+    private final ExecutorService multiWordExecutorService;
 
     @Autowired
-    public MultiWordTranslationServiceMyMemory(RestTemplate restTemplate, ObjectMapper objectMapper) {
+    public MultiWordTranslationServiceMyMemory(RestTemplate restTemplate, ObjectMapper objectMapper, ExecutorService multiWordExecutorService) {
         this.restTemplate = restTemplate;
         this.objectMapper = objectMapper;
+        this.multiWordExecutorService = multiWordExecutorService;
     }
 
     @Override
@@ -64,8 +64,7 @@ public class MultiWordTranslationServiceMyMemory implements MultiWordTranslation
         List<Future> futures = new ArrayList<>();
 
         for (String sentence : sentences) {
-            ExecutorService executorService = Executors.newFixedThreadPool(MULTI_WORD_THREAD_POOL_SIZE);
-            Future<SentenceElementMyMemory> elementFuture = executorService.submit(() -> getMultiWordTranslationFromApi(sentence));
+            Future<SentenceElementMyMemory> elementFuture = multiWordExecutorService.submit(() -> getMultiWordTranslationFromApi(sentence));
             futures.add(elementFuture);
         }
 
