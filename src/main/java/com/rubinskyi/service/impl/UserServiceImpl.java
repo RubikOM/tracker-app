@@ -9,9 +9,7 @@ import com.rubinskyi.dao.UserRepository;
 import com.rubinskyi.entity.User;
 
 @Service
-@Transactional
 public class UserServiceImpl implements UserService {
-
     private final UserRepository userRepository;
 
     @Autowired
