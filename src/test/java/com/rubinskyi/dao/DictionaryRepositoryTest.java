@@ -1,4 +1,4 @@
-package com.rubinskyi.dao.impl;
+package com.rubinskyi.dao;
 
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
@@ -106,29 +106,4 @@ public class DictionaryRepositoryTest {
 
         assertNull(result);
     }
-
-    @Test
-    @DatabaseSetup("/dataSet/DictionaryElements.xml")
-    @ExpectedDatabase(assertionMode = DatabaseAssertionMode.NON_STRICT, value = "/dataSet/afterChange/addElement.xml")
-    public void save() {
-        User author = new User(2L, "user2", "user2Pass");
-        LocalDate creationDate = LocalDate.parse("2019-01-01");
-
-        DictionaryElement element = new DictionaryElement();
-        element.setWord("testUser2_3");
-        element.setTranslation("тест2_3");
-        element.setAuthor(author);
-        element.setCreationDate(creationDate);
-
-        dictionaryRepository.save(element);
-    }
-
-    @Test
-    @Transactional
-    @DatabaseSetup("/dataSet/DictionaryElements.xml")
-    @ExpectedDatabase(assertionMode = DatabaseAssertionMode.NON_STRICT, value = "/dataSet/afterChange/removeElement.xml")
-    public void deleteById() {
-        dictionaryRepository.deleteById(6L);
-    }
-
 }

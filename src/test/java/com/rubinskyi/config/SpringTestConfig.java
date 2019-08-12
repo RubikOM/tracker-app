@@ -3,8 +3,6 @@ package com.rubinskyi.config;
 import com.rubinskyi.entity.Dictionary;
 import com.rubinskyi.entity.Interest;
 import com.rubinskyi.entity.User;
-import org.junit.Assert;
-import org.junit.Test;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -14,8 +12,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Configuration
-@ComponentScan(basePackages = {"com.rubinskyi.service, com.rubinskyi.pojo, com.rubinskyi.dao," +
-        " com.rubinskyi.config.bean"})
+@ComponentScan(basePackages = {"com.rubinskyi.service", "com.rubinskyi.pojo", "com.rubinskyi.dao",
+        "com.rubinskyi.config.bean"})
 @Import(JpaConfiguration.class)
 public class SpringTestConfig {
     @Bean("userForTest")
@@ -29,10 +27,5 @@ public class SpringTestConfig {
         userForTest.setInterests(interests);
 
         return userForTest;
-    }
-
-    @Test
-    public void contextStarts() {
-        Assert.assertTrue(true);
     }
 }

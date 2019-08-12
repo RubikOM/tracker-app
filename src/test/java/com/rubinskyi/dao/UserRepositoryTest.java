@@ -1,4 +1,4 @@
-package com.rubinskyi.dao.impl;
+package com.rubinskyi.dao;
 
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
