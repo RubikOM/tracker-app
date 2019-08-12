@@ -1,19 +1,5 @@
 package com.rubinskyi.service.api.impl;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rubinskyi.entity.DictionaryElement;
@@ -23,12 +9,23 @@ import com.rubinskyi.pojo.lingvo.ComprehensiveElementLingvo;
 import com.rubinskyi.pojo.mapper.ComprehensiveElementMapperSimple;
 import com.rubinskyi.service.api.ComprehensiveTranslationService;
 import com.rubinskyi.service.api.DictionaryElementConsolidatorService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @PropertySource("classpath:api.properties")
+@Slf4j
 public class ComprehensiveTranslationServiceLingvo implements ComprehensiveTranslationService {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(PartialTranslationServiceLingvo.class);
     private final ComprehensiveElementMapperSimple comprehensiveElementMapper;
     private final DictionaryElementConsolidatorService dictionaryElementConsolidatorService;
     @Value("${comprehensiveDataCall}")
@@ -70,7 +67,7 @@ public class ComprehensiveTranslationServiceLingvo implements ComprehensiveTrans
             elements = objectMapper.readValue(jsonInput, new TypeReference<List<ComprehensiveElementLingvo>>() {
             });
         } catch (IOException e) {
-            LOGGER.error("Can't map JSON to ComprehensiveElementLingvo list ", e);
+            log.error("Can't map JSON to ComprehensiveElementLingvo list ", e);
             throw new RuntimeException(e);
         }
 

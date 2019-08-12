@@ -1,9 +1,9 @@
 package com.rubinskyi.service.api.impl;
 
-import java.io.IOException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rubinskyi.pojo.lingvo.PartialElementLingvo;
+import com.rubinskyi.service.api.PartialTranslationService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -11,16 +11,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rubinskyi.pojo.lingvo.PartialElementLingvo;
-import com.rubinskyi.service.api.PartialTranslationService;
+import java.io.IOException;
 
 @Service
 @PropertySource("classpath:api.properties")
+@Slf4j
 public class PartialTranslationServiceLingvo implements PartialTranslationService {
     @Value("${partialDataCall}")
     private String API_CALL_TEMPLATE_PARTIAL;
-    private static final Logger LOGGER = LoggerFactory.getLogger(PartialTranslationServiceLingvo.class);
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
 
@@ -46,7 +44,7 @@ public class PartialTranslationServiceLingvo implements PartialTranslationServic
             element = objectMapper.readValue(jsonInput, PartialElementLingvo.class);
             return element;
         } catch (IOException e) {
-            LOGGER.error(e.toString(), e);
+            log.error(e.toString(), e);
             return new PartialElementLingvo();
         }
     }

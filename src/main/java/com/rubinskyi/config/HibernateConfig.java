@@ -1,16 +1,17 @@
 package com.rubinskyi.config;
 
-import org.apache.commons.dbcp2.BasicDataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBuilder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
@@ -42,14 +43,14 @@ public class HibernateConfig {
         };
     }
 
-    @Bean(name = "dataSource")
-    public BasicDataSource dataSource() {
-        BasicDataSource ds = new BasicDataSource();
-        ds.setDriverClassName(environment.getRequiredProperty("db.class"));
-        ds.setUrl(environment.getRequiredProperty("db.url"));
-        ds.setUsername(environment.getRequiredProperty("db.user"));
-        ds.setPassword(environment.getRequiredProperty("db.pass"));
-        return ds;
+    @Bean
+    public DataSource dataSource() {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName(environment.getRequiredProperty("db.class"));
+        dataSource.setUrl(environment.getRequiredProperty("db.url"));
+        dataSource.setUsername(environment.getRequiredProperty("db.user"));
+        dataSource.setPassword(environment.getRequiredProperty("db.pass"));
+        return dataSource;
     }
 
     @Bean

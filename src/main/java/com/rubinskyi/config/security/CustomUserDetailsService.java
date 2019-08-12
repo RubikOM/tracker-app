@@ -1,28 +1,25 @@
 package com.rubinskyi.config.security;
 
-import java.util.Collections;
-import java.util.Set;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.rubinskyi.entity.User;
+import com.rubinskyi.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.User.UserBuilder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.rubinskyi.entity.User;
-import com.rubinskyi.service.UserService;
+import java.util.Collections;
+import java.util.Set;
 
 @Service("userDetailsService")
+@Slf4j
 public class CustomUserDetailsService implements UserDetailsService {
     private UserService userService;
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(CustomUserDetailsService.class);
 
     @Autowired
     public CustomUserDetailsService(UserService userService) {
@@ -34,7 +31,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = userService.findByLogin(login);
         UserBuilder builder;
         if (user == null) {
-            LOGGER.error(login + " user not found");
+            log.error(login + " user not found");
             throw new UsernameNotFoundException(login + " username not found");
         }
         GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_USER");

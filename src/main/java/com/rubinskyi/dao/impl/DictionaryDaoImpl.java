@@ -1,28 +1,26 @@
 package com.rubinskyi.dao.impl;
 
-import java.time.LocalDate;
-import java.util.List;
-
+import com.rubinskyi.dao.DictionaryDao;
+import com.rubinskyi.entity.DictionaryElement;
+import com.rubinskyi.entity.User;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.rubinskyi.dao.DictionaryDao;
-import com.rubinskyi.entity.DictionaryElement;
-import com.rubinskyi.entity.User;
+import java.time.LocalDate;
+import java.util.List;
 
 @Repository
 @Qualifier("hibernate")
 @Transactional
+@Slf4j
 public class DictionaryDaoImpl implements DictionaryDao {
-    private final static Logger LOGGER = LoggerFactory.getLogger(DictionaryDaoImpl.class);
     private final SessionFactory sessionFactory;
 
     private final static String SELECT_ALL_DICTIONARY_ELEMENTS = "from DictionaryElement where author.id = :author";
@@ -67,7 +65,7 @@ public class DictionaryDaoImpl implements DictionaryDao {
         try {
             return (DictionaryElement) query.uniqueResult();
         } catch (HibernateException e) {
-            LOGGER.error(wordInEnglish + " is not uniq in DB");
+            log.error(wordInEnglish + " is not uniq in DB");
             List<DictionaryElement> result = query.list();
             return result.get(result.size() - 1);
         }
