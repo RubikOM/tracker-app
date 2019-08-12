@@ -1,0 +1,40 @@
+package com.rubinskyi.config.properties;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
+
+@Component
+@PropertySource("classpath:api.properties")
+public class ApiProperties {
+    @Value("${partialDataCall}")
+    private String apiCallTemplatePartial;
+    @Value("${comprehensiveDataCall}")
+    private String apiCallTemplateComprehensive;
+    @Value("${sentenceApiCall}")
+    private String apiCallTemplateSentence;
+    @Value("${multiWordThreadPoolSize}")
+    private int multiWordThreadPoolSize;
+    @Value("${lingvoThreadPoolSize}")
+    private int lingvoThreadPoolSize;
+
+    public String getApiCallTemplatePartial() {
+        return apiCallTemplatePartial;
+    }
+
+    public String getApiCallTemplateComprehensive() {
+        return apiCallTemplateComprehensive;
+    }
+
+    public String getApiCallTemplateSentence() {
+        return apiCallTemplateSentence;
+    }
+
+    public int getMultiWordThreadPoolSize() {
+        return multiWordThreadPoolSize;
+    }
+
+    public int getLingvoThreadPoolSize() {
+        return lingvoThreadPoolSize;
+    }
+}
