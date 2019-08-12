@@ -10,7 +10,7 @@ import java.util.concurrent.Executors;
 
 @Configuration
 public class ThreadPoolBeans {
-    private ApiProperties apiProperties;
+    private final ApiProperties apiProperties;
 
     @Autowired
     public ThreadPoolBeans(ApiProperties apiProperties) {

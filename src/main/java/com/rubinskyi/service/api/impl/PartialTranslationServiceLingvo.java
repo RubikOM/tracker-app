@@ -18,9 +18,9 @@ import java.io.IOException;
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class PartialTranslationServiceLingvo implements PartialTranslationService {
-    @NonNull private final RestTemplate restTemplate;
-    @NonNull private final ObjectMapper objectMapper;
-    @NonNull private ApiProperties apiProperties;
+    private final RestTemplate restTemplate;
+    private final ObjectMapper objectMapper;
+    private final ApiProperties apiProperties;
 
     public String obtainTranslationFromApi(String wordInEnglish) {
         String apiCall = String.format(apiProperties.getApiCallTemplatePartial(), makeWordValidToUrl(wordInEnglish));

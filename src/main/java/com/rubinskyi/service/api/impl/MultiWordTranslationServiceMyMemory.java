@@ -31,10 +31,10 @@ import static org.apache.commons.lang3.StringUtils.SPACE;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class MultiWordTranslationServiceMyMemory implements MultiWordTranslationService {
     private static final int MAX_STRING_LENGTH = 500;
-    @NonNull private final RestTemplate restTemplate;
-    @NonNull private final ObjectMapper objectMapper;
-    @NonNull private final ExecutorService multiWordExecutorService;
-    @NonNull private ApiProperties apiProperties;
+    private final RestTemplate restTemplate;
+    private final ObjectMapper objectMapper;
+    private final ExecutorService multiWordExecutorService;
+    private final ApiProperties apiProperties;
 
     @Override
     public String translateSentenceToRussian(String englishSentence) {

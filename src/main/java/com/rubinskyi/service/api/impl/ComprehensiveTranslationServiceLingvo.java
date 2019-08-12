@@ -10,7 +10,6 @@ import com.rubinskyi.pojo.lingvo.ComprehensiveElementLingvo;
 import com.rubinskyi.pojo.mapper.ComprehensiveElementMapperSimple;
 import com.rubinskyi.service.api.ComprehensiveTranslationService;
 import com.rubinskyi.service.api.DictionaryElementConsolidatorService;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +26,11 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ComprehensiveTranslationServiceLingvo implements ComprehensiveTranslationService {
-    @NonNull private final ComprehensiveElementMapperSimple comprehensiveElementMapper;
-    @NonNull private final DictionaryElementConsolidatorService dictionaryElementConsolidatorService;
-    @NonNull private final RestTemplate restTemplate;
-    @NonNull private final ObjectMapper objectMapper;
-    @NonNull private ApiProperties apiProperties;
+    private final ComprehensiveElementMapperSimple comprehensiveElementMapper;
+    private final DictionaryElementConsolidatorService dictionaryElementConsolidatorService;
+    private final RestTemplate restTemplate;
+    private final ObjectMapper objectMapper;
+    private final ApiProperties apiProperties;
     // TODO created session - scoped user bean??
     private User currentUser;
 
