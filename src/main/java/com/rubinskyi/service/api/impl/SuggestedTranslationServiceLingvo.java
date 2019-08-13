@@ -3,6 +3,7 @@ package com.rubinskyi.service.api.impl;
 import com.rubinskyi.config.properties.ApiProperties;
 import com.rubinskyi.entity.DictionaryElement;
 import com.rubinskyi.entity.User;
+import com.rubinskyi.service.UserService;
 import com.rubinskyi.service.api.ComprehensiveTranslationService;
 import com.rubinskyi.service.api.SuggestedTranslationService;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -21,17 +24,20 @@ import java.util.stream.Collectors;
 
 import static org.apache.commons.lang3.StringUtils.SPACE;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-@Slf4j
 public class SuggestedTranslationServiceLingvo implements SuggestedTranslationService {
     private final ExecutorService lingvoExecutorService;
     private final ComprehensiveTranslationService comprehensiveTranslationService;
     private final ApiProperties apiProperties;
+    private final UserService userService;
 
     @Override
-    public List<DictionaryElement> getSuggestedElements(String englishText, User currentUser) {
+    @Transactional
+    public List<DictionaryElement> getSuggestedElements(String englishText, String username) {
         // TODO this whole thing should be rebuilt
+        User currentUser = userService.findByLogin(username);
         String[] cleanedWords = splitToArray(englishText);
         List<String> wordsToSuggest = Arrays.stream(cleanedWords)
                 .distinct()
@@ -53,9 +59,8 @@ public class SuggestedTranslationServiceLingvo implements SuggestedTranslationSe
         }
         List<DictionaryElement> dictionaryElementsToSuggest = futures.stream()
                 .map(this::extractFromFuture)
-//                .filter(element -> element.getTranslation() != null)
+                .filter(element -> element.getTranslation() != null)
                 .collect(Collectors.toList());
-
         return dictionaryElementsToSuggest;
     }
 

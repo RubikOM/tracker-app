@@ -25,10 +25,8 @@
     <p>${russianTranslation}</p>
     <p>Suggested elements</p>
     <c:forEach items="${suggestedElements}" var="suggestedElement">
-<%--        <c:if test="${suggestedElement.translation != null}">--%>
-            ${dictionaryElement.word}
-            ${dictionaryElement.translation}
-<%--        </c:if>--%>
+        <p>word: ${suggestedElement.word}</p>
+        <p>suggested translations: ${suggestedElement.translation}</p>
     </c:forEach>
 </c:if>
 

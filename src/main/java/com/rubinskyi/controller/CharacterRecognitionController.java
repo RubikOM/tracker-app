@@ -3,7 +3,6 @@ package com.rubinskyi.controller;
 import com.rubinskyi.entity.DictionaryElement;
 import com.rubinskyi.pojo.Pages;
 import com.rubinskyi.service.ImageCharacterRecognitionService;
-import com.rubinskyi.service.UserService;
 import com.rubinskyi.service.api.MultiWordTranslationService;
 import com.rubinskyi.service.api.SuggestedTranslationService;
 import lombok.RequiredArgsConstructor;
@@ -25,12 +24,13 @@ import java.nio.file.Files;
 import java.security.Principal;
 import java.util.List;
 
+@Slf4j
 @Controller
 @RequestMapping("/dictionary")
-@PropertySource("classpath:characterRecognition.properties")
-@Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@PropertySource("classpath:characterRecognition.properties")
 public class CharacterRecognitionController {
+    // TODO delete transactional and move props to props class
     @Value("classpath:tessimage")
     private File userUploadedImagesFolder;
     @Value("${emptyResponse}")
@@ -43,7 +43,6 @@ public class CharacterRecognitionController {
     private final ImageCharacterRecognitionService recognitionService;
     private final MultiWordTranslationService multiWordTranslationService;
     private final SuggestedTranslationService suggestedTranslationService;
-    private final UserService userService;
 
     @GetMapping("/file")
     public String getFileImportationPage() {
@@ -65,7 +64,7 @@ public class CharacterRecognitionController {
         if (textFromRecognitionService.equals(emptyResponseMessage)) {
             model.addAttribute("error", cannotRecogniseCharactersMessage);
         } else {
-            List<DictionaryElement> suggestedElements = suggestedTranslationService.getSuggestedElements(textFromRecognitionService, userService.findByLogin(principal.getName()));
+            List<DictionaryElement> suggestedElements = suggestedTranslationService.getSuggestedElements(textFromRecognitionService, principal.getName());
             String russianTranslation = multiWordTranslationService.translateTextToRussian(textFromRecognitionService);
             model.addAttribute("recognisedText", textFromRecognitionService);
             model.addAttribute("russianTranslation", russianTranslation);
