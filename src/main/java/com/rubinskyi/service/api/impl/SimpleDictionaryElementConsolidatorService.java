@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 import com.rubinskyi.entity.DictionaryElement;
 import com.rubinskyi.service.api.DictionaryElementConsolidatorService;
 
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.SPACE;
+
 @Service
 @PropertySource("classpath:consolidation.properties")
 public class SimpleDictionaryElementConsolidatorService implements DictionaryElementConsolidatorService {
@@ -39,9 +42,10 @@ public class SimpleDictionaryElementConsolidatorService implements DictionaryEle
         String consolidatedExample = examples.stream().limit(EXAMPLES_AMOUNT).collect(Collectors.joining());
         String consolidatedExampleTranslation = exampleTranslations.stream().limit(EXAMPLES_AMOUNT).collect(Collectors.joining());
         String consolidatedTranslation = translations.stream().limit(TRANSLATIONS_AMOUNT)
-                .collect(Collectors.joining(", ")).replaceAll(" +", " ");
+                .collect(Collectors.joining(", ")).replaceAll(" +", SPACE);
         String consolidatedTranslationStyled = consolidatedTranslation
-                .replace(";", ",").replace(" ||", ",");
+                .replace(";", ",").replace(" ||", ",")
+                .replace("!", EMPTY).replace("?", EMPTY);
 
         DictionaryElement element = new DictionaryElement.Builder(word, consolidatedTranslationStyled)
                 .transcription(transcription.isEmpty() ? transcription : "[" + transcription + "]")

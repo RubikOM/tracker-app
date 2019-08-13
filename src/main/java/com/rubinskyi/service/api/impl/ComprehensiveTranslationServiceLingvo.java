@@ -31,11 +31,8 @@ public class ComprehensiveTranslationServiceLingvo implements ComprehensiveTrans
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
     private final ApiProperties apiProperties;
-    // TODO created session - scoped user bean??
-    private User currentUser;
 
     public DictionaryElement getDictionaryElementFromApi(String wordInEnglish, User user) {
-        currentUser = user;
         String apiCall = String.format(apiProperties.getApiCallTemplateComprehensive(), wordInEnglish);
         List<DictionaryElement> dictionaryElements = collectDictionaryElements(apiCall, user);
         if (dictionaryElements.isEmpty()) {
@@ -66,17 +63,17 @@ public class ComprehensiveTranslationServiceLingvo implements ComprehensiveTrans
     private List<DictionaryElement> mapToDictionaryElementList(List<ComprehensiveElementLingvo> lingvoList, User user) {
         List<DictionaryElement> dictionaryElements = lingvoList.stream()
                 .filter(elementLingvo -> user.interestedInDictionary(elementLingvo.getDictionaryName()))
-                .sorted(this::compare)
+                .sorted((comprehensiveElement1, comprehensiveElement2) -> compare(comprehensiveElement1, comprehensiveElement2, user))
                 .map(comprehensiveElementMapper::comprehensiveElementToDictionaryElement)
                 .collect(Collectors.toList());
         return dictionaryElements;
     }
 
-    private int compare(ComprehensiveElementLingvo comprehensiveElement1, ComprehensiveElementLingvo comprehensiveElement2) {
-        return calculateValue(comprehensiveElement1) - calculateValue(comprehensiveElement2);
+    private int compare(ComprehensiveElementLingvo comprehensiveElement1, ComprehensiveElementLingvo comprehensiveElement2, User currentUser) {
+        return calculateValue(comprehensiveElement1, currentUser) - calculateValue(comprehensiveElement2, currentUser);
     }
 
-    private int calculateValue(ComprehensiveElementLingvo comprehensiveElement) {
+    private int calculateValue(ComprehensiveElementLingvo comprehensiveElement, User currentUser) {
         String dictionary = comprehensiveElement.getDictionaryName();
         Integer result = currentUser.getInterests()
                 .stream()
