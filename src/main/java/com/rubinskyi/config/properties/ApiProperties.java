@@ -19,4 +19,6 @@ public class ApiProperties {
     private int multiWordThreadPoolSize;
     @Value("${lingvoThreadPoolSize}")
     private int lingvoThreadPoolSize;
+    @Value("${suggestedWords}")
+    private int suggestedWordsAmount;
 }

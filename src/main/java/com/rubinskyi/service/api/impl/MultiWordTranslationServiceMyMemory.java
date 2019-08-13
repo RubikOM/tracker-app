@@ -5,7 +5,6 @@ import com.rubinskyi.config.properties.ApiProperties;
 import com.rubinskyi.pojo.sentences.RussianSentenceResponse;
 import com.rubinskyi.pojo.sentences.SentenceElementMyMemory;
 import com.rubinskyi.service.api.MultiWordTranslationService;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,12 +58,12 @@ public class MultiWordTranslationServiceMyMemory implements MultiWordTranslation
             futures.add(elementFuture);
         }
 
-        String result = futures.stream()
+        String russianTranslation = futures.stream()
                 .map(this::extractFromFuture)
                 .map(SentenceElementMyMemory::getResponseData)
                 .map(RussianSentenceResponse::getTranslatedText)
                 .collect(Collectors.joining(SPACE));
-        return result;
+        return russianTranslation;
     }
 
     private SentenceElementMyMemory getMultiWordTranslationFromApi(String englishText) {

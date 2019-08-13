@@ -1,30 +1,32 @@
-package com.rubinskyi.service.impl;
+package com.rubinskyi.service.api.impl;
 
 import com.rubinskyi.config.SpringTestConfig;
-import org.junit.Ignore;
+import com.rubinskyi.entity.DictionaryElement;
+import com.rubinskyi.entity.User;
+import com.rubinskyi.service.api.SuggestedTranslationService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.io.File;
+import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {SpringTestConfig.class})
-public class TesseractImageCharacterRecognitionServiceTest {
+@ContextConfiguration(classes = SpringTestConfig.class)
+public class SuggestedTranslationServiceLingvoTest {
 
     @Autowired
-    private TesseractImageCharacterRecognitionService tesseractImageCharacterRecognitionService;
+    private User userForTest;
+
+    @Autowired
+    private SuggestedTranslationService suggestedTranslationService;
 
     @Test
-    public void resolveImage_shouldReturnRightLargeText() {
-        File file = new File("src/test/resources/tessimage/large_image.png");
-
-        String result = tesseractImageCharacterRecognitionService.resolveImage(file);
-        String expectedResult = "PREREQUISITES\n" +
+    public void getSuggestedElements() {
+        String initialString = "PREREQUISITES\n" +
                 "\n" +
                 "In order to make the most of this, you will need to have\n" +
                 "a little bit of programming experience. All examples in this\n" +
@@ -36,61 +38,16 @@ public class TesseractImageCharacterRecognitionServiceTest {
                 "book is hands-on and example driven: lots of examples and\n" +
                 "lots of code, so even if your math skills are not up to par,\n" +
                 "do not worry! The examples are very detailed and heavily\n" +
-                "documented to help you follow along.\n";
+                "documented to help you follow along.\nAnd one more question? To test.";
 
-        assertEquals(expectedResult, result);
+        List<DictionaryElement> suggestedElements = suggestedTranslationService.getSuggestedElements(initialString, userForTest);
+
+        assertEquals(5, suggestedElements.size());
     }
 
     @Test
-    public void resolveImage_shouldReturnRightSmallText() {
-        File file = new File("src/test/resources/tessimage/small_image.png");
-
-        String result = tesseractImageCharacterRecognitionService.resolveImage(file);
-        String expectedResult = "Noisy image\n" +
-                "to test\n" +
-                "Tesseract OCR\n";
-
-        assertEquals(expectedResult, result);
-    }
-
-    @Test
-    public void resolveImage_shouldReturnRightNoisyText() {
-        File file = new File("src/test/resources/tessimage/image_noisy.png");
-
-        String result = tesseractImageCharacterRecognitionService.resolveImage(file);
-        String expectedResult = "~ Tesseract Will\n" +
-                "Fail With Noisy\n" +
-                "- Backgrounds\n";
-
-        assertEquals(expectedResult, result);
-    }
-
-    @Test
-    public void resolveImage_shouldResolveAllCharacters() {
-        File file = new File("src/test/resources/tessimage/eurotext.png");
-
-        String expectedResult = "The (quick) [brown] {fox} jumps!\n" +
-                "Over the $43,456.78 <lazy> #90 dog\n" +
-                "& duck/goose, as 12.5% of E-mail\n" +
-                "from aspammer@website.com is spam.\n" +
-                "Der ,schnelle” braune Fuchs springt\n" +
-                "iiber den faulen Hund. Le renard brun\n" +
-                "«rapide» saute par-dessus le chien\n" +
-                "paresseux. La volpe marrone rapida\n" +
-                "salta sopra il cane pigro. El zorro\n" +
-                "marron ripido salta sobre el perro\n" +
-                "perezoso. A raposa marrom ripida\n" +
-                "salta sobre o cdo preguigoso.\n";
-
-        String result = tesseractImageCharacterRecognitionService.resolveImage(file);
-        assertEquals(expectedResult, result);
-    }
-
-    @Test
-    public void resolveImage_realWorldImage_realBook() {
-        File file = new File("src/test/resources/tessimage/javaBook.png");
-
-        String expectedResult = "Clients neither know nor care about the class of the object they get back from the\n" +
+    public void getSuggestedElements_largeText() {
+        String initialString = "Clients neither know nor care about the class of the object they get back from the\n" +
                 "factory; they care only that it is some subclass of EnumSet.\n" +
                 "\n" +
                 "A fifth advantage of static factories is that the class of the returned object\n" +
@@ -128,18 +85,8 @@ public class TesseractImageCharacterRecognitionServiceTest {
                 "Java 6, the platform includes a general-purpose service provider framework,\n" +
                 "java.utilServiceLoader, so you needn’t, and generally shouldn’t, write your\n";
 
-        String result = tesseractImageCharacterRecognitionService.resolveImage(file);
-        assertEquals(expectedResult, result);
-    }
+        List<DictionaryElement> suggestedElements = suggestedTranslationService.getSuggestedElements(initialString, userForTest);
 
-    @Test
-    @Ignore
-    public void resolveImage_shouldResolveHandWrittenText() {
-        File file = new File("src/test/resources/tessimage/hand_written_text.png");
-
-        String result = tesseractImageCharacterRecognitionService.resolveImage(file);
-        String expectedResult = "05221859";
-
-        assertEquals(expectedResult, result);
+//        assertEquals(3, suggestedElements.size());
     }
 }

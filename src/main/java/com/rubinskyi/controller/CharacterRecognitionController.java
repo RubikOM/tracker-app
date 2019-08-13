@@ -1,8 +1,11 @@
 package com.rubinskyi.controller;
 
+import com.rubinskyi.entity.DictionaryElement;
 import com.rubinskyi.pojo.Pages;
 import com.rubinskyi.service.ImageCharacterRecognitionService;
+import com.rubinskyi.service.UserService;
 import com.rubinskyi.service.api.MultiWordTranslationService;
+import com.rubinskyi.service.api.SuggestedTranslationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 @RequestMapping("/dictionary")
@@ -38,6 +42,8 @@ public class CharacterRecognitionController {
 
     private final ImageCharacterRecognitionService recognitionService;
     private final MultiWordTranslationService multiWordTranslationService;
+    private final SuggestedTranslationService suggestedTranslationService;
+    private final UserService userService;
 
     @GetMapping("/file")
     public String getFileImportationPage() {
@@ -59,9 +65,11 @@ public class CharacterRecognitionController {
         if (textFromRecognitionService.equals(emptyResponseMessage)) {
             model.addAttribute("error", cannotRecogniseCharactersMessage);
         } else {
+            List<DictionaryElement> suggestedElements = suggestedTranslationService.getSuggestedElements(textFromRecognitionService, userService.findByLogin(principal.getName()));
             String russianTranslation = multiWordTranslationService.translateTextToRussian(textFromRecognitionService);
             model.addAttribute("recognisedText", textFromRecognitionService);
             model.addAttribute("russianTranslation", russianTranslation);
+            model.addAttribute("suggestedElements", suggestedElements);
         }
 
         try {

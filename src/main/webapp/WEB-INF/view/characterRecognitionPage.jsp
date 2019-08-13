@@ -23,6 +23,13 @@
     <p> ${recognisedText}</p>
     <p>Translated text</p>
     <p>${russianTranslation}</p>
+    <p>Suggested elements</p>
+    <c:forEach items="${suggestedElements}" var="suggestedElement">
+<%--        <c:if test="${suggestedElement.translation != null}">--%>
+            ${dictionaryElement.word}
+            ${dictionaryElement.translation}
+<%--        </c:if>--%>
+    </c:forEach>
 </c:if>
 
 <c:if test="${error != null}">
