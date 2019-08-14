@@ -1,28 +1,49 @@
 package com.rubinskyi.service.api.impl;
 
-import com.rubinskyi.config.SpringTestConfig;
+import com.rubinskyi.config.SpringTestConfigWithMockUser;
+import com.rubinskyi.entity.Dictionary;
 import com.rubinskyi.entity.DictionaryElement;
+import com.rubinskyi.entity.Interest;
 import com.rubinskyi.entity.User;
+import com.rubinskyi.service.UserService;
 import com.rubinskyi.service.api.SuggestedTranslationService;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = SpringTestConfig.class)
+@RunWith(SpringRunner.class)
+@ContextConfiguration(classes = SpringTestConfigWithMockUser.class)
 public class SuggestedTranslationServiceLingvoTest {
-
     @Autowired
-    private User userForTest;
-
+    private User testUser;
+    @Autowired
+    private UserService userService;
     @Autowired
     private SuggestedTranslationService suggestedTranslationService;
+
+
+    @Before
+    public void prepareMockUser() {
+        Set<Interest> interests = new HashSet<>();
+        User userForTest = new User(1L, "mike", "mockPassword");
+        interests.add(new Interest(userForTest, new Dictionary("LingvoComputer (En-Ru)"), 1));
+        interests.add(new Interest(userForTest, new Dictionary("LingvoUniversal (En-Ru)"), 2));
+        interests.add(new Interest(userForTest, new Dictionary("Learning (En-Ru)"), 3));
+        userForTest.setInterests(interests);
+        testUser = userForTest;
+
+        Mockito.when(userService.findByLogin(Mockito.anyString())).thenReturn(testUser);
+    }
 
     @Test
     public void getSuggestedElements() {
@@ -40,9 +61,19 @@ public class SuggestedTranslationServiceLingvoTest {
                 "do not worry! The examples are very detailed and heavily\n" +
                 "documented to help you follow along.\nAnd one more question? To test.";
 
-        List<DictionaryElement> suggestedElements = suggestedTranslationService.getSuggestedElements(initialString, userForTest);
+        List<DictionaryElement> suggestedElements = suggestedTranslationService.getSuggestedElements(initialString, "mike");
 
-        assertEquals(5, suggestedElements.size());
+        assertEquals(4, suggestedElements.size());
+    }
+
+    @Test
+    public void getSuggestedElements_sentence() {
+        String initialString = "In order to make the most of this, you will need to have a little bit of programming experience." +
+                " All examples in this book are in the Python programming language. Familiarity with Python or other scripting languages is suggested, but not required.";
+
+        List<DictionaryElement> suggestedElements = suggestedTranslationService.getSuggestedElements(initialString, "mike");
+
+        assertEquals(3, suggestedElements.size());
     }
 
     @Test
@@ -85,8 +116,8 @@ public class SuggestedTranslationServiceLingvoTest {
                 "Java 6, the platform includes a general-purpose service provider framework,\n" +
                 "java.utilServiceLoader, so you needn’t, and generally shouldn’t, write your\n";
 
-        List<DictionaryElement> suggestedElements = suggestedTranslationService.getSuggestedElements(initialString, userForTest);
+        List<DictionaryElement> suggestedElements = suggestedTranslationService.getSuggestedElements(initialString, "mike");
 
-//        assertEquals(3, suggestedElements.size());
+        assertEquals(3, suggestedElements.size());
     }
 }
