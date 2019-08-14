@@ -7,12 +7,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Getter
-@PropertySource("classpath:api.properties")
+@PropertySource("classpath:characterRecognition.properties")
 public class OcrProperties {
-    @Value("${emptyResponse}")
+    @Value("${ocr.emptyResponse}")
     private String emptyResponseMessage;
-    @Value("${wrongFileType}")
+    @Value("${ocr.wrongFileType}")
     private String wrongFileFormatMessage;
-    @Value("${cannotRecogniseCharacters}")
+    @Value("${ocr.cannotRecogniseCharacters}")
     private String cannotRecogniseCharactersMessage;
 }
