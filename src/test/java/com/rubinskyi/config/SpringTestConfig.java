@@ -14,7 +14,7 @@ import java.util.Set;
 @Configuration
 @ComponentScan(basePackages = {"com.rubinskyi.service", "com.rubinskyi.pojo", "com.rubinskyi.dao",
         "com.rubinskyi.config.bean", "com.rubinskyi.config.properties"})
-@Import(JpaConfiguration.class)
+@Import({JpaConfiguration.class, TextFileReader.class})
 public class SpringTestConfig {
     @Bean("userForTest")
     public User getTestUser() {

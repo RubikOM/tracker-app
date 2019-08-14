@@ -82,8 +82,8 @@ public class MultiWordTranslationServiceMyMemory implements MultiWordTranslation
     }
 
     private List<String> cropStringBySentences(String initialText) {
-        Pattern pattern = Pattern.compile("[^.!?\\s][^.!?]*(?:[.!?](?!['\"]?\\s|$)[^.!?]*)*[.!?]?['\"]?(?=\\s|$)",
-                Pattern.MULTILINE | Pattern.COMMENTS);
+        String splitBySeparateSentences = "[^.!?\\s][^.!?]*(?:[.!?](?!['\"]?\\s|$)[^.!?]*)*[.!?]?['\"]?(?=\\s|$)";
+        Pattern pattern = Pattern.compile(splitBySeparateSentences, Pattern.MULTILINE | Pattern.COMMENTS);
         Matcher matcher = pattern.matcher(initialText);
         List<String> result = new ArrayList<>();
         while (matcher.find()) {

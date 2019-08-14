@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -33,7 +34,6 @@ public class SuggestedTranslationServiceLingvo implements SuggestedTranslationSe
 
     @Override
     public List<DictionaryElement> getSuggestedElements(String englishText, String username) {
-        // TODO this whole thing should be rebuilt
         User currentUser = userService.findByLogin(username);
         String[] cleanedWords = splitToArray(englishText);
         List<String> wordsToSuggest = Arrays.stream(cleanedWords)
@@ -56,7 +56,7 @@ public class SuggestedTranslationServiceLingvo implements SuggestedTranslationSe
         }
         List<DictionaryElement> dictionaryElementsToSuggest = futures.stream()
                 .map(this::extractFromFuture)
-                .filter(element -> element.getTranslation() != null)
+                .filter(element -> Objects.nonNull(element.getTranslation()))
                 .collect(Collectors.toList());
         return dictionaryElementsToSuggest;
     }
