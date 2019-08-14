@@ -25,10 +25,10 @@ import static org.junit.Assert.assertNull;
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = SpringTestConfig.class)
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class, DbUnitTestExecutionListener.class})
-public class DictionaryRepositoryTest {
+public class DictionaryElementRepositoryTest {
 
     @Autowired
-    private DictionaryRepository dictionaryRepository;
+    private DictionaryElementRepository dictionaryElementRepository;
 
     @Test
     @DatabaseSetup("/dataSet/DictionaryElements.xml")
@@ -52,7 +52,7 @@ public class DictionaryRepositoryTest {
         expectedResult.add(expectedValue1);
         expectedResult.add(expectedValue2);
 
-        List<DictionaryElement> result = dictionaryRepository.findAllByAuthor(author);
+        List<DictionaryElement> result = dictionaryElementRepository.findAllByAuthor(author);
 
         assertEquals(expectedResult, result);
     }
@@ -62,7 +62,7 @@ public class DictionaryRepositoryTest {
     public void findFirst10ByAuthor() {
         User author = new User(2L, "user2", "user2Pass");
         Pageable pageable = PageRequest.of(0, 10);
-        List<DictionaryElement> result = dictionaryRepository.findAllByAuthor(author, pageable);
+        List<DictionaryElement> result = dictionaryElementRepository.findAllByAuthor(author, pageable);
 
         assertEquals(10, result.size());
     }
@@ -73,7 +73,7 @@ public class DictionaryRepositoryTest {
         User author = new User(100500L, "NoSuchUserHere", "NoSuchUserHere");
 
         List expectedResult = new ArrayList();
-        List<DictionaryElement> result = dictionaryRepository.findAllByAuthor(author);
+        List<DictionaryElement> result = dictionaryElementRepository.findAllByAuthor(author);
 
         assertEquals(expectedResult, result);
     }
@@ -90,7 +90,7 @@ public class DictionaryRepositoryTest {
         expectedResult.setAuthor(author);
         expectedResult.setCreationDate(creationDate);
 
-        DictionaryElement result = dictionaryRepository.findByWordAndAuthor("testUser2_1", author);
+        DictionaryElement result = dictionaryElementRepository.findByWordAndAuthor("testUser2_1", author);
 
         assertEquals(expectedResult, result);
     }
@@ -100,7 +100,7 @@ public class DictionaryRepositoryTest {
     public void findByWordAndAuthor_emptyResult() {
         User author = new User(2L, "user2", "user2Pass");
 
-        DictionaryElement result = dictionaryRepository.findByWordAndAuthor("NoSuchWordHere", author);
+        DictionaryElement result = dictionaryElementRepository.findByWordAndAuthor("NoSuchWordHere", author);
 
         assertNull(result);
     }

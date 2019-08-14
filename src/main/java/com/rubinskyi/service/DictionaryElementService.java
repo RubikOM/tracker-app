@@ -5,7 +5,7 @@ import java.util.List;
 import com.rubinskyi.entity.DictionaryElement;
 import com.rubinskyi.entity.User;
 
-public interface DictionaryService {
+public interface DictionaryElementService {
     List<DictionaryElement> getAllDictionaryElements(User user);
 
     List<DictionaryElement> getLastDictionaryElements(User user);

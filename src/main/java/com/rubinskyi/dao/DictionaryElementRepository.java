@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Repository
-public interface DictionaryRepository extends PagingAndSortingRepository<DictionaryElement, Long> {
+public interface DictionaryElementRepository extends PagingAndSortingRepository<DictionaryElement, Long> {
 
     List<DictionaryElement> findAllByAuthor(User user);
 
