@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,11 +22,12 @@ import java.nio.file.Files;
 import java.security.Principal;
 import java.util.Map;
 
+import static com.rubinskyi.pojo.constant.StringConstant.ERROR;
+
 @Slf4j
 @Controller
 @RequestMapping("/dictionary")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-@PropertySource("classpath:characterRecognition.properties")
 public class CharacterRecognitionController {
     @Value("classpath:tessimage")
     private File userUploadedImagesFolder;
@@ -48,12 +48,12 @@ public class CharacterRecognitionController {
             multipartFile.transferTo(file);
         } catch (IOException e) {
             log.error("Error while transferring org.springframework.web.multipart.MultipartFile to java.io.File ", e);
-            model.addAttribute("error", ocrProperties.getWrongFileFormatMessage());
+            model.addAttribute(ERROR, ocrProperties.getWrongFileFormatMessage());
             return Pages.UPLOAD_FILE_PAGE.getPage();
         }
         String textFromRecognitionService = recognitionService.resolveImage(file);
         if (textFromRecognitionService.equals(ocrProperties.getEmptyResponseMessage())) {
-            model.addAttribute("error", ocrProperties.getCannotRecogniseCharactersMessage());
+            model.addAttribute(ERROR, ocrProperties.getCannotRecogniseCharactersMessage());
         } else {
             Map<String, Object> translations = fileTranslationService.getTranslations(textFromRecognitionService, principal.getName());
             model.addAttribute("recognisedText", textFromRecognitionService);

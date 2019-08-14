@@ -30,6 +30,7 @@ import static org.apache.commons.lang3.StringUtils.SPACE;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class MultiWordTranslationServiceMyMemory implements MultiWordTranslationService {
     private static final int MAX_STRING_LENGTH = 500;
+    private static final String REGEX_TO_SPLIT_BY_SEPARATE_SENTENCES = "[^.!?\\s][^.!?]*(?:[.!?](?!['\"]?\\s|$)[^.!?]*)*[.!?]?['\"]?(?=\\s|$)";
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
     private final ExecutorService multiWordExecutorService;
@@ -82,8 +83,7 @@ public class MultiWordTranslationServiceMyMemory implements MultiWordTranslation
     }
 
     private List<String> cropStringBySentences(String initialText) {
-        String splitBySeparateSentences = "[^.!?\\s][^.!?]*(?:[.!?](?!['\"]?\\s|$)[^.!?]*)*[.!?]?['\"]?(?=\\s|$)";
-        Pattern pattern = Pattern.compile(splitBySeparateSentences, Pattern.MULTILINE | Pattern.COMMENTS);
+        Pattern pattern = Pattern.compile(REGEX_TO_SPLIT_BY_SEPARATE_SENTENCES, Pattern.MULTILINE | Pattern.COMMENTS);
         Matcher matcher = pattern.matcher(initialText);
         List<String> result = new ArrayList<>();
         while (matcher.find()) {

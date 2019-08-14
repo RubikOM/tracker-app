@@ -22,9 +22,9 @@ public class MultiWordTranslationServiceMyMemoryTest {
 
     @Test
     public void translateSentenceToRussian_shouldReturnCorrectResponse() {
-        String initialString = textFileReader.getContentByFileName("tesseractTestDataHeader.txt");
+        String initialString = textFileReader.getContentByFileName("ocrText/tesseractTestDataHeader.txt");
 
-        String expectedResult = textFileReader.getContentByFileName("tesseractTestDataHeaderTranslated.txt");
+        String expectedResult = textFileReader.getContentByFileName("ocrText/tesseractTestDataHeaderTranslated.txt");
         assertEquals(expectedResult, multiWordTranslation.translateSentenceToRussian(initialString));
     }
 
@@ -32,9 +32,9 @@ public class MultiWordTranslationServiceMyMemoryTest {
     @Test
     @Ignore
     public void translateSentenceToRussian_TranslatesTextBiggerThan500Characters() {
-        String initialString = textFileReader.getContentByFileName("tesseractTestData.txt");
+        String initialString = textFileReader.getContentByFileName("ocrText/tesseractTestData.txt");
 
-        String expectedResult = textFileReader.getContentByFileName("tesseractTestDataTranslated.txt");
+        String expectedResult = textFileReader.getContentByFileName("ocrText/tesseractTestDataTranslated.txt");
         assertEquals(expectedResult, multiWordTranslation.translateTextToRussian(initialString));
     }
 }
