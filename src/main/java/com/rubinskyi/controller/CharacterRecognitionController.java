@@ -7,7 +7,6 @@ import com.rubinskyi.service.api.FileTranslationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,8 +28,6 @@ import static com.rubinskyi.pojo.constant.StringConstant.ERROR;
 @RequestMapping("/dictionary")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class CharacterRecognitionController {
-    @Value("classpath:tessimage")
-    private File userUploadedImagesFolder;
     private final ImageCharacterRecognitionService recognitionService;
     private final FileTranslationService fileTranslationService;
     private final OcrProperties ocrProperties;
@@ -42,7 +39,7 @@ public class CharacterRecognitionController {
 
     @PostMapping("/uploadFile")
     public String submitFile(@RequestParam("file") MultipartFile multipartFile, Model model, Principal principal) {
-        String pathToFile = userUploadedImagesFolder.getAbsolutePath() + "_" + principal.getName() + "_" + multipartFile.getOriginalFilename();
+        String pathToFile = ocrProperties.getUserUploadedImagesFolder().getAbsolutePath() + "_" + principal.getName() + "_" + multipartFile.getOriginalFilename();
         File file = new File(pathToFile);
         try {
             multipartFile.transferTo(file);
