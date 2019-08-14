@@ -1,10 +1,9 @@
 package com.rubinskyi.controller;
 
-import com.rubinskyi.entity.DictionaryElement;
+import com.rubinskyi.config.properties.OcrProperties;
 import com.rubinskyi.pojo.Pages;
 import com.rubinskyi.service.ImageCharacterRecognitionService;
-import com.rubinskyi.service.api.MultiWordTranslationService;
-import com.rubinskyi.service.api.SuggestedTranslationService;
+import com.rubinskyi.service.api.FileTranslationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.security.Principal;
-import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Controller
@@ -30,19 +29,11 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @PropertySource("classpath:characterRecognition.properties")
 public class CharacterRecognitionController {
-    // TODO delete transactional and move props to props class
     @Value("classpath:tessimage")
     private File userUploadedImagesFolder;
-    @Value("${emptyResponse}")
-    private String emptyResponseMessage;
-    @Value("${wrongFileType}")
-    private String wrongFileFormatMessage;
-    @Value("${cannotRecogniseCharacters}")
-    private String cannotRecogniseCharactersMessage;
-
     private final ImageCharacterRecognitionService recognitionService;
-    private final MultiWordTranslationService multiWordTranslationService;
-    private final SuggestedTranslationService suggestedTranslationService;
+    private final FileTranslationService fileTranslationService;
+    private final OcrProperties ocrProperties;
 
     @GetMapping("/file")
     public String getFileImportationPage() {
@@ -57,18 +48,17 @@ public class CharacterRecognitionController {
             multipartFile.transferTo(file);
         } catch (IOException e) {
             log.error("Error while transferring org.springframework.web.multipart.MultipartFile to java.io.File ", e);
-            model.addAttribute("error", wrongFileFormatMessage);
+            model.addAttribute("error", ocrProperties.getWrongFileFormatMessage());
             return Pages.UPLOAD_FILE_PAGE.getPage();
         }
         String textFromRecognitionService = recognitionService.resolveImage(file);
-        if (textFromRecognitionService.equals(emptyResponseMessage)) {
-            model.addAttribute("error", cannotRecogniseCharactersMessage);
+        if (textFromRecognitionService.equals(ocrProperties.getEmptyResponseMessage())) {
+            model.addAttribute("error", ocrProperties.getCannotRecogniseCharactersMessage());
         } else {
-            List<DictionaryElement> suggestedElements = suggestedTranslationService.getSuggestedElements(textFromRecognitionService, principal.getName());
-            String russianTranslation = multiWordTranslationService.translateTextToRussian(textFromRecognitionService);
+            Map<String, Object> translations = fileTranslationService.getTranslations(textFromRecognitionService, principal.getName());
             model.addAttribute("recognisedText", textFromRecognitionService);
-            model.addAttribute("russianTranslation", russianTranslation);
-            model.addAttribute("suggestedElements", suggestedElements);
+            model.addAttribute("russianTranslation", translations.get("russian"));
+            model.addAttribute("suggestedElements", translations.get("suggestedElements"));
         }
 
         try {

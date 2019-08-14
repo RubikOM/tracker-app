@@ -6,8 +6,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 @Component
-@PropertySource("classpath:api.properties")
 @Getter
+@PropertySource("classpath:api.properties")
 public class ApiProperties {
     @Value("${partialDataCall}")
     private String apiCallTemplatePartial;

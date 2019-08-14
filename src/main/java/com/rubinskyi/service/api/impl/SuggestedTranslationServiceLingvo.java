@@ -11,8 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -34,7 +32,6 @@ public class SuggestedTranslationServiceLingvo implements SuggestedTranslationSe
     private final UserService userService;
 
     @Override
-    @Transactional
     public List<DictionaryElement> getSuggestedElements(String englishText, String username) {
         // TODO this whole thing should be rebuilt
         User currentUser = userService.findByLogin(username);
