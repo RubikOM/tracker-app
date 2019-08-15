@@ -1,0 +1,5 @@
+2019-08-09 16:48:21,674 INFO com.rubinskyi.config.SpringTestConfig [Test worker] Hello Mike
+2019-08-09 16:50:07,192 INFO com.rubinskyi.config.SpringTestConfig [Test worker] Hello Mike
+2019-08-09 16:56:01,995 INFO com.rubinskyi.config.SpringTestConfig [Test worker] Hello Mike
+
+2019-08-09 17:52:54,983 INFO com.rubinskyi.config.Test [main] It works
