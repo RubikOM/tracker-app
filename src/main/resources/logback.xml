@@ -1,7 +1,14 @@
 <configuration>
-
     <statusListener class="ch.qos.logback.core.status.NopStatusListener" />
     <property name="HOME_LOG" value="logs/app.log"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                %d{dd-MM-yyyy HH:mm:ss.SSS} %magenta([%thread]) %highlight(%-5level) %logger{36}.%M - %msg%n
+            </Pattern>
+        </layout>
+    </appender>
 
     <appender name="FILE-ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${HOME_LOG}</file>
@@ -18,12 +25,14 @@
         </encoder>
     </appender>
 
-    <logger name="com.rubinskyi" level="info" additivity="false">
+    <logger name="com.rubinskyi" level="debug" additivity="false">
+        <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE-ROLLING"/>
     </logger>
 
-    <root level="error">
+    <root level="info">
         <appender-ref ref="FILE-ROLLING"/>
+        <appender-ref ref="CONSOLE"/>
     </root>
 
 </configuration>

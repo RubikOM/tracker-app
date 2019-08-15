@@ -10,13 +10,13 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 
 @Service
-@PropertySource("classpath:characterRecognition.properties")
+//@PropertySource("classpath:characterRecognition.properties")
 @Slf4j
 public class TesseractImageCharacterRecognitionService implements ImageCharacterRecognitionService {
     @Value("classpath:tessdata")
     private File tesseractTrainedModelsFolder;
-    @Value("${emptyResponse}")
-    private String emptyResponseMessage;
+//    @Value("${emptyResponse}")
+//    private String emptyResponseMessage;
 
     @Override
     public String resolveImage(File file) {
@@ -28,7 +28,7 @@ public class TesseractImageCharacterRecognitionService implements ImageCharacter
             recognisedText = tesseract.doOCR(file);
         } catch (Exception e) {
             log.error("Error during image recognition", e);
-            return emptyResponseMessage;
+            return "emptyResponseMessage";
         }
         return recognisedText;
     }
