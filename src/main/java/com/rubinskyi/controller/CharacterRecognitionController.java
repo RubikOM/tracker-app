@@ -1,13 +1,12 @@
 package com.rubinskyi.controller;
 
+import com.rubinskyi.config.properties.OcrProperties;
 import com.rubinskyi.pojo.Pages;
 import com.rubinskyi.service.ImageCharacterRecognitionService;
-import com.rubinskyi.service.api.MultiWordTranslationService;
+import com.rubinskyi.service.api.FileTranslationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,24 +19,18 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.security.Principal;
+import java.util.Map;
 
+import static com.rubinskyi.pojo.constant.StringConstant.ERROR;
+
+@Slf4j
 @Controller
 @RequestMapping("/dictionary")
-@PropertySource("classpath:characterRecognition.properties")
-@Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class CharacterRecognitionController {
-    @Value("classpath:tessimage")
-    private File userUploadedImagesFolder;
-    @Value("${emptyResponse}")
-    private String emptyResponseMessage;
-    @Value("${wrongFileType}")
-    private String wrongFileFormatMessage;
-    @Value("${cannotRecogniseCharacters}")
-    private String cannotRecogniseCharactersMessage;
-
     private final ImageCharacterRecognitionService recognitionService;
-    private final MultiWordTranslationService multiWordTranslationService;
+    private final FileTranslationService fileTranslationService;
+    private final OcrProperties ocrProperties;
 
     @GetMapping("/file")
     public String getFileImportationPage() {
@@ -46,22 +39,23 @@ public class CharacterRecognitionController {
 
     @PostMapping("/uploadFile")
     public String submitFile(@RequestParam("file") MultipartFile multipartFile, Model model, Principal principal) {
-        String pathToFile = userUploadedImagesFolder.getAbsolutePath() + "_" + principal.getName() + "_" + multipartFile.getOriginalFilename();
+        String pathToFile = ocrProperties.getUserUploadedImagesFolder().getAbsolutePath() + "_" + principal.getName() + "_" + multipartFile.getOriginalFilename();
         File file = new File(pathToFile);
         try {
             multipartFile.transferTo(file);
         } catch (IOException e) {
             log.error("Error while transferring org.springframework.web.multipart.MultipartFile to java.io.File ", e);
-            model.addAttribute("error", wrongFileFormatMessage);
+            model.addAttribute(ERROR, ocrProperties.getWrongFileFormatMessage());
             return Pages.UPLOAD_FILE_PAGE.getPage();
         }
         String textFromRecognitionService = recognitionService.resolveImage(file);
-        if (textFromRecognitionService.equals(emptyResponseMessage)) {
-            model.addAttribute("error", cannotRecogniseCharactersMessage);
+        if (textFromRecognitionService.equals(ocrProperties.getEmptyResponseMessage())) {
+            model.addAttribute(ERROR, ocrProperties.getCannotRecogniseCharactersMessage());
         } else {
-            String russianTranslation = multiWordTranslationService.translateTextToRussian(textFromRecognitionService);
+            Map<String, Object> translations = fileTranslationService.getTranslations(textFromRecognitionService, principal.getName());
             model.addAttribute("recognisedText", textFromRecognitionService);
-            model.addAttribute("russianTranslation", russianTranslation);
+            model.addAttribute("russianTranslation", translations.get("russian"));
+            model.addAttribute("suggestedElements", translations.get("suggestedElements"));
         }
 
         try {

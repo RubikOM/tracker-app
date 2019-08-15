@@ -1,9 +1,9 @@
 package com.rubinskyi.service.impl;
 
-import com.rubinskyi.dao.DictionaryRepository;
+import com.rubinskyi.dao.DictionaryElementRepository;
 import com.rubinskyi.entity.DictionaryElement;
 import com.rubinskyi.entity.User;
-import com.rubinskyi.service.DictionaryService;
+import com.rubinskyi.service.DictionaryElementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -15,37 +15,37 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class DictionaryServiceImpl implements DictionaryService {
-    private final DictionaryRepository dictionaryRepository;
+public class DictionaryElementElementServiceImpl implements DictionaryElementService {
+    private final DictionaryElementRepository dictionaryElementRepository;
 
     public List<DictionaryElement> getAllDictionaryElements(User user) {
-        return dictionaryRepository.findAllByAuthor(user);
+        return dictionaryElementRepository.findAllByAuthor(user);
     }
 
     public List<DictionaryElement> getLastDictionaryElements(User user) {
         Pageable pageable = PageRequest.of(0, 10);
-        return dictionaryRepository.findAllByAuthor(user, pageable);
+        return dictionaryElementRepository.findAllByAuthor(user, pageable);
     }
 
     public List<DictionaryElement> getTodaysDictionaryElements(User user) {
         LocalDate today = LocalDate.now();
-        return dictionaryRepository.findAllByAuthorAndCreationDate(user, today);
+        return dictionaryElementRepository.findAllByAuthorAndCreationDate(user, today);
     }
 
     public DictionaryElement findByWord(String word, User user) {
-        return dictionaryRepository.findByWordAndAuthor(word, user);
+        return dictionaryElementRepository.findByWordAndAuthor(word, user);
     }
 
     public void createDictionaryElement(DictionaryElement dictionaryElement, User user) {
         dictionaryElement.setCreationDate(LocalDate.now());
         dictionaryElement.setAuthor(user);
 
-        dictionaryRepository.save(dictionaryElement);
+        dictionaryElementRepository.save(dictionaryElement);
     }
 
     public void removeDictionaryElement(String wordToDelete, User user) {
         DictionaryElement byWord = findByWord(wordToDelete, user);
 
-        dictionaryRepository.delete(byWord);
+        dictionaryElementRepository.delete(byWord);
     }
 }

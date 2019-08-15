@@ -6,17 +6,19 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 @Component
-@PropertySource("classpath:api.properties")
 @Getter
+@PropertySource("classpath:api.properties")
 public class ApiProperties {
-    @Value("${partialDataCall}")
+    @Value("${api.partialDataCall}")
     private String apiCallTemplatePartial;
-    @Value("${comprehensiveDataCall}")
+    @Value("${api.comprehensiveDataCall}")
     private String apiCallTemplateComprehensive;
-    @Value("${sentenceApiCall}")
+    @Value("${api.sentenceApiCall}")
     private String apiCallTemplateSentence;
-    @Value("${multiWordThreadPoolSize}")
+    @Value("${api.multiWordThreadPoolSize}")
     private int multiWordThreadPoolSize;
-    @Value("${lingvoThreadPoolSize}")
+    @Value("${api.lingvoThreadPoolSize}")
     private int lingvoThreadPoolSize;
+    @Value("${api.suggestedWordsAmount}")
+    private int suggestedWordsAmount;
 }

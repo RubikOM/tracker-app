@@ -12,6 +12,8 @@ import org.springframework.web.servlet.view.JstlView;
 @EnableWebMvc
 @Configuration
 public class WebAppConfig implements WebMvcConfigurer {
+    private static final int MAX_UPLOAD_SIZE_BYTES = 2_000_000;
+
     @Bean
     public InternalResourceViewResolver viewResolver() {
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
@@ -29,7 +31,7 @@ public class WebAppConfig implements WebMvcConfigurer {
     @Bean(name = "multipartResolver")
     public CommonsMultipartResolver multipartResolver() {
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-        multipartResolver.setMaxUploadSize(100_000);
+        multipartResolver.setMaxUploadSize(MAX_UPLOAD_SIZE_BYTES);
         return multipartResolver;
     }
 

@@ -2,7 +2,7 @@ package com.rubinskyi.service.impl;
 
 import java.util.List;
 
-import com.rubinskyi.service.DictionaryService;
+import com.rubinskyi.service.DictionaryElementService;
 import com.rubinskyi.service.FileImportationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,16 +14,16 @@ import com.rubinskyi.entity.User;
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class TextFileImportationService implements FileImportationService {
-    private final DictionaryService dictionaryService;
+    private final DictionaryElementService dictionaryElementService;
 
     public String getTodayTxtFile(User user) {
-        List<DictionaryElement> dictionaryElements = dictionaryService.getTodaysDictionaryElements(user);
+        List<DictionaryElement> dictionaryElements = dictionaryElementService.getTodaysDictionaryElements(user);
 
         return makeSingleStringWithFiles(dictionaryElements);
     }
 
     public String getAllTimeTxtFile(User user) {
-        List<DictionaryElement> allTimeDictionaryElements = dictionaryService.getAllDictionaryElements(user);
+        List<DictionaryElement> allTimeDictionaryElements = dictionaryElementService.getAllDictionaryElements(user);
 
         return makeSingleStringWithFiles(allTimeDictionaryElements);
     }

@@ -5,7 +5,6 @@ import com.rubinskyi.config.properties.ApiProperties;
 import com.rubinskyi.pojo.sentences.RussianSentenceResponse;
 import com.rubinskyi.pojo.sentences.SentenceElementMyMemory;
 import com.rubinskyi.service.api.MultiWordTranslationService;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +30,7 @@ import static org.apache.commons.lang3.StringUtils.SPACE;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class MultiWordTranslationServiceMyMemory implements MultiWordTranslationService {
     private static final int MAX_STRING_LENGTH = 500;
+    private static final String REGEX_TO_SPLIT_BY_SEPARATE_SENTENCES = "[^.!?\\s][^.!?]*(?:[.!?](?!['\"]?\\s|$)[^.!?]*)*[.!?]?['\"]?(?=\\s|$)";
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
     private final ExecutorService multiWordExecutorService;
@@ -59,12 +59,12 @@ public class MultiWordTranslationServiceMyMemory implements MultiWordTranslation
             futures.add(elementFuture);
         }
 
-        String result = futures.stream()
+        String russianTranslation = futures.stream()
                 .map(this::extractFromFuture)
                 .map(SentenceElementMyMemory::getResponseData)
                 .map(RussianSentenceResponse::getTranslatedText)
                 .collect(Collectors.joining(SPACE));
-        return result;
+        return russianTranslation;
     }
 
     private SentenceElementMyMemory getMultiWordTranslationFromApi(String englishText) {
@@ -83,8 +83,7 @@ public class MultiWordTranslationServiceMyMemory implements MultiWordTranslation
     }
 
     private List<String> cropStringBySentences(String initialText) {
-        Pattern pattern = Pattern.compile("[^.!?\\s][^.!?]*(?:[.!?](?!['\"]?\\s|$)[^.!?]*)*[.!?]?['\"]?(?=\\s|$)",
-                Pattern.MULTILINE | Pattern.COMMENTS);
+        Pattern pattern = Pattern.compile(REGEX_TO_SPLIT_BY_SEPARATE_SENTENCES, Pattern.MULTILINE | Pattern.COMMENTS);
         Matcher matcher = pattern.matcher(initialText);
         List<String> result = new ArrayList<>();
         while (matcher.find()) {

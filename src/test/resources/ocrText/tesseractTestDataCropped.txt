@@ -1,0 +1,2 @@
+In order to make the most of this, you will need to have a little bit of programming experience. 
+All examples in this book are in the Python programming language. Familiarity with Python or other scripting languages is suggested, but not required.

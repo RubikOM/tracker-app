@@ -21,14 +21,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.rubinskyi.entity.DictionaryElement;
 import com.rubinskyi.entity.User;
 import com.rubinskyi.pojo.Pages;
-import com.rubinskyi.service.DictionaryService;
+import com.rubinskyi.service.DictionaryElementService;
 import com.rubinskyi.service.UserService;
 
 @Controller
 @RequestMapping("/dictionary")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class DictionaryController {
-    private final DictionaryService dictionaryService;
+    private final DictionaryElementService dictionaryElementService;
     private final UserService userService;
 
     @GetMapping
@@ -36,12 +36,12 @@ public class DictionaryController {
         model.addAttribute("dictionaryElement", new DictionaryElement());
         User user = userService.findByLogin(principal.getName());
 
-        List<DictionaryElement> elements = dictionaryService.getTodaysDictionaryElements(user);
+        List<DictionaryElement> elements = dictionaryElementService.getTodaysDictionaryElements(user);
         if (!elements.isEmpty()) {
             Collections.reverse(elements);
             model.addAttribute("todaysAddedElements", elements);
         } else {
-            model.addAttribute("lastAddedElements", dictionaryService.getLastDictionaryElements(user));
+            model.addAttribute("lastAddedElements", dictionaryElementService.getLastDictionaryElements(user));
         }
 
         model.addAttribute("username", user.getLogin());
@@ -52,7 +52,7 @@ public class DictionaryController {
     public String getEditPage(@PathVariable("editWord") String word, Model model, Principal principal) {
         User user = userService.findByLogin(principal.getName());
 
-        model.addAttribute("dictionaryElement", dictionaryService.findByWord(word, user));
+        model.addAttribute("dictionaryElement", dictionaryElementService.findByWord(word, user));
 
         return Pages.EDIT_WORD_PAGE.getPage();
     }
@@ -63,10 +63,10 @@ public class DictionaryController {
         User authenticatedUser = userService.findByLogin(principal.getName());
 
         if (bindingResult.hasErrors()) {
-            model.addAttribute("todaysAddedElements", dictionaryService.getTodaysDictionaryElements(authenticatedUser));
+            model.addAttribute("todaysAddedElements", dictionaryElementService.getTodaysDictionaryElements(authenticatedUser));
             return Pages.DICTIONARY_PAGE.getPage();
         } else {
-            dictionaryService.createDictionaryElement(dictionaryElement, authenticatedUser);
+            dictionaryElementService.createDictionaryElement(dictionaryElement, authenticatedUser);
             return "redirect:/dictionary";
         }
     }
@@ -76,6 +76,6 @@ public class DictionaryController {
     public void removeDictionaryElement(@PathVariable("deleteWord") String word, Principal principal) {
         User authenticatedUser = userService.findByLogin(principal.getName());
 
-        dictionaryService.removeDictionaryElement(word, authenticatedUser);
+        dictionaryElementService.removeDictionaryElement(word, authenticatedUser);
     }
 }

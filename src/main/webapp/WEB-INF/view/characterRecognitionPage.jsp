@@ -19,10 +19,17 @@
 </form:form>
 
 <c:if test="${recognisedText != null}">
-    <p>Text in image: </p>
-    <p> ${recognisedText}</p>
-    <p>Translated text</p>
-    <p>${russianTranslation}</p>
+    <c:out value="Text in image: ${recognisedText}"/>
+    <br>
+    <c:out value="Translated text: ${russianTranslation}"/>
+    <br>
+    <c:out value="Suggested elements: "/>
+    <c:forEach items="${suggestedElements}" var="suggestedElement">
+        <br>
+        <c:out value="word: ${suggestedElement.word}"/>
+        <br>
+        <c:out value="suggested translations: ${suggestedElement.translation}"/>
+    </c:forEach>
 </c:if>
 
 <c:if test="${error != null}">

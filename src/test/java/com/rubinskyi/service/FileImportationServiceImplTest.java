@@ -20,7 +20,7 @@ import com.rubinskyi.entity.User;
 public class FileImportationServiceImplTest {
 
     @Mock
-    DictionaryService dictionaryService;
+    DictionaryElementService dictionaryElementService;
     @Mock
     User user;
     @InjectMocks
@@ -34,7 +34,7 @@ public class FileImportationServiceImplTest {
                 .example("for the space of two kilometers").exampleTranslation("на расстоянии двух километров").build();
         List<DictionaryElement> dictionaryElements = Arrays.asList(element0, element1, element2);
 
-        Mockito.when(dictionaryService.getTodaysDictionaryElements(user)).thenReturn(dictionaryElements);
+        Mockito.when(dictionaryElementService.getTodaysDictionaryElements(user)).thenReturn(dictionaryElements);
         String todayTxtFile = textFileImportationService.getTodayTxtFile(user);
         String expectedResult = "space;пауза;\n" +
                 "space;speɪs;расстояние;\n" +
@@ -51,7 +51,7 @@ public class FileImportationServiceImplTest {
                 .example("for the space of two kilometers").exampleTranslation("на расстоянии двух километров").build();
         List<DictionaryElement> dictionaryElements = Arrays.asList(element0, element1, element2);
 
-        Mockito.when(dictionaryService.getAllDictionaryElements(user)).thenReturn(dictionaryElements);
+        Mockito.when(dictionaryElementService.getAllDictionaryElements(user)).thenReturn(dictionaryElements);
         String todayTxtFile = textFileImportationService.getAllTimeTxtFile(user);
         String expectedResult = "space;пауза;\n" +
                 "space;speɪs;расстояние;\n" +

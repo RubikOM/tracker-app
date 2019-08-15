@@ -1,0 +1,13 @@
+PREREQUISITES
+
+In order to make the most of this, you will need to have
+a little bit of programming experience. All examples in this
+book are in the Python programming language. Familiarity
+with Python or other scripting languages is suggested, but
+not required.
+
+You'll also need to know some basic mathematics. This
+book is hands-on and example driven: lots of examples and
+lots of code, so even if your math skills are not up to par,
+do not worry! The examples are very detailed and heavily
+documented to help you follow along.
