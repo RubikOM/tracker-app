@@ -26,7 +26,7 @@ import static com.rubinskyi.pojo.constant.StringConstant.ERROR;
 @Slf4j
 @Controller
 @RequestMapping("/dictionary")
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class CharacterRecognitionController {
     private final ImageCharacterRecognitionService recognitionService;
     private final FileTranslationService fileTranslationService;

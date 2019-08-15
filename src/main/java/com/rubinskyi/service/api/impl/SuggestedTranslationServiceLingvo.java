@@ -25,7 +25,7 @@ import static org.apache.commons.lang3.StringUtils.SPACE;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class SuggestedTranslationServiceLingvo implements SuggestedTranslationService {
     private final ExecutorService lingvoExecutorService;
     private final ComprehensiveTranslationService comprehensiveTranslationService;

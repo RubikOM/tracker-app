@@ -15,7 +15,7 @@ import java.util.Map;
 
 @Service
 @Transactional
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class FileTranslationServiceImpl implements FileTranslationService {
     private final MultiWordTranslationService multiWordTranslationService;
     private final SuggestedTranslationService suggestedTranslationService;

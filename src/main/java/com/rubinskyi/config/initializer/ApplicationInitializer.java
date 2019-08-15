@@ -1,3 +1,4 @@
+/*
 package com.rubinskyi.config.initializer;
 
 import org.springframework.core.Ordered;
@@ -42,3 +43,4 @@ public class ApplicationInitializer implements WebApplicationInitializer {
         characterEncoding.addMappingForUrlPatterns(dispatcherTypes, true, "/*");
     }
 }
+*/
