@@ -15,7 +15,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import com.rubinskyi.entity.DictionaryElement;
 import com.rubinskyi.entity.User;
+import org.springframework.boot.test.context.SpringBootTest;
 
+@SpringBootTest
 @RunWith(MockitoJUnitRunner.class)
 public class FileImportationServiceImplTest {
 
