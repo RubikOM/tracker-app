@@ -22,7 +22,7 @@ import java.util.Properties;
 @Configuration
 @EnableJpaRepositories("com.rubinskyi.dao")
 @EnableTransactionManagement
-@PropertySource(value = {"classpath:db.properties"})
+@PropertySource(value = {"classpath:database.yaml"})
 public class JpaConfiguration {
     private static final String PACKAGE_WITH_ENTITY_CLASSES = "com.rubinskyi.entity";
     private final Environment environment;
@@ -48,10 +48,10 @@ public class JpaConfiguration {
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(environment.getRequiredProperty("db.class"));
-        dataSource.setUrl(environment.getRequiredProperty("db.url"));
-        dataSource.setUsername(environment.getRequiredProperty("db.user"));
-        dataSource.setPassword(environment.getRequiredProperty("db.pass"));
+        dataSource.setDriverClassName(environment.getRequiredProperty("driverClassName"));
+        dataSource.setUrl(environment.getRequiredProperty("url"));
+        dataSource.setUsername(environment.getRequiredProperty("username"));
+        dataSource.setPassword(environment.getRequiredProperty("password"));
         return dataSource;
     }
 
@@ -70,10 +70,10 @@ public class JpaConfiguration {
 
     private Properties additionalProperties() {
         Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto", environment.getRequiredProperty("hibernate.hbm2ddl.auto"));
-        properties.setProperty("hibernate.dialect", environment.getRequiredProperty("hibernate.dialect"));
-        properties.setProperty("hibernate.show_sql", environment.getRequiredProperty("hibernate.show_sql"));
-        properties.setProperty("hibernate.format_sql", environment.getRequiredProperty("hibernate.format_sql"));
+        properties.setProperty("hibernate.hbm2ddl.auto", environment.getRequiredProperty("hbm2ddl.auto"));
+        properties.setProperty("hibernate.dialect", environment.getRequiredProperty("dialect"));
+        properties.setProperty("hibernate.show_sql", environment.getRequiredProperty("show_sql"));
+        properties.setProperty("hibernate.format_sql", environment.getRequiredProperty("format_sql"));
 
         return properties;
     }

@@ -34,5 +34,4 @@
         <appender-ref ref="FILE-ROLLING"/>
         <appender-ref ref="CONSOLE"/>
     </root>
-
 </configuration>
