@@ -49,7 +49,7 @@ public class SuggestedTranslationServiceLingvoTest {
 
     @Test
     public void getSuggestedElements() {
-        String initialString = textFileReader.getContentByFileName("ocrText/tesseractTestData.txt");
+        String initialString = textFileReader.getContentByFileName("ocrTextFiles/tesseractTestData.txt");
         List<DictionaryElement> suggestedElements = suggestedTranslationService.getSuggestedElements(initialString, "mike");
 
         assertEquals(4, suggestedElements.size());
@@ -57,7 +57,7 @@ public class SuggestedTranslationServiceLingvoTest {
 
     @Test
     public void getSuggestedElements_sentence() {
-        String initialString = textFileReader.getContentByFileName("ocrText/tesseractTestDataCropped.txt");
+        String initialString = textFileReader.getContentByFileName("ocrTextFiles/tesseractTestDataCropped.txt");
         List<DictionaryElement> suggestedElements = suggestedTranslationService.getSuggestedElements(initialString, "mike");
 
         assertEquals(3, suggestedElements.size());
@@ -65,7 +65,7 @@ public class SuggestedTranslationServiceLingvoTest {
 
     @Test
     public void getSuggestedElements_largeText() {
-        String initialString = textFileReader.getContentByFileName("ocrText/realBook.txt");
+        String initialString = textFileReader.getContentByFileName("ocrTextFiles/realBook.txt");
         List<DictionaryElement> suggestedElements = suggestedTranslationService.getSuggestedElements(initialString, "mike");
 
         assertEquals(3, suggestedElements.size());

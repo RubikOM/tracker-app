@@ -31,7 +31,7 @@ public class TesseractImageCharacterRecognitionServiceTest {
         File file = textFileReader.getFileByName("tessimage/large_image.png");
 
         String result = tesseractImageCharacterRecognitionService.resolveImage(file).replace("\n", SPACE).trim();
-        String expectedResult = textFileReader.getContentByFileName("ocrText/tesseractTestData.txt");
+        String expectedResult = textFileReader.getContentByFileName("ocrTextFiles/tesseractTestData.txt");
 
         assertEquals(expectedResult, result);
     }
@@ -64,7 +64,7 @@ public class TesseractImageCharacterRecognitionServiceTest {
     public void resolveImage_shouldResolveAllCharacters() {
         File file = textFileReader.getFileByName("tessimage/eurotext.png");
 
-        String expectedResult = textFileReader.getContentByFileName("ocrText/allCharacters.txt");
+        String expectedResult = textFileReader.getContentByFileName("ocrTextFiles/allCharacters.txt");
 
         String result = tesseractImageCharacterRecognitionService.resolveImage(file).replace("\n", SPACE).trim();
         assertEquals(expectedResult.trim(), result);
@@ -74,7 +74,7 @@ public class TesseractImageCharacterRecognitionServiceTest {
     public void resolveImage_realWorldImage_realBook() {
         File file = textFileReader.getFileByName("tessimage/javaBook.png");
 
-        String expectedResult = textFileReader.getContentByFileName("ocrText/realBook.txt");
+        String expectedResult = textFileReader.getContentByFileName("ocrTextFiles/realBook.txt");
         String result = tesseractImageCharacterRecognitionService.resolveImage(file);
         assertEquals(ignoreSpaces(expectedResult), ignoreSpaces(result));
     }

@@ -1,6 +1,6 @@
 database:
   url: jdbc:mysql://localhost/english_dictionary
-  username: sa
+  user: sa
   password: Qwerty3011
   driverClassName: com.mysql.cj.jdbc.Driver
 hibernate:

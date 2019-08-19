@@ -1,34 +1,31 @@
 package com.rubinskyi.service.impl;
 
+import com.rubinskyi.config.properties.OcrProperties;
 import com.rubinskyi.service.ImageCharacterRecognitionService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.sourceforge.tess4j.Tesseract;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 
 @Service
-//@PropertySource("classpath:characterRecognition.properties")
 @Slf4j
+@RequiredArgsConstructor
 public class TesseractImageCharacterRecognitionService implements ImageCharacterRecognitionService {
-    @Value("classpath:tessdata")
-    private File tesseractTrainedModelsFolder;
-//    @Value("${emptyResponse}")
-//    private String emptyResponseMessage;
+    private final OcrProperties ocrProperties;
 
     @Override
     public String resolveImage(File file) {
         Tesseract tesseract = new Tesseract();
         String recognisedText;
         try {
-            tesseract.setDatapath(tesseractTrainedModelsFolder.getAbsolutePath());
+            tesseract.setDatapath(ocrProperties.getTesseractTrainedModelsFolder().getAbsolutePath());
             tesseract.setLanguage("eng");
             recognisedText = tesseract.doOCR(file);
         } catch (Exception e) {
             log.error("Error during image recognition", e);
-            return "emptyResponseMessage";
+            return ocrProperties.getEmptyResponseMessage();
         }
         return recognisedText;
     }

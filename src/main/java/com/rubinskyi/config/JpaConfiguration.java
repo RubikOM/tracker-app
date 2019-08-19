@@ -50,7 +50,7 @@ public class JpaConfiguration {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(environment.getRequiredProperty("driverClassName"));
         dataSource.setUrl(environment.getRequiredProperty("url"));
-        dataSource.setUsername(environment.getRequiredProperty("username"));
+        dataSource.setUsername(environment.getRequiredProperty("user"));
         dataSource.setPassword(environment.getRequiredProperty("password"));
         return dataSource;
     }

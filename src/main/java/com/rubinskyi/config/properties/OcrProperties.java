@@ -17,6 +17,8 @@ public class OcrProperties {
     private String wrongFileFormatMessage;
     @Value("${ocr.cannotRecogniseCharacters}")
     private String cannotRecogniseCharactersMessage;
-    @Value("classpath:tessimage")
+    @Value("${ocr.tessimageFolder}")
     private File userUploadedImagesFolder;
+    @Value("${ocr.tessdataFolder}")
+    private File tesseractTrainedModelsFolder;
 }
