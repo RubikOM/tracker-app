@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.rubinskyi.pojo.constant.StringConstant.COMMA;
+import static com.rubinskyi.pojo.constant.StringConstant.SEMICOLON;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.SPACE;
 
@@ -36,7 +38,7 @@ public class SimpleDictionaryElementConsolidatorService implements DictionaryEle
         String consolidatedTranslation = translations.stream().limit(apiProperties.getTranslationsAmount())
                 .collect(Collectors.joining(", ")).replaceAll(" +", SPACE);
         String consolidatedTranslationStyled = consolidatedTranslation
-                .replace(";", ",").replace(" ||", ",")
+                .replace(SEMICOLON, COMMA).replace(" ||", COMMA)
                 .replace("!", EMPTY).replace("?", EMPTY);
 
         DictionaryElement element = new DictionaryElement.Builder(word, consolidatedTranslationStyled)
@@ -56,7 +58,7 @@ public class SimpleDictionaryElementConsolidatorService implements DictionaryEle
     private LinkedHashSet<String> getUniqueTranslations(List<String> translations) {
         LinkedHashSet<String> translationsUnique = new LinkedHashSet<>();
         for (String translation : translations) {
-            String[] splitTranslations = translation.split(";");
+            String[] splitTranslations = translation.split(SEMICOLON);
             Collections.addAll(translationsUnique, splitTranslations);
         }
         return translationsUnique;

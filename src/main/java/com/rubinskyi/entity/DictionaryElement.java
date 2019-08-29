@@ -22,10 +22,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import static com.rubinskyi.pojo.constant.StringConstant.SEMICOLON;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.SPACE;
+
 @Entity
 @Table(name = "DICTIONARY_ELEMENTS")
-@Getter @Setter
-@ToString @EqualsAndHashCode
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode
 @NoArgsConstructor
 public class DictionaryElement {
     @Id
@@ -124,18 +130,22 @@ public class DictionaryElement {
             makeWordValidForFile();
 
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(word).append(";").append(transcription.equals("") ? "" : transcription + ";")
-                    .append(translation).append(";").append(example.equals("") ? "" : example + ";")
-                    .append(exampleTranslation.equals("") ? "" : exampleTranslation + ";").append("\n");
+            stringBuilder.append(word).append(SEMICOLON)
+                    .append(Objects.equals(transcription, EMPTY) ? EMPTY : transcription.concat(SEMICOLON))
+                    .append(translation).append(SEMICOLON)
+                    .append(Objects.equals(example, EMPTY) ? EMPTY : example.concat(SEMICOLON))
+                    .append(Objects.equals(exampleTranslation, EMPTY) ? EMPTY : exampleTranslation.concat(SEMICOLON))
+                    .append("\n");
+
             return stringBuilder.toString();
         }
 
         private void makeWordValidForFile() {
-            if (!example.equals("") && exampleTranslation.equals("")) {
-                exampleTranslation = " ";
+            if (!Objects.equals(example, EMPTY) && Objects.equals(exampleTranslation, EMPTY)) {
+                exampleTranslation = SPACE;
             }
-            if (!exampleTranslation.equals("") && example.equals("")) {
-                example = " ";
+            if (!Objects.equals(exampleTranslation, EMPTY) && Objects.equals(example, EMPTY)) {
+                example = SPACE;
             }
         }
     }
