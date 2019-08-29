@@ -18,15 +18,15 @@ public class TranslationFromApiController {
 
     @GetMapping("/fillPage/{wordInEnglish}")
     public DictionaryElementDto getDictionaryElementFromApi(@PathVariable String wordInEnglish, Principal principal) {
-        String validWord = makeWordValidForApi(wordInEnglish);
-        DictionaryElement dictionaryElementFromApi = translationFromApiService.getDictionaryElementFromApi(validWord, principal);
+        String firstWord = getFirstWord(wordInEnglish);
+        DictionaryElement dictionaryElementFromApi = translationFromApiService.getDictionaryElementFromApi(firstWord, principal);
 
         if (dictionaryElementFromApi.getTranslation() == null || dictionaryElementFromApi.getTranslation().isEmpty()) {
             return new DictionaryElementDto(wordInEnglish, ERROR_MESSAGE);
         } else return new DictionaryElementDto(dictionaryElementFromApi);
     }
 
-    private String makeWordValidForApi(String word) {
+    private String getFirstWord(String word) {
         String[] wordAsArray = word.split(" ");
         return wordAsArray.length > 0 ? wordAsArray[wordAsArray.length - 1] : word;
     }

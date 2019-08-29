@@ -3,22 +3,21 @@
 0*) After caching we can no more hold words in table for each concrete user -- just hold a reference in DB
 2) JSP -> thymeleaf (or even react or angular for front)
 6) js looks very trashy at the time, mb switch for some front - end framework
-9) transactional in dao tests are not working so I did transactional in dao layer instead of service
 15) Test what will happen if user not in DB in authentication time
 18) spellchecker TranslationFromApiController : if word isn't correct guess what user wanted to add + Some normal way to show error (not one currently used)
-19) ComprehensiveTranslationServiceLingvo makeWordValidForApi() throws to apiEntity just 1 word, need some normal logic here
-29) Add Liquidbase to project.
+19) ComprehensiveTranslationServiceLingvo takes just 1 word
 33) Validator
-34) Optionals in repository methods!!!
 36) Message if password wrong
 38) edit form button.
 43) https://developers.lingvolive.com/ru-ru/Help Suggests
-44) Migrate to Junit5 and mockito 3
-45) Interest and Dictionary repositories
 46) Should rebuild SuggestedTranslationService - it now takes 5 biggest words, should take 5 less known ones
-47) path to file is broken now
-
-50) ??? Move rest calls to dao layer ???
+* Rebuild tests - delete SpringBootTest on Unit tests and separate configs
+* Api calls back to intellij ???
+* Inject session scope user to controller
+* Controller tests via Spring boot
+* global exception handling via Spring boot
+* Liquidbase
+* Migrate to Junit5 and mockito 3
 
 1   mike plain-old-small-letter-password
 2	lia	passwordToCopy
