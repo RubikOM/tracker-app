@@ -1,4 +1,4 @@
-package com.rubinskyi.service;
+package com.rubinskyi.service.outerApi;
 
 import java.io.File;
 

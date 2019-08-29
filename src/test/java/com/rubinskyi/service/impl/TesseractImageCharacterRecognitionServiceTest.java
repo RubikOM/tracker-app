@@ -1,5 +1,6 @@
 package com.rubinskyi.service.impl;
 
+import com.rubinskyi.service.outerApi.impl.TesseractImageCharacterRecognitionService;
 import com.rubinskyi.testBean.TextFileReaderBean;
 import com.rubinskyi.config.SpringTestConfig;
 import org.junit.Test;

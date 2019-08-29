@@ -1,11 +1,10 @@
-package com.rubinskyi.service.api.impl;
+package com.rubinskyi.service.outerApi.impl;
 
 import com.rubinskyi.entity.DictionaryElement;
 import com.rubinskyi.entity.User;
 import com.rubinskyi.service.UserService;
-import com.rubinskyi.service.api.TranslationFromApiService;
+import com.rubinskyi.service.outerApi.TranslationFromApiService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

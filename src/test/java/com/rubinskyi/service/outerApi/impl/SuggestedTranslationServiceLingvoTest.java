@@ -1,11 +1,11 @@
-package com.rubinskyi.service.api.impl;
+package com.rubinskyi.service.outerApi.impl;
 
 import com.rubinskyi.config.SpringTestConfig;
 import com.rubinskyi.testBean.TextFileReaderBean;
 import com.rubinskyi.entity.DictionaryElement;
 import com.rubinskyi.entity.User;
 import com.rubinskyi.service.UserService;
-import com.rubinskyi.service.api.SuggestedTranslationService;
+import com.rubinskyi.service.outerApi.SuggestedTranslationService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,4 +1,4 @@
-package com.rubinskyi.service.api.impl;
+package com.rubinskyi.service.outerApi.impl;
 
 import com.rubinskyi.testBean.TextFileReaderBean;
 import com.rubinskyi.config.SpringTestConfig;

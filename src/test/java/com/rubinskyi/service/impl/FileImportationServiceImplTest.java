@@ -1,10 +1,11 @@
-package com.rubinskyi.service;
+package com.rubinskyi.service.impl;
 
 import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
 import java.util.List;
 
+import com.rubinskyi.service.DictionaryElementService;
 import com.rubinskyi.service.impl.TextFileImportationService;
 import org.junit.Test;
 import org.junit.runner.RunWith;

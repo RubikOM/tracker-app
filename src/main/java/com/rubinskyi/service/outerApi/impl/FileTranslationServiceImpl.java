@@ -1,9 +1,9 @@
-package com.rubinskyi.service.api.impl;
+package com.rubinskyi.service.outerApi.impl;
 
 import com.rubinskyi.entity.DictionaryElement;
-import com.rubinskyi.service.api.FileTranslationService;
-import com.rubinskyi.service.api.MultiWordTranslationService;
-import com.rubinskyi.service.api.SuggestedTranslationService;
+import com.rubinskyi.service.outerApi.FileTranslationService;
+import com.rubinskyi.service.outerApi.MultiWordTranslationService;
+import com.rubinskyi.service.outerApi.SuggestedTranslationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

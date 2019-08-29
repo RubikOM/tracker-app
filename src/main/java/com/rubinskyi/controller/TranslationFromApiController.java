@@ -2,11 +2,8 @@ package com.rubinskyi.controller;
 
 import com.rubinskyi.entity.DictionaryElement;
 import com.rubinskyi.pojo.dto.DictionaryElementDto;
-import com.rubinskyi.service.api.TranslationFromApiService;
+import com.rubinskyi.service.outerApi.TranslationFromApiService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;

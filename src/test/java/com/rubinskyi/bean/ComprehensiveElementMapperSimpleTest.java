@@ -1,4 +1,4 @@
-package com.rubinskyi.pojo.apiEntity;
+package com.rubinskyi.bean;
 
 import com.rubinskyi.config.SpringTestConfig;
 import com.rubinskyi.entity.DictionaryElement;

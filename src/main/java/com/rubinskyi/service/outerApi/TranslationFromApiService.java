@@ -1,4 +1,4 @@
-package com.rubinskyi.service.api;
+package com.rubinskyi.service.outerApi;
 
 import java.security.Principal;
 

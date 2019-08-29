@@ -1,10 +1,10 @@
-package com.rubinskyi.service.api.impl;
+package com.rubinskyi.service.outerApi.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rubinskyi.bean.properties.ApiProperties;
 import com.rubinskyi.pojo.sentences.RussianSentenceResponse;
 import com.rubinskyi.pojo.sentences.SentenceElementMyMemory;
-import com.rubinskyi.service.api.MultiWordTranslationService;
+import com.rubinskyi.service.outerApi.MultiWordTranslationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

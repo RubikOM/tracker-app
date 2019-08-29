@@ -1,11 +1,11 @@
-package com.rubinskyi.service.api.impl;
+package com.rubinskyi.service.outerApi.impl;
 
 import com.rubinskyi.bean.properties.ApiProperties;
 import com.rubinskyi.entity.DictionaryElement;
 import com.rubinskyi.entity.User;
 import com.rubinskyi.service.UserService;
-import com.rubinskyi.service.api.ComprehensiveTranslationService;
-import com.rubinskyi.service.api.SuggestedTranslationService;
+import com.rubinskyi.service.outerApi.ComprehensiveTranslationService;
+import com.rubinskyi.service.outerApi.SuggestedTranslationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
-package com.rubinskyi.service.impl;
+package com.rubinskyi.service.outerApi.impl;
 
-import com.rubinskyi.service.ImageCharacterRecognitionService;
+import com.rubinskyi.service.outerApi.ImageCharacterRecognitionService;
 import com.rubinskyi.bean.FileSearcherBean;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

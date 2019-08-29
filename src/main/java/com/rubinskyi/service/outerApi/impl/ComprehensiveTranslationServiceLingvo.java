@@ -1,4 +1,4 @@
-package com.rubinskyi.service.api.impl;
+package com.rubinskyi.service.outerApi.impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,8 +8,8 @@ import com.rubinskyi.entity.Interest;
 import com.rubinskyi.entity.User;
 import com.rubinskyi.pojo.lingvo.ComprehensiveElementLingvo;
 import com.rubinskyi.bean.mapper.ComprehensiveElementMapperSimple;
-import com.rubinskyi.service.api.ComprehensiveTranslationService;
-import com.rubinskyi.service.api.DictionaryElementConsolidatorService;
+import com.rubinskyi.service.outerApi.ComprehensiveTranslationService;
+import com.rubinskyi.service.outerApi.DictionaryElementConsolidatorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
