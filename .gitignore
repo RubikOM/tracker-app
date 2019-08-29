@@ -1,3 +1,4 @@
+.git
 .idea
 .gradle
 target
@@ -10,6 +11,5 @@ logs
 *.log
 *.xml
 
-gradle
 gradlew
 gradlew.bat
