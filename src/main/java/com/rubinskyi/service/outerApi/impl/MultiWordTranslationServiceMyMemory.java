@@ -92,7 +92,6 @@ public class MultiWordTranslationServiceMyMemory implements MultiWordTranslation
         return mergeStrings(result);
     }
 
-    // TODO replace with streams to increase readability
     private List<String> mergeStrings(List<String> sentences) {
         ArrayList<String> result = new ArrayList<>(sentences);
         for (int i = 0; i < result.size() - 1; i++) {

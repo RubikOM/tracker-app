@@ -1,13 +1,11 @@
 .git
 .idea
 .gradle
-target
 build
 gradle
 logs
 
 *.class
-*.sql
 *.log
 *.xml
 
