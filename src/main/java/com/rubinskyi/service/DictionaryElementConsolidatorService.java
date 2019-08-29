@@ -1,4 +1,4 @@
-package com.rubinskyi.service.outerApi;
+package com.rubinskyi.service;
 
 import java.util.List;
 

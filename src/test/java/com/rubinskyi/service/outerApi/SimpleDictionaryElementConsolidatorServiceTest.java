@@ -2,6 +2,7 @@ package com.rubinskyi.service.outerApi;
 
 import com.rubinskyi.config.SpringTestConfig;
 import com.rubinskyi.entity.DictionaryElement;
+import com.rubinskyi.service.DictionaryElementConsolidatorService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

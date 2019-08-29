@@ -9,7 +9,7 @@ import com.rubinskyi.entity.User;
 import com.rubinskyi.pojo.lingvo.ComprehensiveElementLingvo;
 import com.rubinskyi.bean.mapper.ComprehensiveElementMapperSimple;
 import com.rubinskyi.service.outerApi.ComprehensiveTranslationService;
-import com.rubinskyi.service.outerApi.DictionaryElementConsolidatorService;
+import com.rubinskyi.service.DictionaryElementConsolidatorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

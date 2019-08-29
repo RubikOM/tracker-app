@@ -1,8 +1,8 @@
-package com.rubinskyi.service.outerApi.impl;
+package com.rubinskyi.service.impl;
 
 import com.rubinskyi.bean.properties.ApiProperties;
 import com.rubinskyi.entity.DictionaryElement;
-import com.rubinskyi.service.outerApi.DictionaryElementConsolidatorService;
+import com.rubinskyi.service.DictionaryElementConsolidatorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
