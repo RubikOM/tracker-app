@@ -16,7 +16,7 @@ import java.io.IOException;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class PartialTranslationServiceLingvo implements PartialTranslationService {
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;

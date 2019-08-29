@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class ComprehensiveTranslationServiceLingvo implements ComprehensiveTranslationService {
     private final ComprehensiveElementMapperSimple comprehensiveElementMapper;
     private final DictionaryElementConsolidatorService dictionaryElementConsolidatorService;

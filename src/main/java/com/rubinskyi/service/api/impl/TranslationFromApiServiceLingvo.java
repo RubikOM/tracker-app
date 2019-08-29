@@ -13,7 +13,7 @@ import java.security.Principal;
 
 @Service
 @Transactional
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class TranslationFromApiServiceLingvo implements TranslationFromApiService {
     private final ComprehensiveTranslationServiceLingvo comprehensiveDataService;
     private final UserService userService;

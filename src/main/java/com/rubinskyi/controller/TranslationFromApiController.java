@@ -15,7 +15,7 @@ import java.security.Principal;
 
 @RestController
 @PropertySource("classpath:validationMessages.properties")
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class TranslationFromApiController {
     @Value("${response.isEmpty}")
     private String noResultFoundMessage;

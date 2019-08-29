@@ -6,12 +6,14 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
+@SpringBootTest
 @ContextConfiguration(classes = SpringTestConfig.class)
 public class MultiWordTranslationServiceMyMemoryTest {
 
@@ -22,9 +24,9 @@ public class MultiWordTranslationServiceMyMemoryTest {
 
     @Test
     public void translateSentenceToRussian_shouldReturnCorrectResponse() {
-        String initialString = textFileReader.getContentByFileName("ocrText/tesseractTestDataHeader.txt");
+        String initialString = textFileReader.getContentByFileName("ocrTextFiles/tesseractTestDataHeader.txt");
 
-        String expectedResult = textFileReader.getContentByFileName("ocrText/tesseractTestDataHeaderTranslated.txt");
+        String expectedResult = textFileReader.getContentByFileName("ocrTextFiles/tesseractTestDataHeaderTranslated.txt");
         assertEquals(expectedResult, multiWordTranslation.translateSentenceToRussian(initialString));
     }
 
@@ -32,9 +34,9 @@ public class MultiWordTranslationServiceMyMemoryTest {
     @Test
     @Ignore
     public void translateSentenceToRussian_TranslatesTextBiggerThan500Characters() {
-        String initialString = textFileReader.getContentByFileName("ocrText/tesseractTestData.txt");
+        String initialString = textFileReader.getContentByFileName("ocrTextFiles/tesseractTestData.txt");
 
-        String expectedResult = textFileReader.getContentByFileName("ocrText/tesseractTestDataTranslated.txt");
+        String expectedResult = textFileReader.getContentByFileName("ocrTextFiles/tesseractTestDataTranslated.txt");
         assertEquals(expectedResult, multiWordTranslation.translateTextToRussian(initialString));
     }
 }

@@ -12,7 +12,7 @@ import com.rubinskyi.entity.DictionaryElement;
 import com.rubinskyi.entity.User;
 
 @Service
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class TextFileImportationService implements FileImportationService {
     private final DictionaryElementService dictionaryElementService;
 

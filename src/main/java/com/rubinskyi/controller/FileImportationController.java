@@ -14,7 +14,7 @@ import java.security.Principal;
 import java.time.LocalDate;
 
 @Controller
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class FileImportationController {
     private static final String FILE_EXTENSION = ".txt";
     private static final String FILE_TYPE = "text/plain;charset=UTF-8";

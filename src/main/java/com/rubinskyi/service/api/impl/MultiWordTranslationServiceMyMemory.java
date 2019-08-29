@@ -7,7 +7,6 @@ import com.rubinskyi.pojo.sentences.SentenceElementMyMemory;
 import com.rubinskyi.service.api.MultiWordTranslationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -27,7 +26,7 @@ import static org.apache.commons.lang3.StringUtils.SPACE;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class MultiWordTranslationServiceMyMemory implements MultiWordTranslationService {
     private static final int MAX_STRING_LENGTH = 500;
     private static final String REGEX_TO_SPLIT_BY_SEPARATE_SENTENCES = "[^.!?\\s][^.!?]*(?:[.!?](?!['\"]?\\s|$)[^.!?]*)*[.!?]?['\"]?(?=\\s|$)";

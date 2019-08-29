@@ -1,0 +1,10 @@
+database:
+  url: jdbc:mysql://localhost/english_dictionary
+  user: sa
+  password: Qwerty3011
+  driverClassName: com.mysql.cj.jdbc.Driver
+hibernate:
+  hbm2ddl.auto: validate
+  dialect: org.hibernate.dialect.MySQLDialect
+  format_sql: true
+  show_sql: true

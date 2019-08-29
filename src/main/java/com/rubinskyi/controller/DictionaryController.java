@@ -26,7 +26,7 @@ import com.rubinskyi.service.UserService;
 
 @Controller
 @RequestMapping("/dictionary")
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class DictionaryController {
     private final DictionaryElementService dictionaryElementService;
     private final UserService userService;

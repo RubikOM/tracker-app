@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class DictionaryElementElementServiceImpl implements DictionaryElementService {
     private final DictionaryElementRepository dictionaryElementRepository;
 

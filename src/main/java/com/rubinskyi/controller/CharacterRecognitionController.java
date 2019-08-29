@@ -6,7 +6,6 @@ import com.rubinskyi.service.ImageCharacterRecognitionService;
 import com.rubinskyi.service.api.FileTranslationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +25,7 @@ import static com.rubinskyi.pojo.constant.StringConstant.ERROR;
 @Slf4j
 @Controller
 @RequestMapping("/dictionary")
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class CharacterRecognitionController {
     private final ImageCharacterRecognitionService recognitionService;
     private final FileTranslationService fileTranslationService;
