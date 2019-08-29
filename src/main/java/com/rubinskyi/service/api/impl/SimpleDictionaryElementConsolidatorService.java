@@ -1,47 +1,39 @@
 package com.rubinskyi.service.api.impl;
 
+import com.rubinskyi.config.properties.ApiProperties;
+import com.rubinskyi.entity.DictionaryElement;
+import com.rubinskyi.service.api.DictionaryElementConsolidatorService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.stereotype.Service;
-
-import com.rubinskyi.entity.DictionaryElement;
-import com.rubinskyi.service.api.DictionaryElementConsolidatorService;
-
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.SPACE;
 
 @Service
-@PropertySource("classpath:consolidation.properties")
+@RequiredArgsConstructor
 public class SimpleDictionaryElementConsolidatorService implements DictionaryElementConsolidatorService {
-    @Value("${delimiter}")
-    private String TRANSLATIONS_DELIMITER;
-    @Value("${defaultTranscription}")
-    private String defaultTranscription;
-    @Value("${totalTranslations}")
-    private int TRANSLATIONS_AMOUNT;
-    @Value("${totalExamples}")
-    private int EXAMPLES_AMOUNT;
+    private final ApiProperties apiProperties;
 
     @Override
     public DictionaryElement consolidateDictionaryElements(List<DictionaryElement> dictionaryElementList) {
         String word = dictionaryElementList.stream().map(DictionaryElement::getWord).filter(s -> !s.isEmpty()).findAny()
                 .orElseThrow(() -> new IllegalStateException("Response should contain word"));
         String transcription = dictionaryElementList.stream().map(DictionaryElement::getTranscription).filter(s -> !s.isEmpty()).findAny()
-                .orElse(defaultTranscription);
+                .orElse(EMPTY);
         List<String> examples = filterAndCollectToList(dictionaryElementList.stream().map(DictionaryElement::getExample));
         List<String> exampleTranslations = filterAndCollectToList(dictionaryElementList.stream().map(DictionaryElement::getExampleTranslation));
         LinkedHashSet<String> translations = getUniqueTranslations(filterAndCollectToList(dictionaryElementList
                 .stream().map(DictionaryElement::getTranslation)));
 
-        String consolidatedExample = examples.stream().limit(EXAMPLES_AMOUNT).collect(Collectors.joining());
-        String consolidatedExampleTranslation = exampleTranslations.stream().limit(EXAMPLES_AMOUNT).collect(Collectors.joining());
-        String consolidatedTranslation = translations.stream().limit(TRANSLATIONS_AMOUNT)
+        String consolidatedExample = examples.stream().limit(apiProperties.getExamplesAmount()).collect(Collectors.joining());
+        String consolidatedExampleTranslation = exampleTranslations.stream().limit(apiProperties.getExamplesAmount()).collect(Collectors.joining());
+        String consolidatedTranslation = translations.stream().limit(apiProperties.getTranslationsAmount())
                 .collect(Collectors.joining(", ")).replaceAll(" +", SPACE);
         String consolidatedTranslationStyled = consolidatedTranslation
                 .replace(";", ",").replace(" ||", ",")
@@ -64,7 +56,7 @@ public class SimpleDictionaryElementConsolidatorService implements DictionaryEle
     private LinkedHashSet<String> getUniqueTranslations(List<String> translations) {
         LinkedHashSet<String> translationsUnique = new LinkedHashSet<>();
         for (String translation : translations) {
-            String[] splitTranslations = translation.split(TRANSLATIONS_DELIMITER);
+            String[] splitTranslations = translation.split(";");
             Collections.addAll(translationsUnique, splitTranslations);
         }
         return translationsUnique;
