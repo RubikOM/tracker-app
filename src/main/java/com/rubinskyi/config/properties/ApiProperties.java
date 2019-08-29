@@ -9,16 +9,12 @@ import org.springframework.stereotype.Component;
 @Getter
 @PropertySource("classpath:api.properties")
 public class ApiProperties {
-    @Value("${api.partialDataCall}")
+    @Value("${api.partialApiCall}")
     private String apiCallTemplatePartial;
-    @Value("${api.comprehensiveDataCall}")
+    @Value("${api.comprehensiveApiCall}")
     private String apiCallTemplateComprehensive;
     @Value("${api.sentenceApiCall}")
     private String apiCallTemplateSentence;
-    @Value("${api.multiWordThreadPoolSize}")
-    private int multiWordThreadPoolSize;
-    @Value("${api.lingvoThreadPoolSize}")
-    private int lingvoThreadPoolSize;
     @Value("${api.suggestedWordsAmount}")
     private int suggestedWordsAmount;
 }

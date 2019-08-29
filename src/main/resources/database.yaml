@@ -1,7 +1,7 @@
 database:
-  url: jdbc:mysql://localhost/english_dictionary
-  user: sa
-  password: Qwerty3011
+  url: jdbc:mysql://localhost/english_dictionary?useUnicode=yes&characterEncoding=UTF-8
+  user: root
+  password: Asdfgh_3011
   driverClassName: com.mysql.cj.jdbc.Driver
 hibernate:
   hbm2ddl.auto: validate

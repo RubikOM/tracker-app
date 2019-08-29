@@ -1,0 +1,15 @@
+.idea
+.gradle
+target
+build
+gradle
+logs
+
+*.class
+*.sql
+*.log
+*.xml
+
+gradle
+gradlew
+gradlew.bat
