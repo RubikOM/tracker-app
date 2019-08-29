@@ -1,7 +1,7 @@
 package com.rubinskyi.service.impl;
 
 import com.rubinskyi.service.ImageCharacterRecognitionService;
-import com.rubinskyi.util.FileSearcherBean;
+import com.rubinskyi.bean.FileSearcherBean;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.sourceforge.tess4j.Tesseract;

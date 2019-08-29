@@ -1,6 +1,6 @@
 package com.rubinskyi.service.api.impl;
 
-import com.rubinskyi.config.properties.ApiProperties;
+import com.rubinskyi.bean.properties.ApiProperties;
 import com.rubinskyi.entity.DictionaryElement;
 import com.rubinskyi.entity.User;
 import com.rubinskyi.service.UserService;
@@ -8,7 +8,6 @@ import com.rubinskyi.service.api.ComprehensiveTranslationService;
 import com.rubinskyi.service.api.SuggestedTranslationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

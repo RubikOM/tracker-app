@@ -3,7 +3,7 @@ package com.rubinskyi.controller;
 import com.rubinskyi.pojo.Pages;
 import com.rubinskyi.service.ImageCharacterRecognitionService;
 import com.rubinskyi.service.api.FileTranslationService;
-import com.rubinskyi.util.FileSearcherBean;
+import com.rubinskyi.bean.FileSearcherBean;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;

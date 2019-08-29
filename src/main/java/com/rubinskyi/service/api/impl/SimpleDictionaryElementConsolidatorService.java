@@ -1,6 +1,6 @@
 package com.rubinskyi.service.api.impl;
 
-import com.rubinskyi.config.properties.ApiProperties;
+import com.rubinskyi.bean.properties.ApiProperties;
 import com.rubinskyi.entity.DictionaryElement;
 import com.rubinskyi.service.api.DictionaryElementConsolidatorService;
 import lombok.RequiredArgsConstructor;

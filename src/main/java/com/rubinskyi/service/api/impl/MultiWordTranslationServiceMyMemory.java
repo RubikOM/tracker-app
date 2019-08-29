@@ -1,7 +1,7 @@
 package com.rubinskyi.service.api.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rubinskyi.config.properties.ApiProperties;
+import com.rubinskyi.bean.properties.ApiProperties;
 import com.rubinskyi.pojo.sentences.RussianSentenceResponse;
 import com.rubinskyi.pojo.sentences.SentenceElementMyMemory;
 import com.rubinskyi.service.api.MultiWordTranslationService;

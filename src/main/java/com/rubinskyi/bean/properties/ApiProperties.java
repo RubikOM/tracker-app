@@ -1,11 +1,9 @@
-package com.rubinskyi.config.properties;
+package com.rubinskyi.bean.properties;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
-
-import java.io.File;
 
 @Component
 @Getter

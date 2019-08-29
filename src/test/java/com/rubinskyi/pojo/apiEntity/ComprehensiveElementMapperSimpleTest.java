@@ -3,7 +3,7 @@ package com.rubinskyi.pojo.apiEntity;
 import com.rubinskyi.config.SpringTestConfig;
 import com.rubinskyi.entity.DictionaryElement;
 import com.rubinskyi.pojo.lingvo.ComprehensiveElementLingvo;
-import com.rubinskyi.pojo.mapper.ComprehensiveElementMapper;
+import com.rubinskyi.bean.mapper.ComprehensiveElementMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

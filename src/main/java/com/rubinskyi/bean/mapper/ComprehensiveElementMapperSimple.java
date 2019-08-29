@@ -1,4 +1,4 @@
-package com.rubinskyi.pojo.mapper;
+package com.rubinskyi.bean.mapper;
 
 import java.util.HashMap;
 import java.util.Map;

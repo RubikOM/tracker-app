@@ -1,8 +1,7 @@
 package com.rubinskyi.service.impl;
 
-import com.rubinskyi.config.SpringTestConfig;
 import com.rubinskyi.testBean.TextFileReaderBean;
-import org.junit.Ignore;
+import com.rubinskyi.config.SpringTestConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,17 +76,6 @@ public class TesseractImageCharacterRecognitionServiceTest {
         String expectedResult = textFileReaderBean.getContentByFileName("ocrTextFiles/realBook.txt");
         String result = tesseractImageCharacterRecognitionService.resolveImage(file);
         assertEquals(ignoreSpaces(expectedResult), ignoreSpaces(result));
-    }
-
-    @Test
-    @Ignore
-    public void resolveImage_shouldResolveHandWrittenText() {
-        File file = textFileReaderBean.getFileByName("tessimage/hand_written_text.png");
-
-        String result = tesseractImageCharacterRecognitionService.resolveImage(file);
-        String expectedResult = "05221859";
-
-        assertEquals(expectedResult, result);
     }
 
     private String ignoreSpaces(String initialString) {

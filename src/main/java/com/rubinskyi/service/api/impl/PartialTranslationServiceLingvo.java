@@ -1,13 +1,11 @@
 package com.rubinskyi.service.api.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rubinskyi.config.properties.ApiProperties;
+import com.rubinskyi.bean.properties.ApiProperties;
 import com.rubinskyi.pojo.lingvo.PartialElementLingvo;
 import com.rubinskyi.service.api.PartialTranslationService;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;

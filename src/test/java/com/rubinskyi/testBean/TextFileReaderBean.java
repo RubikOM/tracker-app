@@ -1,13 +1,12 @@
 package com.rubinskyi.testBean;
 
-import com.rubinskyi.util.FileSearcherBean;
+import com.rubinskyi.bean.FileSearcherBean;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.stream.Collectors;
