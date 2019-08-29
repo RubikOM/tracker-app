@@ -23,14 +23,4 @@ public class ApiProperties {
     private int translationsAmount;
     @Value("${api.examplesAmount}")
     private int examplesAmount;
-
-    @Value("${ocr.wrongFileType}")
-    private String wrongFileFormatMessage;
-    @Value("${ocr.cannotRecogniseCharacters}")
-    private String cannotRecogniseCharactersMessage;
-    // TODO rebuild pathes to files later
-    @Value("${ocr.tessimageFolder}")
-    private File userUploadedImagesFolder;
-    @Value("${ocr.tessdataFolder}")
-    private File tesseractTrainedModelsFolder;
 }

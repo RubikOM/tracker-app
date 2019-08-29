@@ -14,12 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 import java.security.Principal;
 
 @RestController
-@PropertySource("classpath:validationMessages.properties")
 @RequiredArgsConstructor
 public class TranslationFromApiController {
-    @Value("${response.isEmpty}")
-    private String noResultFoundMessage;
     private final TranslationFromApiService translationFromApiService;
+    private static final String ERROR_MESSAGE = "Sorry, we didn't find anything, check your spelling";
 
     @GetMapping("/fillPage/{wordInEnglish}")
     public DictionaryElementDto getDictionaryElementFromApi(@PathVariable String wordInEnglish, Principal principal) {
@@ -27,7 +25,7 @@ public class TranslationFromApiController {
         DictionaryElement dictionaryElementFromApi = translationFromApiService.getDictionaryElementFromApi(validWord, principal);
 
         if (dictionaryElementFromApi.getTranslation() == null || dictionaryElementFromApi.getTranslation().isEmpty()) {
-            return new DictionaryElementDto(wordInEnglish, noResultFoundMessage);
+            return new DictionaryElementDto(wordInEnglish, ERROR_MESSAGE);
         } else return new DictionaryElementDto(dictionaryElementFromApi);
     }
 

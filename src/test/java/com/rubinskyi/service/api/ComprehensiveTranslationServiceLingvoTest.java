@@ -19,7 +19,7 @@ public class ComprehensiveTranslationServiceLingvoTest {
     @Autowired
     private ComprehensiveTranslationService comprehensiveTranslationService;
     @Autowired
-    private User userForTest;
+    private User defaultUser;
 
     @Test
     public void obtainDataFromApi_shouldReturnCorrectResponse() {
@@ -32,7 +32,7 @@ public class ComprehensiveTranslationServiceLingvoTest {
                 .exampleTranslation("воздушное пространство")
                 .build();
 
-        DictionaryElement actualResult = comprehensiveTranslationService.getDictionaryElementFromApi(wordToTranslate, userForTest);
+        DictionaryElement actualResult = comprehensiveTranslationService.getDictionaryElementFromApi(wordToTranslate, defaultUser);
 
         assertEquals(expectedResult, actualResult);
     }
@@ -44,7 +44,7 @@ public class ComprehensiveTranslationServiceLingvoTest {
         DictionaryElement expectedResult = new DictionaryElement();
         expectedResult.setWord(wordToTranslate);
 
-        DictionaryElement actualResult = comprehensiveTranslationService.getDictionaryElementFromApi(wordToTranslate, userForTest);
+        DictionaryElement actualResult = comprehensiveTranslationService.getDictionaryElementFromApi(wordToTranslate, defaultUser);
 
         assertEquals(expectedResult, actualResult);
     }

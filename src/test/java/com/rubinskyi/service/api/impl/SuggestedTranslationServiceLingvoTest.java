@@ -1,7 +1,7 @@
 package com.rubinskyi.service.api.impl;
 
 import com.rubinskyi.config.SpringTestConfig;
-import com.rubinskyi.config.TextFileReader;
+import com.rubinskyi.testBean.TextFileReaderBean;
 import com.rubinskyi.entity.DictionaryElement;
 import com.rubinskyi.entity.User;
 import com.rubinskyi.service.UserService;
@@ -26,30 +26,22 @@ import static org.mockito.Mockito.when;
 @ContextConfiguration(classes = {SpringTestConfig.class})
 public class SuggestedTranslationServiceLingvoTest {
     @Autowired
-    private User testUser;
+    private User defaultUser;
     @Autowired
     private SuggestedTranslationService suggestedTranslationService;
     @Autowired
-    TextFileReader textFileReader;
+    TextFileReaderBean textFileReaderBean;
     @MockBean
     private UserService userService;
 
     @Before
     public void prepareMockUser() {
-        /*Set<Interest> interests = new HashSet<>();
-        User userForTest = new User(1L, "mike", "mockPassword");
-        interests.add(new Interest(userForTest, new Dictionary("LingvoComputer (En-Ru)"), 1));
-        interests.add(new Interest(userForTest, new Dictionary("LingvoUniversal (En-Ru)"), 2));
-        interests.add(new Interest(userForTest, new Dictionary("Learning (En-Ru)"), 3));
-        userForTest.setInterests(interests);
-        testUser = userForTest;*/
-
-        when(userService.findByLogin(Mockito.anyString())).thenReturn(testUser);
+        when(userService.findByLogin(Mockito.anyString())).thenReturn(defaultUser);
     }
 
     @Test
     public void getSuggestedElements() {
-        String initialString = textFileReader.getContentByFileName("ocrTextFiles/tesseractTestData.txt");
+        String initialString = textFileReaderBean.getContentByFileName("ocrTextFiles/tesseractTestData.txt");
         List<DictionaryElement> suggestedElements = suggestedTranslationService.getSuggestedElements(initialString, "mike");
 
         assertEquals(4, suggestedElements.size());
@@ -57,7 +49,7 @@ public class SuggestedTranslationServiceLingvoTest {
 
     @Test
     public void getSuggestedElements_sentence() {
-        String initialString = textFileReader.getContentByFileName("ocrTextFiles/tesseractTestDataCropped.txt");
+        String initialString = textFileReaderBean.getContentByFileName("ocrTextFiles/tesseractTestDataCropped.txt");
         List<DictionaryElement> suggestedElements = suggestedTranslationService.getSuggestedElements(initialString, "mike");
 
         assertEquals(3, suggestedElements.size());
@@ -65,7 +57,7 @@ public class SuggestedTranslationServiceLingvoTest {
 
     @Test
     public void getSuggestedElements_largeText() {
-        String initialString = textFileReader.getContentByFileName("ocrTextFiles/realBook.txt");
+        String initialString = textFileReaderBean.getContentByFileName("ocrTextFiles/realBook.txt");
         List<DictionaryElement> suggestedElements = suggestedTranslationService.getSuggestedElements(initialString, "mike");
 
         assertEquals(3, suggestedElements.size());

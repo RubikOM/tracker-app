@@ -14,12 +14,12 @@ import static org.junit.Assert.assertTrue;
 public class UserTest {
 
     @Autowired
-    private User userForTest;
+    private User defaultUser;
 
     @Test
     public void interestedInDictionary_shouldWorkCorrectly() {
         String dictionaryName = "LingvoComputer (En-Ru)";
-        boolean interestedInDictionary = userForTest.interestedInDictionary(dictionaryName);
+        boolean interestedInDictionary = defaultUser.interestedInDictionary(dictionaryName);
 
         assertTrue(interestedInDictionary);
     }

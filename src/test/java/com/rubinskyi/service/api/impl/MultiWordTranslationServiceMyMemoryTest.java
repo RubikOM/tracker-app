@@ -1,6 +1,6 @@
 package com.rubinskyi.service.api.impl;
 
-import com.rubinskyi.config.TextFileReader;
+import com.rubinskyi.testBean.TextFileReaderBean;
 import com.rubinskyi.config.SpringTestConfig;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -20,13 +20,13 @@ public class MultiWordTranslationServiceMyMemoryTest {
     @Autowired
     private MultiWordTranslationServiceMyMemory multiWordTranslation;
     @Autowired
-    TextFileReader textFileReader;
+    TextFileReaderBean textFileReaderBean;
 
     @Test
     public void translateSentenceToRussian_shouldReturnCorrectResponse() {
-        String initialString = textFileReader.getContentByFileName("ocrTextFiles/tesseractTestDataHeader.txt");
+        String initialString = textFileReaderBean.getContentByFileName("ocrTextFiles/tesseractTestDataHeader.txt");
 
-        String expectedResult = textFileReader.getContentByFileName("ocrTextFiles/tesseractTestDataHeaderTranslated.txt");
+        String expectedResult = textFileReaderBean.getContentByFileName("ocrTextFiles/tesseractTestDataHeaderTranslated.txt");
         assertEquals(expectedResult, multiWordTranslation.translateSentenceToRussian(initialString));
     }
 
@@ -34,9 +34,9 @@ public class MultiWordTranslationServiceMyMemoryTest {
     @Test
     @Ignore
     public void translateSentenceToRussian_TranslatesTextBiggerThan500Characters() {
-        String initialString = textFileReader.getContentByFileName("ocrTextFiles/tesseractTestData.txt");
+        String initialString = textFileReaderBean.getContentByFileName("ocrTextFiles/tesseractTestData.txt");
 
-        String expectedResult = textFileReader.getContentByFileName("ocrTextFiles/tesseractTestDataTranslated.txt");
+        String expectedResult = textFileReaderBean.getContentByFileName("ocrTextFiles/tesseractTestDataTranslated.txt");
         assertEquals(expectedResult, multiWordTranslation.translateTextToRussian(initialString));
     }
 }

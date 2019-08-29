@@ -1,6 +1,7 @@
-package com.rubinskyi.config;
+package com.rubinskyi.testBean;
 
-import lombok.Getter;
+import com.rubinskyi.util.FileSearcherBean;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -15,9 +16,11 @@ import java.util.stream.Stream;
 import static org.apache.commons.lang3.StringUtils.SPACE;
 
 @Slf4j
-@Getter
 @Component
-public class TextFileReader {
+@RequiredArgsConstructor
+public class TextFileReaderBean {
+    private final FileSearcherBean fileSearcherBean;
+
     public String getContentByFileName(String fileName) {
         File fileByName = getFileByName(fileName);
         try {
@@ -30,13 +33,6 @@ public class TextFileReader {
     }
 
     public File getFileByName(String fileName) {
-        ClassLoader classLoader = getClass().getClassLoader();
-        URL resource = classLoader.getResource(fileName);
-        if (resource == null) {
-            log.error("Cannot open file with name " + fileName);
-            throw new IllegalArgumentException("file is not found!");
-        } else {
-            return new File(resource.getFile());
-        }
+        return fileSearcherBean.getFileByName(fileName);
     }
 }

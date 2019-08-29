@@ -7,7 +7,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @Configuration
-public class ThreadPoolBeans {
+public class ThreadPoolBean {
     private static final int THREAD_POOL_SIZE = 5;
 
     @Bean
