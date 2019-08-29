@@ -1,8 +1,8 @@
 package com.rubinskyi.service.impl;
 
+import com.rubinskyi.service.outerApi.impl.TesseractImageCharacterRecognitionService;
+import com.rubinskyi.testBean.TextFileReaderBean;
 import com.rubinskyi.config.SpringTestConfig;
-import com.rubinskyi.config.TextFileReader;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,21 +24,21 @@ public class TesseractImageCharacterRecognitionServiceTest {
     @Autowired
     private TesseractImageCharacterRecognitionService tesseractImageCharacterRecognitionService;
     @Autowired
-    private TextFileReader textFileReader;
+    private TextFileReaderBean textFileReaderBean;
 
     @Test
     public void resolveImage_shouldReturnRightLargeText() {
-        File file = textFileReader.getFileByName("tessimage/large_image.png");
+        File file = textFileReaderBean.getFileByName("tessimage/large_image.png");
 
         String result = tesseractImageCharacterRecognitionService.resolveImage(file).replace("\n", SPACE).trim();
-        String expectedResult = textFileReader.getContentByFileName("ocrTextFiles/tesseractTestData.txt");
+        String expectedResult = textFileReaderBean.getContentByFileName("ocrTextFiles/tesseractTestData.txt");
 
         assertEquals(expectedResult, result);
     }
 
     @Test
     public void resolveImage_shouldReturnRightSmallText() {
-        File file = textFileReader.getFileByName("tessimage/small_image.png");
+        File file = textFileReaderBean.getFileByName("tessimage/small_image.png");
 
         String result = tesseractImageCharacterRecognitionService.resolveImage(file);
         String expectedResult = "Noisy image\n" +
@@ -50,7 +50,7 @@ public class TesseractImageCharacterRecognitionServiceTest {
 
     @Test
     public void resolveImage_shouldReturnRightNoisyText() {
-        File file = textFileReader.getFileByName("tessimage/image_noisy.png");
+        File file = textFileReaderBean.getFileByName("tessimage/image_noisy.png");
 
         String result = tesseractImageCharacterRecognitionService.resolveImage(file);
         String expectedResult = "~ Tesseract Will\n" +
@@ -62,9 +62,9 @@ public class TesseractImageCharacterRecognitionServiceTest {
 
     @Test
     public void resolveImage_shouldResolveAllCharacters() {
-        File file = textFileReader.getFileByName("tessimage/eurotext.png");
+        File file = textFileReaderBean.getFileByName("tessimage/eurotext.png");
 
-        String expectedResult = textFileReader.getContentByFileName("ocrTextFiles/allCharacters.txt");
+        String expectedResult = textFileReaderBean.getContentByFileName("ocrTextFiles/allCharacters.txt");
 
         String result = tesseractImageCharacterRecognitionService.resolveImage(file).replace("\n", SPACE).trim();
         assertEquals(expectedResult.trim(), result);
@@ -72,22 +72,11 @@ public class TesseractImageCharacterRecognitionServiceTest {
 
     @Test
     public void resolveImage_realWorldImage_realBook() {
-        File file = textFileReader.getFileByName("tessimage/javaBook.png");
+        File file = textFileReaderBean.getFileByName("tessimage/javaBook.png");
 
-        String expectedResult = textFileReader.getContentByFileName("ocrTextFiles/realBook.txt");
+        String expectedResult = textFileReaderBean.getContentByFileName("ocrTextFiles/realBook.txt");
         String result = tesseractImageCharacterRecognitionService.resolveImage(file);
         assertEquals(ignoreSpaces(expectedResult), ignoreSpaces(result));
-    }
-
-    @Test
-    @Ignore
-    public void resolveImage_shouldResolveHandWrittenText() {
-        File file = textFileReader.getFileByName("tessimage/hand_written_text.png");
-
-        String result = tesseractImageCharacterRecognitionService.resolveImage(file);
-        String expectedResult = "05221859";
-
-        assertEquals(expectedResult, result);
     }
 
     private String ignoreSpaces(String initialString) {

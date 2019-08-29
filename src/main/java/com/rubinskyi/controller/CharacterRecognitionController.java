@@ -1,9 +1,9 @@
 package com.rubinskyi.controller;
 
-import com.rubinskyi.config.properties.OcrProperties;
 import com.rubinskyi.pojo.Pages;
-import com.rubinskyi.service.ImageCharacterRecognitionService;
-import com.rubinskyi.service.api.FileTranslationService;
+import com.rubinskyi.service.outerApi.ImageCharacterRecognitionService;
+import com.rubinskyi.service.outerApi.FileTranslationService;
+import com.rubinskyi.bean.FileSearcherBean;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -20,6 +20,7 @@ import java.nio.file.Files;
 import java.security.Principal;
 import java.util.Map;
 
+import static com.rubinskyi.pojo.constant.StringConstant.EMPTY_RESPONSE;
 import static com.rubinskyi.pojo.constant.StringConstant.ERROR;
 
 @Slf4j
@@ -29,7 +30,8 @@ import static com.rubinskyi.pojo.constant.StringConstant.ERROR;
 public class CharacterRecognitionController {
     private final ImageCharacterRecognitionService recognitionService;
     private final FileTranslationService fileTranslationService;
-    private final OcrProperties ocrProperties;
+    private final FileSearcherBean fileSearcher;
+    private static final String TESSERACT_IMAGE_FOLDER = "tessimage";
 
     @GetMapping("/file")
     public String getFileImportationPage() {
@@ -38,18 +40,19 @@ public class CharacterRecognitionController {
 
     @PostMapping("/uploadFile")
     public String submitFile(@RequestParam("file") MultipartFile multipartFile, Model model, Principal principal) {
-        String pathToFile = ocrProperties.getUserUploadedImagesFolder().getAbsolutePath() + "_" + principal.getName() + "_" + multipartFile.getOriginalFilename();
+        File imageFolder = fileSearcher.getFileByName(TESSERACT_IMAGE_FOLDER);
+        String pathToFile = imageFolder.getPath() + "_" + principal.getName() + "_" + multipartFile.getOriginalFilename();
         File file = new File(pathToFile);
         try {
             multipartFile.transferTo(file);
         } catch (IOException e) {
             log.error("Error while transferring org.springframework.web.multipart.MultipartFile to java.io.File ", e);
-            model.addAttribute(ERROR, ocrProperties.getWrongFileFormatMessage());
+            model.addAttribute(ERROR, "Cannot read given file, check if it has required format");
             return Pages.UPLOAD_FILE_PAGE.getPage();
         }
         String textFromRecognitionService = recognitionService.resolveImage(file);
-        if (textFromRecognitionService.equals(ocrProperties.getEmptyResponseMessage())) {
-            model.addAttribute(ERROR, ocrProperties.getCannotRecogniseCharactersMessage());
+        if (textFromRecognitionService.equals(EMPTY_RESPONSE)) {
+            model.addAttribute(ERROR, "Sorry, we can't recognise characters in this image, try else image");
         } else {
             Map<String, Object> translations = fileTranslationService.getTranslations(textFromRecognitionService, principal.getName());
             model.addAttribute("recognisedText", textFromRecognitionService);
