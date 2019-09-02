@@ -7,7 +7,7 @@ CREATE TABLE USERS
 (
     id       BIGINT auto_increment primary key,
     name     varchar(30),
-    password varchar(200),
+    password varchar(200)
 );
 
 CREATE TABLE DICTIONARIES
@@ -24,7 +24,7 @@ CREATE TABLE INTERESTS
     priority      int,
 
     foreign key (user_id) references USERS (id),
-    foreign key (dictionary_id) references DICTIONARIES (id),
+    foreign key (dictionary_id) references DICTIONARIES (id)
 );
 
 CREATE TABLE DICTIONARY_ELEMENTS
@@ -38,7 +38,7 @@ CREATE TABLE DICTIONARY_ELEMENTS
     creation_date       date,
     user_id             BIGINT,
 
-    foreign key (user_id) references USERS (id),
+    foreign key (user_id) references USERS (id)
 );
 
 insert into DICTIONARIES (name)

@@ -11,3 +11,4 @@ logs
 
 gradlew
 gradlew.bat
+gradle.properties

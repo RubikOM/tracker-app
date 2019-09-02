@@ -4,15 +4,14 @@
 18) spellchecker TranslationFromApiController : if word isn't correct guess what user wanted to add + Some normal way to show error (not one currently used)
 33) Validator
 36) Validation for landing page (password wrong)
-38) make eidt button workable
+38) make edit button workable
 43) https://developers.lingvolive.com/ru-ru/Help Suggests for concrete word - can make suggestions for non correct words (low priority)
 46) Should rebuild SuggestedTranslationService - it now takes 5 biggest words, should take 5 less known ones (medium priority)
 * Rebuild tests - delete SpringBootTest on Unit tests and separate configs
 * Api calls back to intellij ???
 * Controller tests via Spring boot
 * global exception handling via Spring boot
-* Liquidbase
-* Flyway
+* Liquibase ???
 * ? Migrate to Junit5 and mockito 3
 * Own aspect
 * Own prototype / session bean in singleton
