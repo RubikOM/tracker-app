@@ -71,9 +71,9 @@ public class DictionaryElement {
         private final String word;
         private final String translation;
 
-        private String transcription = "";
-        private String example = "";
-        private String exampleTranslation = "";
+        private String transcription = EMPTY;
+        private String example = EMPTY;
+        private String exampleTranslation = EMPTY;
         private User author = null;
 
         public Builder(String word, String translation) {
@@ -121,18 +121,21 @@ public class DictionaryElement {
 
     public class Importer {
         public String getDictionaryElementAsString() {
-            if (translation == null) return "";
-            makeWordValidForFile();
+            if (translation == null) {
+                return EMPTY;
+            } else {
+                makeWordValidForFile();
 
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(word).append(SEMICOLON)
-                    .append(Objects.equals(transcription, EMPTY) ? EMPTY : transcription.concat(SEMICOLON))
-                    .append(translation).append(SEMICOLON)
-                    .append(Objects.equals(example, EMPTY) ? EMPTY : example.concat(SEMICOLON))
-                    .append(Objects.equals(exampleTranslation, EMPTY) ? EMPTY : exampleTranslation.concat(SEMICOLON))
-                    .append("\n");
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append(word).append(SEMICOLON)
+                        .append(Objects.equals(transcription, EMPTY) ? EMPTY : transcription.concat(SEMICOLON))
+                        .append(translation).append(SEMICOLON)
+                        .append(Objects.equals(example, EMPTY) ? EMPTY : example.concat(SEMICOLON))
+                        .append(Objects.equals(exampleTranslation, EMPTY) ? EMPTY : exampleTranslation.concat(SEMICOLON))
+                        .append("\n");
 
-            return stringBuilder.toString();
+                return stringBuilder.toString();
+            }
         }
 
         private void makeWordValidForFile() {

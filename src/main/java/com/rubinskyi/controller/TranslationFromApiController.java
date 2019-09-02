@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 
+import static org.apache.commons.lang3.StringUtils.SPACE;
+
 @RestController
 @RequiredArgsConstructor
 public class TranslationFromApiController {
@@ -27,7 +29,7 @@ public class TranslationFromApiController {
     }
 
     private String getFirstWord(String word) {
-        String[] wordAsArray = word.split(" ");
+        String[] wordAsArray = word.split(SPACE);
         return wordAsArray.length > 0 ? wordAsArray[wordAsArray.length - 1] : word;
     }
 }
