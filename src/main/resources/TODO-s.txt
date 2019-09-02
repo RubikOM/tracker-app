@@ -1,4 +1,4 @@
-/*TODO problems in project
+TODO problems in project
 0) Caching by dictionary + add dictionary for minicard and cache it as well as all dictionaries
 0*) After caching we can no more hold words in table for each concrete user -- just hold a reference in DB
 18) spellchecker TranslationFromApiController : if word isn't correct guess what user wanted to add + Some normal way to show error (not one currently used)
@@ -23,4 +23,3 @@
 1   mike plain-old-small-letter-password
 2	lia	passwordToCopy
 3	testUser	testUser
-*/
