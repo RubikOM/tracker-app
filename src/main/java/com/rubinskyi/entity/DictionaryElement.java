@@ -19,6 +19,7 @@ import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import static com.rubinskyi.pojo.constant.StringConstant.LINE_BREAK;
 import static com.rubinskyi.pojo.constant.StringConstant.SEMICOLON;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.SPACE;
@@ -126,15 +127,12 @@ public class DictionaryElement {
             } else {
                 makeWordValidForFile();
 
-                StringBuilder stringBuilder = new StringBuilder();
-                stringBuilder.append(word).append(SEMICOLON)
-                        .append(Objects.equals(transcription, EMPTY) ? EMPTY : transcription.concat(SEMICOLON))
-                        .append(translation).append(SEMICOLON)
-                        .append(Objects.equals(example, EMPTY) ? EMPTY : example.concat(SEMICOLON))
-                        .append(Objects.equals(exampleTranslation, EMPTY) ? EMPTY : exampleTranslation.concat(SEMICOLON))
-                        .append("\n");
-
-                return stringBuilder.toString();
+                return word + SEMICOLON +
+                        (Objects.equals(transcription, EMPTY) ? EMPTY : transcription.concat(SEMICOLON)) +
+                        translation + SEMICOLON +
+                        (Objects.equals(example, EMPTY) ? EMPTY : example.concat(SEMICOLON)) +
+                        (Objects.equals(exampleTranslation, EMPTY) ? EMPTY : exampleTranslation.concat(SEMICOLON)) +
+                        LINE_BREAK;
             }
         }
 
