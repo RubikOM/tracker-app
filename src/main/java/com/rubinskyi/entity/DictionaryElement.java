@@ -1,7 +1,10 @@
 package com.rubinskyi.entity;
 
-import java.time.LocalDate;
-import java.util.Objects;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,14 +16,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-
-import org.hibernate.validator.constraints.NotBlank;
-
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import java.time.LocalDate;
+import java.util.Objects;
 
 import static com.rubinskyi.pojo.constant.StringConstant.SEMICOLON;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
@@ -28,11 +25,9 @@ import static org.apache.commons.lang3.StringUtils.SPACE;
 
 @Entity
 @Table(name = "DICTIONARY_ELEMENTS")
-@Getter
-@Setter
-@ToString
-@EqualsAndHashCode
+@Data
 @NoArgsConstructor
+@BatchSize(size = 50)
 public class DictionaryElement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

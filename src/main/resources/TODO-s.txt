@@ -1,25 +1,25 @@
-/*TODO problems in project
+TODO problems in project
 0) Caching by dictionary + add dictionary for minicard and cache it as well as all dictionaries
 0*) After caching we can no more hold words in table for each concrete user -- just hold a reference in DB
-2) JSP -> thymeleaf (or even react or angular for front)
-6) js looks very trashy at the time, mb switch for some front - end framework
-15) Test what will happen if user not in DB in authentication time
 18) spellchecker TranslationFromApiController : if word isn't correct guess what user wanted to add + Some normal way to show error (not one currently used)
-19) ComprehensiveTranslationServiceLingvo takes just 1 word
 33) Validator
-36) Message if password wrong
-38) edit form button.
-43) https://developers.lingvolive.com/ru-ru/Help Suggests
-46) Should rebuild SuggestedTranslationService - it now takes 5 biggest words, should take 5 less known ones
+36) Validation for landing page (password wrong)
+38) make edit button workable
+43) https://developers.lingvolive.com/ru-ru/Help Suggests for concrete word - can make suggestions for non correct words (low priority)
+46) Should rebuild SuggestedTranslationService - it now takes 5 biggest words, should take 5 less known ones (medium priority)
 * Rebuild tests - delete SpringBootTest on Unit tests and separate configs
 * Api calls back to intellij ???
-* Inject session scope user to controller
 * Controller tests via Spring boot
 * global exception handling via Spring boot
-* Liquidbase
-* Migrate to Junit5 and mockito 3
+* Liquibase ???
+* ? Migrate to Junit5 and mockito 3
+* Own aspect
+* Own prototype / session bean in singleton
+* Own N+1 solution in entities
+* Own bean post processor in this project
+* Re-do view for upload an image and translations result pages
+
 
 1   mike plain-old-small-letter-password
 2	lia	passwordToCopy
 3	testUser	testUser
-*/
