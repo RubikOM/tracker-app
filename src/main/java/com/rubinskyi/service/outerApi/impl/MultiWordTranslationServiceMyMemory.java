@@ -5,6 +5,7 @@ import com.rubinskyi.bean.properties.ApiProperties;
 import com.rubinskyi.pojo.sentences.RussianSentenceResponse;
 import com.rubinskyi.pojo.sentences.SentenceElementMyMemory;
 import com.rubinskyi.service.outerApi.MultiWordTranslationService;
+import com.rubinskyi.util.profiling.LogExecutionTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +37,7 @@ public class MultiWordTranslationServiceMyMemory implements MultiWordTranslation
     private final ApiProperties apiProperties;
 
     @Override
+    @LogExecutionTime
     public String translateSentenceToRussian(String englishSentence) {
         if (englishSentence == null || englishSentence.isEmpty()) return EMPTY;
         List<String> sentences = cropStringBySentences(englishSentence);

@@ -2,6 +2,7 @@ package com.rubinskyi.service.outerApi.impl;
 
 import com.rubinskyi.service.outerApi.ImageCharacterRecognitionService;
 import com.rubinskyi.bean.FileSearcherBean;
+import com.rubinskyi.util.profiling.LogExecutionTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.sourceforge.tess4j.Tesseract;
@@ -19,6 +20,7 @@ public class TesseractImageCharacterRecognitionService implements ImageCharacter
     private static final String TESSERACT_TRAINED_DATA_FOLDER = "tessdata";
 
     @Override
+    @LogExecutionTime
     public String resolveImage(File file) {
         Tesseract tesseract = new Tesseract();
         String recognisedText;

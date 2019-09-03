@@ -1,6 +1,7 @@
 <configuration>
     <statusListener class="ch.qos.logback.core.status.NopStatusListener" />
     <property name="HOME_LOG" value="logs/app.log"/>
+    <property name="PROFILING_LOG" value="logs/profiling.log"/>
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
@@ -25,12 +26,36 @@
         </encoder>
     </appender>
 
+    <appender name="FILE-ROLLING-PROFILING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${PROFILING_LOG}</file>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>logs/archived-profiling/app.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>1MB</maxFileSize>
+            <totalSizeCap>2MB</totalSizeCap>
+            <maxHistory>5</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%d %p %c{1.} [%t] %m%n</pattern>
+        </encoder>
+    </appender>
+
     <logger name="com.rubinskyi" level="debug" additivity="false">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE-ROLLING"/>
     </logger>
 
-    <root level="info">
+    <logger name="com.rubinskyi.util.profiling" level="info" additivity="false">
+        <appender-ref ref="FILE-ROLLING-PROFILING"/>
+    </logger>
+
+    <root level="info" additivity="false">
         <appender-ref ref="FILE-ROLLING"/>
         <appender-ref ref="CONSOLE"/>
     </root>
