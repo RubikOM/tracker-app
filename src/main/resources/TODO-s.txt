@@ -18,6 +18,7 @@ TODO problems in project
 * Own N+1 solution in entities
 * Own bean post processor in this project
 * Re-do view for upload an image and translations result pages
+* Pageable
 
 
 1   mike plain-old-small-letter-password
