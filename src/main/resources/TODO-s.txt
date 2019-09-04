@@ -19,6 +19,12 @@ TODO problems in project
 * Own bean post processor in this project
 * Re-do view for upload an image and translations result pages
 * Pageable
+* Oauth2
+* Kafka/Rabbit
+* Elastic search
+* Keep on with flyway or remove it
+* Docker
+* Own props for Api props
 
 
 1   mike plain-old-small-letter-password
