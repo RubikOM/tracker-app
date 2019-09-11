@@ -23,7 +23,6 @@ TODO problems in project
 * Elastic search
 * Consider rebuilding flyway to be executed from code
 * Docker and then pull to : Elastic Bean Stalk / EC2 / Cloud Formation
-* Own props for Api props
 * gradle flywayClean & gradle flywayMigrate before running a server
 * Entity graph for Hibernate
 
