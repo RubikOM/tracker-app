@@ -4,7 +4,7 @@ plugins {
     id 'idea'
     id 'org.springframework.boot' version '2.0.5.RELEASE'
     id 'io.spring.dependency-management' version '1.0.7.RELEASE'
-    id "org.flywaydb.flyway" version "6.0.1"
+//    id "org.flywaydb.flyway" version "6.0.1"
 }
 
 group = 'com.rubinskyi'
@@ -24,18 +24,19 @@ repositories {
 }
 
 dependencies {
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
     implementation 'org.springframework.boot:spring-boot-dependencies:2.0.5.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
-    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     implementation 'org.apache.commons:commons-lang3'
 
     runtimeOnly 'com.h2database:h2'
     compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.16'
 
-    compile "org.flywaydb:flyway-core:6.0.1"
+    compile "org.flywaydb:flyway-core"
     compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-jasper'
     compile group: 'javax.servlet', name: 'jstl', version: '1.2'
     compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
@@ -74,9 +75,9 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
-flyway {
+/*flyway {
     url = 'jdbc:mysql://localhost/english_dictionary'
     user = dbUser
     password = dbPassword
     schemas = ['english_dictionary']
-}
+}*/

@@ -13,7 +13,6 @@ TODO problems in project
 * global exception handling via Spring boot
 * Liquibase ???
 * ? Migrate to Junit5 and mockito 3
-* Own aspect
 * Own prototype / session bean in singleton
 * Own N+1 solution in entities
 * Own bean post processor in this project
@@ -22,10 +21,11 @@ TODO problems in project
 * Oauth2
 * Kafka/Rabbit
 * Elastic search
-* Keep on with flyway or remove it
-* Docker
+* Consider rebuilding flyway to be executed from code
+* Docker and then pull to : Elastic Bean Stalk / EC2 / Cloud Formation
 * Own props for Api props
-
+* gradle flywayClean & gradle flywayMigrate before running a server
+* Entity graph for Hibernate
 
 1   mike plain-old-small-letter-password
 2	lia	passwordToCopy
