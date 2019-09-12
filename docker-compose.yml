@@ -1,0 +1,26 @@
+version: '3.7'
+services:
+  hk-mysql:
+    build:
+      context: ./docker/db
+    container_name: hk-mysql
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_USER=root
+      - MYSQL_DATABASE=english_dictionary
+      - MYSQL_ROOT_PASSWORD=Asdfgh_3011
+      - MYSQL_PASSWORD=Asdfgh_3011
+    restart: always
+  smart-dictionary:
+    container_name: smart-dictionary
+    build:
+      context: ./
+    image: smart-dictionary
+    depends_on:
+      - 'hk-mysql'
+    links:
+      - 'hk-mysql'
+    ports:
+      - 8888:8888
+    restart: always

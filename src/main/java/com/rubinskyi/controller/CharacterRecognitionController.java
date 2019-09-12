@@ -1,11 +1,12 @@
 package com.rubinskyi.controller;
 
 import com.rubinskyi.pojo.Pages;
-import com.rubinskyi.service.outerApi.ImageCharacterRecognitionService;
 import com.rubinskyi.service.outerApi.FileTranslationService;
-import com.rubinskyi.bean.FileSearcherBean;
+import com.rubinskyi.service.outerApi.ImageCharacterRecognitionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,8 +31,8 @@ import static com.rubinskyi.pojo.constant.StringConstant.ERROR;
 public class CharacterRecognitionController {
     private final ImageCharacterRecognitionService recognitionService;
     private final FileTranslationService fileTranslationService;
-    private final FileSearcherBean fileSearcher;
-    private static final String TESSERACT_IMAGE_FOLDER = "tessimage";
+    @Value("classpath:tessimage")
+    Resource tessimageFolder;
 
     @GetMapping("/file")
     public String getFileImportationPage() {
@@ -40,9 +41,17 @@ public class CharacterRecognitionController {
 
     @PostMapping("/uploadFile")
     public String submitFile(@RequestParam("file") MultipartFile multipartFile, Model model, Principal principal) {
-        File imageFolder = fileSearcher.getFileByName(TESSERACT_IMAGE_FOLDER);
-        String pathToFile = imageFolder.getPath() + "_" + principal.getName() + "_" + multipartFile.getOriginalFilename();
-        File file = new File(pathToFile);
+        String pathToFile;
+        try {
+            // TODO debugger here + maybe hardcode servers info
+            log.error("Path to file is: " + tessimageFolder);
+            pathToFile = tessimageFolder.getFile().getPath();
+        } catch (IOException e) {
+            log.error("Cannot find tessimage folder");
+            model.addAttribute(ERROR, "Something wrong with this file!");
+            return Pages.UPLOAD_FILE_PAGE.getPage();
+        }
+        File file = new File(pathToFile + "\\" + principal.getName() + "_" + multipartFile.getOriginalFilename());
         try {
             multipartFile.transferTo(file);
         } catch (IOException e) {

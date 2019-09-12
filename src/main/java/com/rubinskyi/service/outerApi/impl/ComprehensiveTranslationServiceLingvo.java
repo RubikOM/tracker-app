@@ -10,6 +10,7 @@ import com.rubinskyi.pojo.lingvo.ComprehensiveElementLingvo;
 import com.rubinskyi.bean.mapper.ComprehensiveElementMapperSimple;
 import com.rubinskyi.service.outerApi.ComprehensiveTranslationService;
 import com.rubinskyi.service.DictionaryElementConsolidatorService;
+import com.rubinskyi.util.profiling.LogExecutionTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,7 @@ public class ComprehensiveTranslationServiceLingvo implements ComprehensiveTrans
     private final ObjectMapper objectMapper;
     private final ApiProperties apiProperties;
 
+    @LogExecutionTime
     public DictionaryElement getDictionaryElementFromApi(String wordInEnglish, User user) {
         String apiCall = String.format(apiProperties.getApiCallTemplateComprehensive(), wordInEnglish);
         List<DictionaryElement> dictionaryElements = collectDictionaryElements(apiCall, user);
