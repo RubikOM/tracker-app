@@ -25,6 +25,8 @@ TODO problems in project
 * Docker and then pull to : Elastic Bean Stalk / EC2 / Cloud Formation
 * gradle flywayClean & gradle flywayMigrate before running a server
 * Entity graph for Hibernate
+* Take variables from env variables
+* "during" to autofill
 
 1   mike plain-old-small-letter-password
 2	lia	passwordToCopy

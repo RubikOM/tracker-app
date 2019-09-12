@@ -1,12 +1,14 @@
 database:
+#  url: jdbc:mysql://hk-mysql/english_dictionary?useUnicode=yes&characterEncoding=UTF-8
   url: jdbc:mysql://localhost/english_dictionary?useUnicode=yes&characterEncoding=UTF-8
-#  user: ${DB_USER}
   user: root
   password: Asdfgh_3011
-#  password: ${DB_PASSWORD}
   driverClassName: com.mysql.cj.jdbc.Driver
 hibernate:
   hbm2ddl.auto: validate
   dialect: org.hibernate.dialect.MySQLDialect
   format_sql: true
   show_sql: true
+
+#  user: ${DB_USER}
+#  password: ${DB_PASSWORD}
