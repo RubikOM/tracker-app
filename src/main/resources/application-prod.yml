@@ -1,3 +1,5 @@
 spring:
   datasource:
+    url: ${DB_PROD_URL}/${DB_SCHEMA}
+  flyway:
     url: ${DB_PROD_URL}

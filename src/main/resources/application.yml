@@ -3,7 +3,7 @@ server:
 
 spring:
   profiles:
-    active: dev
+    active: ${ACTIVE_PROFILE}
   jpa:
     open-in-view: false
     show-sql: true
@@ -24,7 +24,7 @@ spring:
     encoding: UTF-8
     url: jdbc:mysql://localhost:3306
     init-sqls: CREATE SCHEMA IF NOT EXISTS `english_dictionary` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ;
-    schemas: english_dictionary
+    schemas: ${DB_SCHEMA}
   datasource:
     username: ${DB_USER}
     password: ${DB_PASSWORD}

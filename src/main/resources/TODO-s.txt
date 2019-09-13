@@ -33,3 +33,5 @@ TODO problems in project
 1   mike plain-old-small-letter-password
 2	lia	passwordToCopy
 3	testUser	testUser
+
+java -jar EnglishSmartDictionary-1.3-SNAPSHOT.war
