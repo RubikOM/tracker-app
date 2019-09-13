@@ -40,9 +40,10 @@ public class CharacterRecognitionController {
 
     @PostMapping("/uploadFile")
     public String submitFile(@RequestParam("file") MultipartFile multipartFile, Model model, Principal principal) {
-        String pathToFile;
-        File tessimageFolder = fileSearcher.getFileByName(IMAGE_FOLDER_NAME);
-        String fileName = tessimageFolder.getAbsolutePath() + "\\" + principal.getName() + "_" + multipartFile.getOriginalFilename();
+        String tessimageFolderPath = fileSearcher.getFilePathByName(IMAGE_FOLDER_NAME);
+        log.info("Trying to get file! ");
+        log.info("Absolute path: " + tessimageFolderPath);
+        String fileName = tessimageFolderPath + "\\" + principal.getName() + "_" + multipartFile.getOriginalFilename();
         log.info("File to create: " + fileName);
         File file = new File(fileName);
         try {
