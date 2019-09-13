@@ -22,7 +22,7 @@ import java.util.Properties;
 @Configuration
 @EnableJpaRepositories("com.rubinskyi.dao")
 @EnableTransactionManagement
-@PropertySource(value = {"classpath:database.yaml"})
+@PropertySource(value = {"classpath:database.yml"})
 public class JpaConfiguration {
     private static final String PACKAGE_WITH_ENTITY_CLASSES = "com.rubinskyi.entity";
     private final Environment environment;

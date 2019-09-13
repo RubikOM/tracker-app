@@ -27,6 +27,8 @@ TODO problems in project
 * Entity graph for Hibernate
 * Take variables from env variables
 * "during" to autofill
+* after adding profiles database yml looks like a target for deletion
+* add create schema if not exist
 
 1   mike plain-old-small-letter-password
 2	lia	passwordToCopy

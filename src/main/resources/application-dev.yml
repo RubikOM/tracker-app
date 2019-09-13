@@ -1,0 +1,3 @@
+spring:
+  datasource:
+    url: ${DB_DEV_URL}
