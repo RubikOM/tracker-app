@@ -1,4 +1,4 @@
-package com.rubinskyi.bean;
+package com.rubinskyi.util.file;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
@@ -9,8 +9,8 @@ import java.net.URL;
 
 @Component
 @Slf4j
-@Profile("dev")
-public class FileSearcherBean {
+@Profile("!prod")
+public class LocalFileSearcher implements FileSearcher {
     public File getFileByName(String fileName) {
         ClassLoader classLoader = getClass().getClassLoader();
         URL resource = classLoader.getResource(fileName);

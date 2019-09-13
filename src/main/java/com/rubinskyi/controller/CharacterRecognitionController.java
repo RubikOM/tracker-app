@@ -3,10 +3,9 @@ package com.rubinskyi.controller;
 import com.rubinskyi.pojo.Pages;
 import com.rubinskyi.service.outerApi.FileTranslationService;
 import com.rubinskyi.service.outerApi.ImageCharacterRecognitionService;
+import com.rubinskyi.util.file.FileSearcher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,8 +30,8 @@ import static com.rubinskyi.pojo.constant.StringConstant.ERROR;
 public class CharacterRecognitionController {
     private final ImageCharacterRecognitionService recognitionService;
     private final FileTranslationService fileTranslationService;
-    @Value("classpath:tessimage")
-    Resource tessimageFolder;
+    private final FileSearcher fileSearcher;
+    private static final String IMAGE_FOLDER_NAME = "tessimage";
 
     @GetMapping("/file")
     public String getFileImportationPage() {
@@ -42,16 +41,10 @@ public class CharacterRecognitionController {
     @PostMapping("/uploadFile")
     public String submitFile(@RequestParam("file") MultipartFile multipartFile, Model model, Principal principal) {
         String pathToFile;
-        try {
-            // TODO debugger here + maybe hardcode servers info
-            log.error("Path to file is: " + tessimageFolder);
-            pathToFile = tessimageFolder.getFile().getPath();
-        } catch (IOException e) {
-            log.error("Cannot find tessimage folder");
-            model.addAttribute(ERROR, "Something wrong with this file!");
-            return Pages.UPLOAD_FILE_PAGE.getPage();
-        }
-        File file = new File(pathToFile + "\\" + principal.getName() + "_" + multipartFile.getOriginalFilename());
+        File tessimageFolder = fileSearcher.getFileByName(IMAGE_FOLDER_NAME);
+        String fileName = tessimageFolder.getAbsolutePath() + "\\" + principal.getName() + "_" + multipartFile.getOriginalFilename();
+        log.info("File to create: " + fileName);
+        File file = new File(fileName);
         try {
             multipartFile.transferTo(file);
         } catch (IOException e) {

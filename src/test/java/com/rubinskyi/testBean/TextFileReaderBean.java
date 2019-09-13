@@ -1,6 +1,7 @@
 package com.rubinskyi.testBean;
 
-import com.rubinskyi.bean.FileSearcherBean;
+import com.rubinskyi.util.file.FileSearcher;
+import com.rubinskyi.util.file.LocalFileSearcher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -18,7 +19,7 @@ import static org.apache.commons.lang3.StringUtils.SPACE;
 @Component
 @RequiredArgsConstructor
 public class TextFileReaderBean {
-    private final FileSearcherBean fileSearcherBean;
+    private final FileSearcher localFileSearcher;
 
     public String getContentByFileName(String fileName) {
         File fileByName = getFileByName(fileName);
@@ -32,6 +33,6 @@ public class TextFileReaderBean {
     }
 
     public File getFileByName(String fileName) {
-        return fileSearcherBean.getFileByName(fileName);
+        return localFileSearcher.getFileByName(fileName);
     }
 }
