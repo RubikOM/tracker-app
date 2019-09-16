@@ -1,8 +1,8 @@
 package com.rubinskyi.service.impl;
 
+import com.rubinskyi.config.SpringTestConfig;
 import com.rubinskyi.service.outerApi.impl.TesseractImageCharacterRecognitionService;
 import com.rubinskyi.testBean.TextFileReaderBean;
-import com.rubinskyi.config.SpringTestConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,9 +53,9 @@ public class TesseractImageCharacterRecognitionServiceTest {
         File file = textFileReaderBean.getFileByName("tessimage/image_noisy.png");
 
         String result = tesseractImageCharacterRecognitionService.resolveImage(file);
-        String expectedResult = "~ Tesseract Will\n" +
+        String expectedResult = "Tesseract Will\n" +
                 "Fail With Noisy\n" +
-                "- Backgrounds\n";
+                "Backgrounds 2\n";
 
         assertEquals(expectedResult, result);
     }

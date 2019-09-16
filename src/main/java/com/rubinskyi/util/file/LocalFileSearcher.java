@@ -1,18 +1,24 @@
 package com.rubinskyi.util.file;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Objects;
 
 @Component
 @Slf4j
 @Profile("!prod")
+@RequiredArgsConstructor
 public class LocalFileSearcher implements FileSearcher {
+    @Qualifier("localFileSearcher")
+    private final ClassLoader classLoader;
+
     public File getFileByName(String fileName) {
-        ClassLoader classLoader = getClass().getClassLoader();
         URL resource = classLoader.getResource(fileName);
         if (resource == null) {
             log.error("Cannot open file with name " + fileName);
@@ -20,5 +26,11 @@ public class LocalFileSearcher implements FileSearcher {
         } else {
             return new File(resource.getFile());
         }
+    }
+
+    @Override
+    public String getTessimageFolder() {
+        String pathToFolder = Objects.requireNonNull(classLoader.getResource(TESSIMAGE_FOLDER_NAME)).getPath();
+        return (new File(pathToFolder).getAbsolutePath());
     }
 }

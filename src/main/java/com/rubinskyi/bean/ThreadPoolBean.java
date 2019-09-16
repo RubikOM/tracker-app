@@ -1,12 +1,12 @@
 package com.rubinskyi.bean;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Component
+@Configuration
 public class ThreadPoolBean {
     private static final int THREAD_POOL_SIZE = 5;
     @Bean

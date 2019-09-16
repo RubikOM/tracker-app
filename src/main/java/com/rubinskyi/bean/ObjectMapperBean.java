@@ -3,10 +3,10 @@ package com.rubinskyi.bean;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
-@Component
+@Configuration
 public class ObjectMapperBean {
     @Bean
     public RestTemplate restTemplate() {
