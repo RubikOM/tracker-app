@@ -30,6 +30,7 @@ TODO problems in project
 * after adding profiles database yml looks like a target for deletion
 * add create schema if not exist
 * replace ADD ERROR to model with global exception handling
+* fix tessimages
 
 1   mike plain-old-small-letter-password
 2	lia	passwordToCopy

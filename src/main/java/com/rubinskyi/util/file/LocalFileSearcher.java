@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.net.URL;
-import java.util.Objects;
 
 @Component
 @Slf4j
@@ -26,11 +25,5 @@ public class LocalFileSearcher implements FileSearcher {
         } else {
             return new File(resource.getFile());
         }
-    }
-
-    @Override
-    public String getTessimageFolder() {
-        String pathToFolder = Objects.requireNonNull(classLoader.getResource(TESSIMAGE_FOLDER_NAME)).getPath();
-        return (new File(pathToFolder).getAbsolutePath());
     }
 }
