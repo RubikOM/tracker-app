@@ -33,6 +33,6 @@ public class TextFileReaderBean {
     }
 
     public File getFileByName(String fileName) {
-        return localFileSearcher.getFileByName(fileName);
+        return new File(localFileSearcher.getFilePathByName(fileName));
     }
 }
