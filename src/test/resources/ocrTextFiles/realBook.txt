@@ -33,4 +33,4 @@ th service access API can return a richer service interface to clients than the
 one furnished by providers. This is the Bridge pattern [Gamma95]. Dependency
 injection frameworks (Item 5) can be viewed as powerful service providers. Since
 Java 6, the platform includes a general-purpose service provider framework,
-java.utilServiceLoader, so you needn’t, and generally shouldn’t, write your
+java.util.ServiceLoader, so you needn’t, and generally shouldn't, write your

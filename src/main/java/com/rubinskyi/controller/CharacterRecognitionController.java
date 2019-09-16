@@ -3,9 +3,9 @@ package com.rubinskyi.controller;
 import com.rubinskyi.pojo.Pages;
 import com.rubinskyi.service.outerApi.FileTranslationService;
 import com.rubinskyi.service.outerApi.ImageCharacterRecognitionService;
-import com.rubinskyi.util.file.FileSearcher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.security.Principal;
 import java.util.Map;
 
@@ -30,8 +29,8 @@ import static com.rubinskyi.pojo.constant.StringConstant.ERROR;
 public class CharacterRecognitionController {
     private final ImageCharacterRecognitionService recognitionService;
     private final FileTranslationService fileTranslationService;
-    private final FileSearcher fileSearcher;
-    private static final String IMAGE_FOLDER_NAME = "tessimage";
+    @Value("classpath:tessimage")
+    private File IMAGE_FOLDER_NAME;
 
     @GetMapping("/file")
     public String getFileImportationPage() {
@@ -40,11 +39,7 @@ public class CharacterRecognitionController {
 
     @PostMapping("/uploadFile")
     public String submitFile(@RequestParam("file") MultipartFile multipartFile, Model model, Principal principal) {
-        String pathToFile;
-        File tessimageFolder = fileSearcher.getFileByName(IMAGE_FOLDER_NAME);
-        String fileName = tessimageFolder.getAbsolutePath() + "\\" + principal.getName() + "_" + multipartFile.getOriginalFilename();
-        log.info("File to create: " + fileName);
-        File file = new File(fileName);
+        File file = new File(IMAGE_FOLDER_NAME.getAbsolutePath() + multipartFile.getOriginalFilename());
         try {
             multipartFile.transferTo(file);
         } catch (IOException e) {
@@ -60,12 +55,6 @@ public class CharacterRecognitionController {
             model.addAttribute("recognisedText", textFromRecognitionService);
             model.addAttribute("russianTranslation", translations.get("russian"));
             model.addAttribute("suggestedElements", translations.get("suggestedElements"));
-        }
-
-        try {
-            Files.delete(file.toPath());
-        } catch (IOException e) {
-            log.error("Cannot delete file " + file.getPath(), e);
         }
         return Pages.UPLOAD_FILE_PAGE.getPage();
     }
