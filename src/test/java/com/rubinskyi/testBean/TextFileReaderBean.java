@@ -1,7 +1,6 @@
 package com.rubinskyi.testBean;
 
 import com.rubinskyi.util.file.FileSearcher;
-import com.rubinskyi.util.file.LocalFileSearcher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -33,6 +32,6 @@ public class TextFileReaderBean {
     }
 
     public File getFileByName(String fileName) {
-        return new File(localFileSearcher.getFilePathByName(fileName));
+        return localFileSearcher.getFileByName(fileName);
     }
 }

@@ -29,3 +29,8 @@ spring:
     username: ${DB_USER}
     password: ${DB_PASSWORD}
     driverClassName: com.mysql.cj.jdbc.Driver
+  servlet:
+    multipart:
+      max-file-size: 2MB
+      enabled: true
+      location: ${java.io.tmpdir}
