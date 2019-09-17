@@ -15,9 +15,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 import static com.rubinskyi.pojo.constant.StringConstant.DOT;
@@ -29,7 +28,6 @@ import static org.apache.commons.lang3.StringUtils.SPACE;
 @Service
 @RequiredArgsConstructor
 public class SuggestedTranslationServiceLingvo implements SuggestedTranslationService {
-    private final ExecutorService lingvoExecutorService;
     private final ComprehensiveTranslationService comprehensiveTranslationService;
     private final ApiProperties apiProperties;
     private final UserService userService;
@@ -49,11 +47,12 @@ public class SuggestedTranslationServiceLingvo implements SuggestedTranslationSe
     }
 
     private List<DictionaryElement> getDictionaryElements(List<String> wordsToSuggest, User currentUser) {
-        List<Future> futures = new ArrayList<>();
+        List<CompletableFuture> futures = new ArrayList<>();
 
         for (String word : wordsToSuggest) {
-            Future<DictionaryElement> elementFuture = lingvoExecutorService.submit(
+            CompletableFuture<DictionaryElement> elementFuture = CompletableFuture.supplyAsync(
                     () -> comprehensiveTranslationService.getDictionaryElementFromApi(word, currentUser));
+
             futures.add(elementFuture);
         }
         List<DictionaryElement> dictionaryElementsToSuggest = futures.stream()
@@ -63,7 +62,11 @@ public class SuggestedTranslationServiceLingvo implements SuggestedTranslationSe
         return dictionaryElementsToSuggest;
     }
 
-    private DictionaryElement extractFromFuture(Future future) {
+    private DictionaryElement extractFromFuture(CompletableFuture future) {
+        if (Objects.isNull(future)) {
+            log.error("Future is null!");
+            return new DictionaryElement();
+        }
         try {
             return (DictionaryElement) future.get();
         } catch (ExecutionException | InterruptedException e) {

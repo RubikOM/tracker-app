@@ -17,6 +17,7 @@ public class LocalFileSearcher implements FileSearcher {
     @Qualifier("localFileSearcher")
     private final ClassLoader classLoader;
 
+    @Override
     public File getFileByName(String fileName) {
         URL resource = classLoader.getResource(fileName);
         if (resource == null) {
