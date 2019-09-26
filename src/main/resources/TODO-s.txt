@@ -4,14 +4,13 @@ TODO problems in project
 18) spellchecker TranslationFromApiController : if word isn't correct guess what user wanted to add + Some normal way to show error (not one currently used)
 33) Validator
 36) Validation for landing page (password wrong)
-38) make edit button workable
+38) make edit button work
 43) https://developers.lingvolive.com/ru-ru/Help Suggests for concrete word - can make suggestions for non correct words (low priority)
 46) Should rebuild SuggestedTranslationService - it now takes 5 biggest words, should take 5 less known ones (medium priority)
 * Rebuild tests - delete SpringBootTest on Unit tests and separate configs
 * Api calls back to intellij ???
 * Controller tests via Spring boot
 * global exception handling via Spring boot
-* Liquibase ???
 * ? Migrate to Junit5 and mockito 3
 * Own prototype / session bean in singleton
 * Own N+1 solution in entities
@@ -23,14 +22,12 @@ TODO problems in project
 * Elastic search
 * Consider rebuilding flyway to be executed from code
 * Docker and then pull to : Elastic Bean Stalk / EC2 / Cloud Formation
-* gradle flywayClean & gradle flywayMigrate before running a server
 * Entity graph for Hibernate
-* Take variables from env variables
+* Take variables from env variables for Docker
 * "during" to autofill
-* after adding profiles database yml looks like a target for deletion
-* add create schema if not exist
-* replace ADD ERROR to model with global exception handling
 * ask mentor how to deal with validation exceptions
+* check if !prod profile works correctly
+* Schema-validation: missing table [english_dictionary.dictionaries11]
 
 1   mike plain-old-small-letter-password
 2	lia	passwordToCopy
@@ -40,7 +37,8 @@ java -jar EnglishSmartDictionary-1.3-SNAPSHOT.war
 
 
 
-java -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=8000,suspend=n -jar -DDB_USER=root -DDB_PASSWORD=Asdfgh_3011 -DDB_DEV_URL=jdbc:mysql://localhost:3306 -DDB_PROD_URL=jdbc:mysql://localhost:3306 -DDB_SCHEMA=english_dictionary -DACTIVE_PROFILE=prod build\libs\EnglishSmartDictionary-1.3-SNAPSHOT.war
+java -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=8000,suspend=n -jar -DDB_USER=root -DDB_PASSWORD=Asdfgh_3011 -DDB_DEV_URL=jdbc:mysql://localhost:3306 -DDB_PROD_URL=jdbc:mysql://hk-mysql:3306 -DDB_SCHEMA=english_dictionary -DACTIVE_PROFILE=dev build\libs\EnglishSmartDictionary-1.3-SNAPSHOT.war
+java -jar -DDB_USER=root -DDB_PASSWORD=Asdfgh_3011 -DDB_DEV_URL=jdbc:mysql://localhost:3306 -DDB_PROD_URL=jdbc:mysql://localhost:3306 -DDB_SCHEMA=english_dictionary -DACTIVE_PROFILE=prod build\libs\EnglishSmartDictionary-1.3-SNAPSHOT.war
 
 * local : C:\Users\user\Desktop\ESD2\build\resources\main\tessimage C:\Users\user\Desktop\ESD2\build\resources\main\tessdata
 * War : C:\Users\user\Desktop\ESD2\file:\C:\Users\user\Desktop\ESD2\build\libs\EnglishSmartDictionary-1.3-SNAPSHOT.war!\WEB-INF\classes\tessdata
