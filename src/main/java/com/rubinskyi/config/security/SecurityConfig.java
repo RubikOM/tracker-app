@@ -65,6 +65,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .rememberMe().key("uniqueAndSecret").tokenValiditySeconds(192800000)
+
+                .and()
+                .exceptionHandling().accessDeniedPage("/error-page")
         ;
     }
 
